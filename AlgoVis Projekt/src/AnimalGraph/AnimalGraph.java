@@ -6,16 +6,22 @@ import algoanim.primitives.Polyline;
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.AnimationType;
 import algoanim.primitives.generators.Language;
+import algoanim.properties.AnimationProperties;
+import algoanim.properties.CircleProperties;
 import algoanim.properties.GraphProperties;
+import algoanim.properties.TextProperties;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
 import algoanim.util.Offset;
 import animal.main.Animal;
+import animal.main.Animation;
+import animal.vhdl.logic.test;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
 import generators.misc.machineLearning.CoordinateSystem1D;
 
+import java.awt.*;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Random;
@@ -29,6 +35,8 @@ public class AnimalGraph {
     int v; // number of vertices (nodes)
     int e; // number of edges
     AnimalEdge[] edgeArray; // array to store all edges
+    int startContract;
+    int endContract;
 
     public AnimalGraph(int v, int e) {
         this.v = v;
@@ -78,6 +86,8 @@ public class AnimalGraph {
             // the node of the edge into one)
             else {
                 System.out.println("Contracting edge" + edgeArray[i].src + edgeArray[i].dest);
+                startContract = edgeArray[i].src;
+                endContract = edgeArray[i].dest;
                 // number of Vertices is one less
                 vertices--;
                 testAnimalSet.union(subset, subset1, subset2);
@@ -102,9 +112,9 @@ public class AnimalGraph {
 
         /*
         0A------1B
-        | \    |
-        |   \  |
-        |     \|
+        |       |
+        |       |
+        |       |
         2C------3D
          */
 
@@ -118,9 +128,10 @@ public class AnimalGraph {
         testGraph.edgeArray[1].src = 0;
         testGraph.edgeArray[1].dest = 2;
 
-        // add edge 0-3
-        testGraph.edgeArray[2].src = 0;
-        testGraph.edgeArray[2].dest = 3;
+
+        // add edge 1-2
+        //testGraph.edgeArray[2].src = 1;
+        //testGraph.edgeArray[2].dest = 2;
 
         // add edge 1-3
         testGraph.edgeArray[3].src = 1;
@@ -135,25 +146,28 @@ public class AnimalGraph {
         Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT,"Kargers Minimum Cut", "Hannah Drews, Yves Geib", 680, 450);
         lang.setStepMode(true);
 
+        TextProperties tp = new TextProperties();
+        CircleProperties cp = new CircleProperties();
+
         // Create Node A
-        Text nodeA = lang.newText(new Coordinates(100,100),"A", "nodeA", null);
+        Text nodeA = lang.newText(new Coordinates(100,100),"A", "nodeA", null, tp);
         //text.setText();
-        Circle circleA = lang.newCircle(new Offset(0,0,nodeA, AnimalScript.DIRECTION_C),20,"circleA",null);
+        Circle circleA = lang.newCircle(new Offset(0,0,nodeA, AnimalScript.DIRECTION_C),20,"circleA",null, cp);
 
         // Create Node B
-        Text nodeB = lang.newText(new Coordinates(200,100),"B", "nodeB", null);
+        Text nodeB = lang.newText(new Coordinates(200,100),"B", "nodeB", null, tp);
         //text.setText();
-        Circle circleB = lang.newCircle(new Offset(0,0,nodeB, AnimalScript.DIRECTION_C),20,"circleB",null);
+        Circle circleB = lang.newCircle(new Offset(0,0,nodeB, AnimalScript.DIRECTION_C),20,"circleB",null, cp);
 
         // Create Node C
-        Text nodeC = lang.newText(new Coordinates(100,200),"C", "nodeC", null);
+        Text nodeC = lang.newText(new Coordinates(100,200),"C", "nodeC", null, tp);
         //text.setText();
-        Circle circleC = lang.newCircle(new Offset(0,0,nodeC, AnimalScript.DIRECTION_C),20,"circleC",null);
+        Circle circleC = lang.newCircle(new Offset(0,0,nodeC, AnimalScript.DIRECTION_C),20,"circleC",null, cp);
 
         // Create Node D
-        Text nodeD = lang.newText(new Coordinates(200,200),"D", "nodeD", null);
+        Text nodeD = lang.newText(new Coordinates(200,200),"D", "nodeD", null, tp);
         //text.setText();
-        Circle circleD = lang.newCircle(new Offset(0,0, nodeD, AnimalScript.DIRECTION_C),20,"circleD",null);
+        Circle circleD = lang.newCircle(new Offset(0,0, nodeD, AnimalScript.DIRECTION_C),20,"circleD",null, cp);
 
        /* Node startA = new Offset(20,0, circleA, AnimalScript.DIRECTION_C);
         Node startB = new Offset(-20,0, circleB, AnimalScript.DIRECTION_C);
@@ -166,9 +180,41 @@ public class AnimalGraph {
         Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null);
         Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null);
 
+        // if its 1 than the corresponding Node in Animal is B (Edge0-1)
+        if (testGraph.endContract == 1) {
+            if (testGraph.startContract == 0) {
+                lang.nextStep();
+                tp.set("color", Color.RED);
+                cp.set("color", Color.RED);
+                nodeA.getProperties();
 
+                lang.nextStep();
+                nodeB.hide();
+                circleB.hide();
+                nodeA.setText("A,B", null,null);
+                edgeAB.hide();
+                edgeBD.hide();
+                Polyline edgeNotContracted = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+            }
+        }
 
+        // if its 2 than the corresponding Node in Animal is C (Edge0-2)
+        if (testGraph.endContract == 2) {
+            if (testGraph.startContract == 0) {
+                lang.nextStep();
+                tp.set("color", Color.RED);
+                cp.set("color", Color.RED);
+                nodeA.getProperties();
 
+                lang.nextStep();
+                nodeC.hide();
+                circleC.hide();
+                nodeA.setText("A,C", null,null);
+                edgeAC.hide();
+                edgeCD.hide();
+                Polyline edgeNotContracted = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+            }
+        }
         // Start animal to view visualization
         Animal.startAnimationFromAnimalScriptCode(lang.toString());
     }
