@@ -6,10 +6,7 @@ import algoanim.primitives.Polyline;
 import algoanim.primitives.Text;
 import algoanim.primitives.generators.AnimationType;
 import algoanim.primitives.generators.Language;
-import algoanim.properties.AnimationProperties;
-import algoanim.properties.CircleProperties;
-import algoanim.properties.GraphProperties;
-import algoanim.properties.TextProperties;
+import algoanim.properties.*;
 import algoanim.util.Coordinates;
 import algoanim.util.Node;
 import algoanim.util.Offset;
@@ -42,7 +39,7 @@ public class AnimalGraph {
         this.v = v;
         this.e = e;
         edgeArray = new AnimalEdge[e];
-        for (int i = 0; i < e; ++i) {
+        for (int i = 0; i < e; i++) {
             edgeArray[i] = new AnimalEdge(); // for number of edges e create a new edge and store it in edgeArray
         }
     }
@@ -118,7 +115,7 @@ public class AnimalGraph {
         2C------3D
          */
 
-        AnimalGraph testGraph = new AnimalGraph(4, 5);
+        AnimalGraph testGraph = new AnimalGraph(4, 4);
 
         // add edge 0-1
         testGraph.edgeArray[0].src = 0;
@@ -134,12 +131,12 @@ public class AnimalGraph {
         //testGraph.edgeArray[2].dest = 2;
 
         // add edge 1-3
-        testGraph.edgeArray[3].src = 1;
-        testGraph.edgeArray[3].dest = 3;
+        testGraph.edgeArray[2].src = 1;
+        testGraph.edgeArray[2].dest = 3;
 
         // add edge 2-3
-        testGraph.edgeArray[4].src = 2;
-        testGraph.edgeArray[4].dest = 3;
+        testGraph.edgeArray[3].src = 2;
+        testGraph.edgeArray[3].dest = 3;
 
         System.out.println("Kargers minimum cut for given graph is:" + testGraph.kargersMinCut(testGraph));
 
@@ -147,7 +144,11 @@ public class AnimalGraph {
         lang.setStepMode(true);
 
         TextProperties tp = new TextProperties();
+        tp.set("color", Color.BLACK);
         CircleProperties cp = new CircleProperties();
+        cp.set("color", Color.BLACK);
+        PolylineProperties pp = new PolylineProperties();
+        pp.set("color", Color.BLACK);
 
         // Create Node A
         Text nodeA = lang.newText(new Coordinates(100,100),"A", "nodeA", null, tp);
@@ -175,18 +176,20 @@ public class AnimalGraph {
 
 
         // Edge between node A and B
-        Polyline edgeAB = lang.newPolyline(new Node[] { new Offset(20,0, circleA, AnimalScript.DIRECTION_C), new Offset(-20,0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null);
-        Polyline edgeAC = lang.newPolyline(new Node[] { new Offset(0,20, circleA, AnimalScript.DIRECTION_C), new Offset(0,-20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null);
-        Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null);
-        Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null);
+        Polyline edgeAB = lang.newPolyline(new Node[] { new Offset(20,0, circleA, AnimalScript.DIRECTION_C), new Offset(-20,0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null, pp);
+        Polyline edgeAC = lang.newPolyline(new Node[] { new Offset(0,20, circleA, AnimalScript.DIRECTION_C), new Offset(0,-20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null, pp);
+        Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null, pp);
+        Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
 
         // if its 1 than the corresponding Node in Animal is B (Edge0-1)
         if (testGraph.endContract == 1) {
             if (testGraph.startContract == 0) {
                 lang.nextStep();
-                tp.set("color", Color.RED);
-                cp.set("color", Color.RED);
-                nodeA.getProperties();
+                nodeA.changeColor("color", Color.RED,null, null);
+                circleA.changeColor("color", Color.RED, null, null);
+                nodeB.changeColor("color", Color.RED, null, null);
+                circleB.changeColor("color", Color.RED, null, null);
+                edgeAB.changeColor("color", Color.GREEN, null, null);
 
                 lang.nextStep();
                 nodeB.hide();
@@ -194,7 +197,24 @@ public class AnimalGraph {
                 nodeA.setText("A,B", null,null);
                 edgeAB.hide();
                 edgeBD.hide();
-                Polyline edgeNotContracted = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+                Polyline Edge1 = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+            }
+
+            /*if (testGraph.startContract == 3) {
+                lang.nextStep();
+                nodeD.changeColor("color", Color.RED,null, null);
+                circleD.changeColor("color", Color.RED, null, null);
+                nodeB.changeColor("color", Color.RED, null, null);
+                circleB.changeColor("color", Color.RED, null, null);
+                edgeBD.changeColor("color", Color.GREEN, null, null);
+
+                lang.nextStep();
+                nodeB.hide();
+                circleB.hide();
+                nodeD.setText("D,B", null,null);
+                edgeAB.hide();
+                edgeBD.hide();
+                Polyline Edge2 = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
             }
         }
 
@@ -202,9 +222,12 @@ public class AnimalGraph {
         if (testGraph.endContract == 2) {
             if (testGraph.startContract == 0) {
                 lang.nextStep();
-                tp.set("color", Color.RED);
-                cp.set("color", Color.RED);
-                nodeA.getProperties();
+                nodeA.changeColor("color", Color.RED,null, null);
+                circleA.changeColor("color", Color.RED, null, null);
+                nodeC.changeColor("color", Color.RED, null, null);
+                circleC.changeColor("color", Color.RED, null, null);
+                edgeAC.changeColor("color", Color.GREEN, null, null);
+
 
                 lang.nextStep();
                 nodeC.hide();
@@ -212,11 +235,27 @@ public class AnimalGraph {
                 nodeA.setText("A,C", null,null);
                 edgeAC.hide();
                 edgeCD.hide();
-                Polyline edgeNotContracted = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+                Polyline Edge3 = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
             }
+            if (testGraph.startContract == 3) {
+                lang.nextStep();
+                nodeC.changeColor("color", Color.RED,null, null);
+                circleC.changeColor("color", Color.RED, null, null);
+                nodeD.changeColor("color", Color.RED, null, null);
+                circleD.changeColor("color", Color.RED, null, null);
+                edgeCD.changeColor("color", Color.GREEN, null, null);
+
+
+                lang.nextStep();
+                nodeC.hide();
+                circleC.hide();
+                nodeD.setText("D,C", null,null);
+                edgeAC.hide();
+                edgeCD.hide();
+                Polyline Edge4 = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+            }*/
         }
         // Start animal to view visualization
         Animal.startAnimationFromAnimalScriptCode(lang.toString());
     }
 }
-
