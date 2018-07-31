@@ -1,24 +1,19 @@
 package AnimalGraph;
 
 import algoanim.animalscript.AnimalScript;
-import algoanim.primitives.Circle;
-import algoanim.primitives.Polyline;
-import algoanim.primitives.Rect;
-import algoanim.primitives.Text;
+import algoanim.primitives.*;
+import algoanim.primitives.generators.AnimationType;
 import algoanim.primitives.generators.Language;
 import algoanim.properties.*;
-import algoanim.util.Coordinates;
-import algoanim.util.DisplayOptions;
-import algoanim.util.Node;
-import algoanim.util.Offset;
+import algoanim.util.*;
+import animal.main.Animal;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 import generators.framework.properties.AnimationPropertiesContainer;
+import generators.maths.adjoint.Matrix;
 
 import java.awt.*;
-import java.util.Hashtable;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class AnimalGraph_Test1 implements Generator {
 
@@ -28,6 +23,7 @@ public class AnimalGraph_Test1 implements Generator {
     Rect rect;
     TextProperties introProp;
     SourceCodeProperties srcProp;
+    private Graph graph;
 
     AnimalSubset testAnimalSet = new AnimalSubset();
 
@@ -60,18 +56,8 @@ public class AnimalGraph_Test1 implements Generator {
         //Language lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews, Yves Geib", 640, 480);
         //Animal.startAnimationFromAnimalScriptCode(lang.toString());
 
-        int x = 4;
-        int y = 4;
-        AnimalGraph_Test1 testGraph = new AnimalGraph_Test1(x, y);
-        for(int i = 0; i < x-1; i++) {
-            for (int j = 0; j < x-1; j++) {
-                testGraph.edgeArray[i].src = j;
-                testGraph.edgeArray[i].dest = i + 1;
-            }
-        }
 
 
-        System.out.println("Kargers minimum cut for given graph is:" + testGraph.kargersMinCut(testGraph));
 
         /*
         0A------1B
@@ -79,8 +65,9 @@ public class AnimalGraph_Test1 implements Generator {
         |       |
         |       |
         2C------3D
+        */
 
-        AnimalGraph testGraph = new AnimalGraph(4, 4);
+        AnimalGraph_Test1 testGraph = new AnimalGraph_Test1(4, 4);
 
         // add edge 0-1
         testGraph.edgeArray[0].src = 0;
@@ -105,9 +92,10 @@ public class AnimalGraph_Test1 implements Generator {
 
         System.out.println("Kargers minimum cut for given graph is:" + testGraph.kargersMinCut(testGraph));
 
-        Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT,"Kargers Minimum Cut", "Hannah Drews, Yves Geib", 680, 450);
-        //lang.setStepMode(true);
+        Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT,"Kargers Minimum Cut", "Hannah Drews, Yves Geib", 640, 480);
+        lang.setStepMode(true);
 
+        /*
         TextProperties tp = new TextProperties();
         tp.set("color", Color.BLACK);
         CircleProperties cp = new CircleProperties();
@@ -140,13 +128,13 @@ public class AnimalGraph_Test1 implements Generator {
         Node[] testarr = {startA, startB};
 
 
-
         // Edge between node A and B
         Polyline edgeAB = lang.newPolyline(new Node[] { new Offset(20,0, circleA, AnimalScript.DIRECTION_C), new Offset(-20,0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null, pp);
         Polyline edgeAC = lang.newPolyline(new Node[] { new Offset(0,20, circleA, AnimalScript.DIRECTION_C), new Offset(0,-20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null, pp);
         Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null, pp);
         Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
 
+        /*
         // if its 1 than the corresponding Node in Animal is B (Edge0-1)
         if (testGraph.endContract == 1) {
             if (testGraph.startContract == 0) {
@@ -221,9 +209,119 @@ public class AnimalGraph_Test1 implements Generator {
                 Polyline Edge4 = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
             }
         }
+        */
+        TextProperties tp = new TextProperties();
+        tp.set("color", Color.BLACK);
+        CircleProperties cp = new CircleProperties();
+        cp.set("color", Color.BLACK);
+        PolylineProperties pp = new PolylineProperties();
+        pp.set("color", Color.BLACK);
+
+        String[] nodeNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+
+
+        int[][] testMatrix = {
+                {0, 1, 1, 0},
+                {0, 0, 0, 1},
+                {0, 0, 0, 1},
+                {0, 0, 0, 0}
+        };
+
+        //Erstelle Platz für Primitives
+        Text[] textArray = new Text[testMatrix.length];
+        Circle[] circleArray = new Circle[testMatrix.length];
+        Polyline[] polyArray = new Polyline[testMatrix.length + (testMatrix.length - 1)];
+
+        int i;
+        int j=0;
+        int x=0;
+
+        //Create Graph dynamically
+        for (i = 0; i < (testMatrix.length); i++) {
+
+            //create Text of node
+
+            if(i < testMatrix.length/2)
+                textArray[i] = lang.newText(new Coordinates(50 + 50*i, 50), nodeNames[i], "node " + nodeNames[i], null, tp);
+            else
+                textArray[i] = lang.newText(new Coordinates(50 + 50 * (i - testMatrix.length/2), 50 + 50 * 1), nodeNames[i], "node " + nodeNames[i], null, tp);
+
+            //create Circle around Text
+            circleArray[i] = lang.newCircle(new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C),20,"Circle " + nodeNames[i],null, cp);
+        }
+
+        for (i = 0; i < testMatrix.length; i++) {
+            for (j = 0; j < testMatrix.length; j++) {
+                if (testMatrix[i][j] == 1) {
+                    polyArray[x] = lang.newPolyline(new Node[] { new Offset( 0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset( 0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
+                    System.out.println(textArray[i].getText() + " " +  textArray[j].getText());
+                    x++;
+                }
+            }
+        }
+
+        System.out.println(testMatrix.length);
+        System.out.println(circleArray[2].getName());
+        lang.nextStep();
+
+        for(i = 0; i< testMatrix.length; i++) {
+            textArray[i].hide();
+            circleArray[i].hide();
+
+        }
+        lang.nextStep();
+
+
+
+
+        int[][] testMatrix1 = {
+                {0, 1, 1},
+                {0, 0, 1},
+                {0, 0, 0},
+        };
+
+        Node[] var1 = new Node[4];
+        var1[0] = (new Coordinates(50, 50));
+        var1[1] = (new Coordinates(50, 150));
+        var1[2] = (new Coordinates(150, 50));
+        var1[3] = (new Coordinates(150, 150));
+
+        Node[] var11 = new Node[3];
+        var11[0] = (new Coordinates(50, 50));
+        var11[1] = (new Coordinates(50, 150));
+        var11[2] = (new Coordinates(150, 50));
+
+        String[] var2 = new String[4];
+        var2[0] = "A";
+        var2[1] = "C";
+        var2[2] = "B";
+        var2[3] = "D";
+
+        String[] var21 = new String[3];
+        var21[0] = "A";
+        var21[1] = "C";
+        var21[2] = "B, D";
+
+        /*
+        GraphProperties gp = new GraphProperties();
+        gp.set("fillColor", Color.WHITE);
+        int x = 0;
+        while(x<3) {
+
+            Graph graph = lang.newGraph("graph", testMatrix, var1, var2, null, gp);
+            //graph.moveTo("NE", (String)null, new Coordinates(20, 100), (Timing)null, (Timing)null);
+            lang.nextStep();
+            graph.hide();
+
+
+            Graph graph1 = lang.newGraph("graph1", testMatrix1, var11, var21, null, gp);
+            lang.nextStep();
+        }
+        */
+
         // Start animal to view visualization
         Animal.startAnimationFromAnimalScriptCode(lang.toString());
-        */
+
     }
 
     @Override
@@ -258,10 +356,11 @@ public class AnimalGraph_Test1 implements Generator {
 
 
 
-        this.createGraph();
-        this.lang.finalizeGeneration();
+        //this.createGraph();
+        //this.lang.finalizeGeneration();
+        return null;
 
-        return this.lang.toString();
+        //return this.lang.toString();
 
     }
 
