@@ -28,19 +28,97 @@ public class AnimalGraph_Test1 implements Generator {
     AnimalSubset testAnimalSet = new AnimalSubset();
 
     int v; // number of vertices (nodes)
-    int e; // number of edges
+    int e = 4; // number of edges ACHTUNG wurde für Beispiel geändert
     AnimalEdge[] edgeArray; // array to store all edges
     int startContract;
     int endContract;
+    int y = 0;
+
+    int[][] testMatrix = {
+            {0, 1, 1, 0},
+            {0, 0, 0, 1},
+            {0, 0, 0, 1},
+            {0, 0, 0, 0},
+    };
+
+
+    // hier muss noch v und e dynamisch gemacht werden, v ist testMatrix.length und e muss gezählt werden
 
 
     public AnimalGraph_Test1(int v, int e) {
         this.v = v;
         this.e = e;
         edgeArray = new AnimalEdge[e];
-        for (int i = 0; i < e; i++) {
-            edgeArray[i] = new AnimalEdge(); // for number of edges e create a new edge and store it in edgeArray
+
+        // Filling the edgeArray with the Matrix Input to let Kargers Execute with the Input Graph
+        for (int i = 0; i < testMatrix.length; i++) {
+            for (int j = 0; j < testMatrix.length; j++) {
+                if (testMatrix[i][j] == 1) {
+                    edgeArray[y] = new AnimalEdge(i, j);
+                    y++;
+                }
+            }
         }
+    }
+
+    public int kargersMinCut(AnimalGraph_Test1 graph) {
+
+        // get given Graph
+        int nrOfVertices = graph.v;
+        int nrOfEdges = graph.e;
+        // here should be a single edge...
+        Random r = new Random();
+
+        // allocate memory for creating v subsets
+        AnimalSubset[] subset = new AnimalSubset[nrOfVertices];
+
+        // create v subsets of single elements
+        for (int v = 0; v < nrOfVertices; v++) {
+            subset[v] = new AnimalSubset(0, 0);
+            subset[v].parent = v;
+            subset[v].rank = 0;
+        }
+
+        // initially there are nrOfVertices in given Graph
+        int vertices = nrOfVertices;
+
+        // graph is contracted until there are two vertices left
+        while (vertices > 2) {
+            // generates a random int between 0 and nrOfEdges
+            int i = r.nextInt(nrOfEdges);
+
+            // find vertices (sets) of current randomly picked edge
+            int subset1 = testAnimalSet.find(subset, edgeArray[i].src);
+            int subset2 = testAnimalSet.find(subset, edgeArray[i].dest);
+
+            // if the vertices belong to the same subset, this edge is not considered
+            if (subset1 == subset2) {
+                continue;
+            }
+            // else contract the edges (combine the subsets and combine
+            // the node of the edge into one)
+            else {
+                System.out.println("Contracting edge" + edgeArray[i].src + edgeArray[i].dest);
+                startContract = edgeArray[i].src;
+                endContract = edgeArray[i].dest;
+                // number of Vertices is one less
+                vertices--;
+                testAnimalSet.union(subset, subset1, subset2);
+            }
+        }
+
+        // there are now two subsets left in the contracted graph
+        // so the results are the edges between the components
+        int cutEdges = 0;
+
+        for (int i = 0; i < nrOfEdges; i++) {
+            int subset1 = testAnimalSet.find(subset, edgeArray[i].src);
+            int subset2 = testAnimalSet.find(subset, edgeArray[i].dest);
+            if (subset1 != subset2) {
+                cutEdges++;
+            }
+        }
+        return cutEdges;
     }
 
 
@@ -56,41 +134,17 @@ public class AnimalGraph_Test1 implements Generator {
         //Language lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews, Yves Geib", 640, 480);
         //Animal.startAnimationFromAnimalScriptCode(lang.toString());
 
-
-
-
         /*
-        0A------1B
+        0A------3C
         |       |
         |       |
         |       |
-        2C------3D
+        1B------4D
         */
 
         AnimalGraph_Test1 testGraph = new AnimalGraph_Test1(4, 4);
+        System.out.println("Kargers Min Cut for Given Graph is: " + testGraph.kargersMinCut(testGraph));
 
-        // add edge 0-1
-        testGraph.edgeArray[0].src = 0;
-        testGraph.edgeArray[0].dest = 1;
-
-        // add edge 0-2
-        testGraph.edgeArray[1].src = 0;
-        testGraph.edgeArray[1].dest = 2;
-
-
-        // add edge 1-2
-        //testGraph.edgeArray[2].src = 1;
-        //testGraph.edgeArray[2].dest = 2;
-
-        // add edge 1-3
-        testGraph.edgeArray[2].src = 1;
-        testGraph.edgeArray[2].dest = 3;
-
-        // add edge 2-3
-        testGraph.edgeArray[3].src = 2;
-        testGraph.edgeArray[3].dest = 3;
-
-        System.out.println("Kargers minimum cut for given graph is:" + testGraph.kargersMinCut(testGraph));
 
         Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT,"Kargers Minimum Cut", "Hannah Drews, Yves Geib", 640, 480);
         lang.setStepMode(true);
@@ -219,21 +273,31 @@ public class AnimalGraph_Test1 implements Generator {
 
         String[] nodeNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
-
         int[][] testMatrix = {
                 {0, 1, 1, 0},
                 {0, 0, 0, 1},
                 {0, 0, 0, 1},
-                {0, 0, 0, 0}
+                {0, 0, 0, 0},
         };
 
+        /* Testmatrix mit 5 Nodes
+        int[][] testMatrix = {
+                {0, 1, 1, 0, 1},
+                {0, 0, 0, 1, 0},
+                {0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0}
+        };
+        */
+
         //Erstelle Platz für Primitives
+
         Text[] textArray = new Text[testMatrix.length];
         Circle[] circleArray = new Circle[testMatrix.length];
         Polyline[] polyArray = new Polyline[testMatrix.length + (testMatrix.length - 1)];
 
         int i;
-        int j=0;
+        int j;
         int x=0;
 
         //Create Graph dynamically
@@ -247,13 +311,17 @@ public class AnimalGraph_Test1 implements Generator {
                 textArray[i] = lang.newText(new Coordinates(50 + 50 * (i - testMatrix.length/2), 50 + 50 * 1), nodeNames[i], "node " + nodeNames[i], null, tp);
 
             //create Circle around Text
+
             circleArray[i] = lang.newCircle(new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C),20,"Circle " + nodeNames[i],null, cp);
         }
+
+        // create Polylines as Edges between Nodes as Text an Circles
 
         for (i = 0; i < testMatrix.length; i++) {
             for (j = 0; j < testMatrix.length; j++) {
                 if (testMatrix[i][j] == 1) {
-                    polyArray[x] = lang.newPolyline(new Node[] { new Offset( 0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset( 0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
+                    // wir können verhindern, dass wir nicht mehr Wissen welche Edge zu welchen Nodes gehört, indem wir einfach das Array mit Null füllen wo keine Edges sind dann ist Anzahl Plätze in der Matrix = Länge des Arrays
+                    polyArray[x] = lang.newPolyline(new Node[] { new Offset( 0, 0, circleArray[i], AnimalScript.DIRECTION_C), new Offset( 0, 0, circleArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
                     System.out.println(textArray[i].getText() + " " +  textArray[j].getText());
                     x++;
                 }
@@ -264,21 +332,24 @@ public class AnimalGraph_Test1 implements Generator {
         System.out.println(circleArray[2].getName());
         lang.nextStep();
 
-        for(i = 0; i< testMatrix.length; i++) {
-            textArray[i].hide();
-            circleArray[i].hide();
+        // highlighten der beiden Nodes die zusammengeführt werden, allerdings aktuell nur für den zweiten Cut
+        // TO DO
+        // dynamisch machen, damit alle Cuts gehiglightet werden und die Polyline highlighten, hiden und neu zeichnen!
 
-        }
+        textArray[testGraph.startContract].changeColor("color", Color.RED, null,null);
+        circleArray[testGraph.startContract].changeColor("color", Color.RED, null, null);
+        textArray[testGraph.endContract].changeColor("color", Color.RED, null, null);
+        circleArray[testGraph.endContract].changeColor("color", Color.RED, null, null);
+
         lang.nextStep();
-
-
-
 
         int[][] testMatrix1 = {
                 {0, 1, 1},
                 {0, 0, 1},
                 {0, 0, 0},
         };
+
+        /*
 
         Node[] var1 = new Node[4];
         var1[0] = (new Coordinates(50, 50));
@@ -415,7 +486,7 @@ public class AnimalGraph_Test1 implements Generator {
         this.lang.setStepMode(true);
     }
 
-    public void createGraph() {
+    /*public void createGraph() {
 
         TextProperties tp = new TextProperties();
         //tp.set("color", Color.BLACK);
@@ -451,73 +522,13 @@ public class AnimalGraph_Test1 implements Generator {
         Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
 
 
-        /*Node startA = new Offset(20,0, circleA, AnimalScript.DIRECTION_C);
+        Node startA = new Offset(20,0, circleA, AnimalScript.DIRECTION_C);
         Node startB = new Offset(-20,0, circleB, AnimalScript.DIRECTION_C);
         Node[] testarr = {startA, startB};
-        */
 
 
-    }
-
-    public int kargersMinCut(AnimalGraph_Test1 graph) {
-
-        // get given Graph
-        int nrOfVertices = graph.v;
-        int nrOfEdges = graph.e;
-        // here should be a single edge...
-        Random r = new Random();
-
-        // allocate memory for creating v subsets
-        AnimalSubset[] subset = new AnimalSubset[nrOfVertices];
-
-        // create v subsets of single elements
-        for (int v = 0; v < nrOfVertices; v++) {
-            subset[v] = new AnimalSubset(0, 0);
-            subset[v].parent = v;
-            subset[v].rank = 0;
-        }
-
-        // initially there are nrOfVertices in given Graph
-        int vertices = nrOfVertices;
-
-        // graph is contracted until there are two vertices left
-        while (vertices > 2) {
-            // generates a random int between 0 and nrOfEdges
-            int i = r.nextInt(nrOfEdges);
-
-            // find vertices (sets) of current randomly picked edge
-            int subset1 = testAnimalSet.find(subset, edgeArray[i].src);
-            int subset2 = testAnimalSet.find(subset, edgeArray[i].dest);
-
-            // if the vertices belong to the same subset, this edge is not considered
-            if (subset1 == subset2) {
-                continue;
-            }
-            // else contract the edges (combine the subsets and combine
-            // the node of the edge into one)
-            else {
-                System.out.println("Contracting edge" + edgeArray[i].src + edgeArray[i].dest);
-                startContract = edgeArray[i].src;
-                endContract = edgeArray[i].dest;
-                // number of Vertices is one less
-                vertices--;
-                testAnimalSet.union(subset, subset1, subset2);
-            }
-        }
-
-        // there are now two subsets left in the contracted graph
-        // so the results are the edges between the components
-        int cutEdges = 0;
-
-        for (int i = 0; i < nrOfEdges; i++) {
-            int subset1 = testAnimalSet.find(subset, edgeArray[i].src);
-            int subset2 = testAnimalSet.find(subset, edgeArray[i].dest);
-            if (subset1 != subset2) {
-                cutEdges++;
-            }
-        }
-        return cutEdges;
 
     }
+    */
 
 }

@@ -40,7 +40,7 @@ public class AnimalGraph {
         this.e = e;
         edgeArray = new AnimalEdge[e];
         for (int i = 0; i < e; i++) {
-            edgeArray[i] = new AnimalEdge(); // for number of edges e create a new edge and store it in edgeArray
+            //edgeArray[i] = new AnimalEdge(); // for number of edges e create a new edge and store it in edgeArray
         }
     }
 
@@ -140,7 +140,7 @@ public class AnimalGraph {
 
         System.out.println("Kargers minimum cut for given graph is:" + testGraph.kargersMinCut(testGraph));
 
-        Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT,"Kargers Minimum Cut", "Hannah Drews, Yves Geib", 680, 450);
+        Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT, "Kargers Minimum Cut", "Hannah Drews, Yves Geib", 680, 450);
         lang.setStepMode(true);
 
         TextProperties tp = new TextProperties();
@@ -151,24 +151,24 @@ public class AnimalGraph {
         pp.set("color", Color.BLACK);
 
         // Create Node A
-        Text nodeA = lang.newText(new Coordinates(100,100),"A", "nodeA", null, tp);
+        Text nodeA = lang.newText(new Coordinates(100, 100), "A", "nodeA", null, tp);
         //text.setText();
-        Circle circleA = lang.newCircle(new Offset(0,0,nodeA, AnimalScript.DIRECTION_C),20,"circleA",null, cp);
+        Circle circleA = lang.newCircle(new Offset(0, 0, nodeA, AnimalScript.DIRECTION_C), 20, "circleA", null, cp);
 
         // Create Node B
-        Text nodeB = lang.newText(new Coordinates(200,100),"B", "nodeB", null, tp);
+        Text nodeB = lang.newText(new Coordinates(200, 100), "B", "nodeB", null, tp);
         //text.setText();
-        Circle circleB = lang.newCircle(new Offset(0,0,nodeB, AnimalScript.DIRECTION_C),20,"circleB",null, cp);
+        Circle circleB = lang.newCircle(new Offset(0, 0, nodeB, AnimalScript.DIRECTION_C), 20, "circleB", null, cp);
 
         // Create Node C
-        Text nodeC = lang.newText(new Coordinates(100,200),"C", "nodeC", null, tp);
+        Text nodeC = lang.newText(new Coordinates(100, 200), "C", "nodeC", null, tp);
         //text.setText();
-        Circle circleC = lang.newCircle(new Offset(0,0,nodeC, AnimalScript.DIRECTION_C),20,"circleC",null, cp);
+        Circle circleC = lang.newCircle(new Offset(0, 0, nodeC, AnimalScript.DIRECTION_C), 20, "circleC", null, cp);
 
         // Create Node D
-        Text nodeD = lang.newText(new Coordinates(200,200),"D", "nodeD", null, tp);
+        Text nodeD = lang.newText(new Coordinates(200, 200), "D", "nodeD", null, tp);
         //text.setText();
-        Circle circleD = lang.newCircle(new Offset(0,0, nodeD, AnimalScript.DIRECTION_C),20,"circleD",null, cp);
+        Circle circleD = lang.newCircle(new Offset(0, 0, nodeD, AnimalScript.DIRECTION_C), 20, "circleD", null, cp);
 
        /* Node startA = new Offset(20,0, circleA, AnimalScript.DIRECTION_C);
         Node startB = new Offset(-20,0, circleB, AnimalScript.DIRECTION_C);
@@ -176,16 +176,16 @@ public class AnimalGraph {
 
 
         // Edge between node A and B
-        Polyline edgeAB = lang.newPolyline(new Node[] { new Offset(20,0, circleA, AnimalScript.DIRECTION_C), new Offset(-20,0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null, pp);
-        Polyline edgeAC = lang.newPolyline(new Node[] { new Offset(0,20, circleA, AnimalScript.DIRECTION_C), new Offset(0,-20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null, pp);
-        Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null, pp);
-        Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
+        Polyline edgeAB = lang.newPolyline(new Node[]{new Offset(20, 0, circleA, AnimalScript.DIRECTION_C), new Offset(-20, 0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null, pp);
+        Polyline edgeAC = lang.newPolyline(new Node[]{new Offset(0, 20, circleA, AnimalScript.DIRECTION_C), new Offset(0, -20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null, pp);
+        Polyline edgeBD = lang.newPolyline(new Node[]{new Offset(0, 20, circleB, AnimalScript.DIRECTION_C), new Offset(0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null, pp);
+        Polyline edgeCD = lang.newPolyline(new Node[]{new Offset(20, 0, circleC, AnimalScript.DIRECTION_C), new Offset(-20, 0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
 
         // if its 1 than the corresponding Node in Animal is B (Edge0-1)
         if (testGraph.endContract == 1) {
             if (testGraph.startContract == 0) {
                 lang.nextStep();
-                nodeA.changeColor("color", Color.RED,null, null);
+                nodeA.changeColor("color", Color.RED, null, null);
                 circleA.changeColor("color", Color.RED, null, null);
                 nodeB.changeColor("color", Color.RED, null, null);
                 circleB.changeColor("color", Color.RED, null, null);
@@ -194,10 +194,10 @@ public class AnimalGraph {
                 lang.nextStep();
                 nodeB.hide();
                 circleB.hide();
-                nodeA.setText("A,B", null,null);
+                nodeA.setText("A,B", null, null);
                 edgeAB.hide();
                 edgeBD.hide();
-                Polyline Edge1 = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
+                Polyline Edge1 = lang.newPolyline(new Node[]{new Offset(20, 0, circleA, AnimalScript.DIRECTION_C), new Offset(0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
             }
 
             /*if (testGraph.startContract == 3) {
