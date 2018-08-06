@@ -28,11 +28,13 @@ public class AnimalGraph_Test1 implements Generator {
     AnimalSubset testAnimalSet = new AnimalSubset();
 
     int v; // number of vertices (nodes)
-    int e = 4; // number of edges ACHTUNG wurde für Beispiel geändert
+    int e; // number of edges ACHTUNG wurde für Beispiel geändert
     AnimalEdge[] edgeArray; // array to store all edges
-    int startContract;
-    int endContract;
+    protected int cutEdges;
+    protected int startContract;
+    protected int endContract;
     int y = 0;
+
 
     int[][] testMatrix = {
             {0, 1, 1, 0},
@@ -40,6 +42,7 @@ public class AnimalGraph_Test1 implements Generator {
             {0, 0, 0, 1},
             {0, 0, 0, 0},
     };
+
 
 
     // hier muss noch v und e dynamisch gemacht werden, v ist testMatrix.length und e muss gezählt werden
@@ -101,6 +104,9 @@ public class AnimalGraph_Test1 implements Generator {
                 System.out.println("Contracting edge" + edgeArray[i].src + edgeArray[i].dest);
                 startContract = edgeArray[i].src;
                 endContract = edgeArray[i].dest;
+
+
+
                 // number of Vertices is one less
                 vertices--;
                 testAnimalSet.union(subset, subset1, subset2);
@@ -109,7 +115,7 @@ public class AnimalGraph_Test1 implements Generator {
 
         // there are now two subsets left in the contracted graph
         // so the results are the edges between the components
-        int cutEdges = 0;
+        cutEdges = 0;
 
         for (int i = 0; i < nrOfEdges; i++) {
             int subset1 = testAnimalSet.find(subset, edgeArray[i].src);
@@ -129,8 +135,8 @@ public class AnimalGraph_Test1 implements Generator {
     */
     public static void main(String[] args) {
 
-        //Generator generator = new AnimalGraph();
-        //Animal.startGeneratorWindow(generator);
+        Generator generator = new AnimalGraph_Test1(4, 4);
+        Animal.startGeneratorWindow(generator);
         //Language lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews, Yves Geib", 640, 480);
         //Animal.startAnimationFromAnimalScriptCode(lang.toString());
 
@@ -149,121 +155,6 @@ public class AnimalGraph_Test1 implements Generator {
         Language lang = Language.getLanguageInstance(AnimationType.ANIMALSCRIPT,"Kargers Minimum Cut", "Hannah Drews, Yves Geib", 640, 480);
         lang.setStepMode(true);
 
-        /*
-        TextProperties tp = new TextProperties();
-        tp.set("color", Color.BLACK);
-        CircleProperties cp = new CircleProperties();
-        cp.set("color", Color.BLACK);
-        PolylineProperties pp = new PolylineProperties();
-        pp.set("color", Color.BLACK);
-
-        // Create Node A
-        Text nodeA = lang.newText(new Coordinates(100,100),"A", "nodeA", null, tp);
-        //text.setText();
-        Circle circleA = lang.newCircle(new Offset(0,0,nodeA, AnimalScript.DIRECTION_C),20,"circleA",null, cp);
-
-        // Create Node B
-        Text nodeB = lang.newText(new Coordinates(200,100),"B", "nodeB", null, tp);
-        //text.setText();
-        Circle circleB = lang.newCircle(new Offset(0,0,nodeB, AnimalScript.DIRECTION_C),20,"circleB",null, cp);
-
-        // Create Node C
-        Text nodeC = lang.newText(new Coordinates(100,200),"C", "nodeC", null, tp);
-        //text.setText();
-        Circle circleC = lang.newCircle(new Offset(0,0,nodeC, AnimalScript.DIRECTION_C),20,"circleC",null, cp);
-
-        // Create Node D
-        Text nodeD = lang.newText(new Coordinates(200,200),"D", "nodeD", null, tp);
-        //text.setText();
-        Circle circleD = lang.newCircle(new Offset(0,0, nodeD, AnimalScript.DIRECTION_C),20,"circleD",null, cp);
-
-       /* Node startA = new Offset(20,0, circleA, AnimalScript.DIRECTION_C);
-        Node startB = new Offset(-20,0, circleB, AnimalScript.DIRECTION_C);
-        Node[] testarr = {startA, startB};
-
-
-        // Edge between node A and B
-        Polyline edgeAB = lang.newPolyline(new Node[] { new Offset(20,0, circleA, AnimalScript.DIRECTION_C), new Offset(-20,0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null, pp);
-        Polyline edgeAC = lang.newPolyline(new Node[] { new Offset(0,20, circleA, AnimalScript.DIRECTION_C), new Offset(0,-20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null, pp);
-        Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null, pp);
-        Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
-
-        /*
-        // if its 1 than the corresponding Node in Animal is B (Edge0-1)
-        if (testGraph.endContract == 1) {
-            if (testGraph.startContract == 0) {
-                lang.nextStep();
-                nodeA.changeColor("color", Color.RED,null, null);
-                circleA.changeColor("color", Color.RED, null, null);
-                nodeB.changeColor("color", Color.RED, null, null);
-                circleB.changeColor("color", Color.RED, null, null);
-                edgeAB.changeColor("color", Color.GREEN, null, null);
-
-                lang.nextStep();
-                nodeB.hide();
-                circleB.hide();
-                nodeA.setText("A,B", null,null);
-                edgeAB.hide();
-                edgeBD.hide();
-                Polyline Edge1 = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
-            }
-
-            /*if (testGraph.startContract == 3) {
-                lang.nextStep();
-                nodeD.changeColor("color", Color.RED,null, null);
-                circleD.changeColor("color", Color.RED, null, null);
-                nodeB.changeColor("color", Color.RED, null, null);
-                circleB.changeColor("color", Color.RED, null, null);
-                edgeBD.changeColor("color", Color.GREEN, null, null);
-
-                lang.nextStep();
-                nodeB.hide();
-                circleB.hide();
-                nodeD.setText("D,B", null,null);
-                edgeAB.hide();
-                edgeBD.hide();
-                Polyline Edge2 = lang.newPolyline(new Node[] { new Offset( 20, 0, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
-            }
-        }
-
-        // if its 2 than the corresponding Node in Animal is C (Edge0-2)
-        if (testGraph.endContract == 2) {
-            if (testGraph.startContract == 0) {
-                lang.nextStep();
-                nodeA.changeColor("color", Color.RED,null, null);
-                circleA.changeColor("color", Color.RED, null, null);
-                nodeC.changeColor("color", Color.RED, null, null);
-                circleC.changeColor("color", Color.RED, null, null);
-                edgeAC.changeColor("color", Color.GREEN, null, null);
-
-
-                lang.nextStep();
-                nodeC.hide();
-                circleC.hide();
-                nodeA.setText("A,C", null,null);
-                edgeAC.hide();
-                edgeCD.hide();
-                Polyline Edge3 = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
-            }
-            if (testGraph.startContract == 3) {
-                lang.nextStep();
-                nodeC.changeColor("color", Color.RED,null, null);
-                circleC.changeColor("color", Color.RED, null, null);
-                nodeD.changeColor("color", Color.RED, null, null);
-                circleD.changeColor("color", Color.RED, null, null);
-                edgeCD.changeColor("color", Color.GREEN, null, null);
-
-
-                lang.nextStep();
-                nodeC.hide();
-                circleC.hide();
-                nodeD.setText("D,C", null,null);
-                edgeAC.hide();
-                edgeCD.hide();
-                Polyline Edge4 = lang.newPolyline(new Node[] { new Offset( 0, 20, circleA, AnimalScript.DIRECTION_C), new Offset( 0, -20, circleD, AnimalScript.DIRECTION_C)}, "EdgeADAfterContracted", null);
-            }
-        }
-        */
         TextProperties tp = new TextProperties();
         tp.set("color", Color.BLACK);
         CircleProperties cp = new CircleProperties();
@@ -273,122 +164,157 @@ public class AnimalGraph_Test1 implements Generator {
 
         String[] nodeNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
+
         int[][] testMatrix = {
                 {0, 1, 1, 0},
-                {0, 0, 0, 1},
-                {0, 0, 0, 1},
-                {0, 0, 0, 0},
+                {1, 0, 0, 1},
+                {1, 0, 0, 1},
+                {0, 1, 1, 0},
         };
 
-        /* Testmatrix mit 5 Nodes
+        /*
+        //Testmatrix mit 6 Nodes
         int[][] testMatrix = {
-                {0, 1, 1, 0, 1},
-                {0, 0, 0, 1, 0},
-                {0, 0, 0, 0, 1},
-                {0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0}
+                {0, 1, 1, 0, 0, 0},
+                {1, 0, 0, 1, 0, 0},
+                {1, 0, 0, 1, 1, 1},
+                {0, 1, 1, 0, 1, 0},
+                {0, 0, 1, 1, 0, 1},
+                {0, 0, 1, 0, 1, 0}
         };
         */
 
-        //Erstelle Platz für Primitives
 
+        //Erstelle Platz für Primitives
         Text[] textArray = new Text[testMatrix.length];
         Circle[] circleArray = new Circle[testMatrix.length];
-        Polyline[] polyArray = new Polyline[testMatrix.length + (testMatrix.length - 1)];
 
-        int i;
-        int j;
-        int x=0;
+        //Erstelle Polyline Matrix, um Polylines an korrekten Stellen zu zeichnen
+        Polyline[][] polyMatrix = new Polyline[testMatrix.length][testMatrix.length];
+
+        int i; //for for-schleife
+        int j; //for for-schleife
+        int[] rememberedNodes = new int[testMatrix.length]; //Erstelle int-Array für das Speichern aller Nodes, die an dem contracteten Node dranhängen. Damit können nachher die neuen Lines gezeichnet werden.
+
 
         //Create Graph dynamically
-        for (i = 0; i < (testMatrix.length); i++) {
+        for (i = 0; i < testMatrix.length; i++) {
 
-            //create Text of node
+            /*
+            create Text of node
+               0A    1B
+
+               2C    3D
+            */
+
+
 
             if(i < testMatrix.length/2)
-                textArray[i] = lang.newText(new Coordinates(50 + 50*i, 50), nodeNames[i], "node " + nodeNames[i], null, tp);
+                textArray[i] = lang.newText(new Coordinates(100 + 100*i, 100), nodeNames[i], "node " + nodeNames[i], null, tp);
             else
-                textArray[i] = lang.newText(new Coordinates(50 + 50 * (i - testMatrix.length/2), 50 + 50 * 1), nodeNames[i], "node " + nodeNames[i], null, tp);
+                textArray[i] = lang.newText(new Coordinates(100 + 100 * (i - testMatrix.length/2), 100 + 100), nodeNames[i], "node " + nodeNames[i], null, tp);
+
 
             //create Circle around Text
 
-            circleArray[i] = lang.newCircle(new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C),20,"Circle " + nodeNames[i],null, cp);
+            circleArray[i] = lang.newCircle(new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C),30,"Circle " + nodeNames[i],null, cp);
         }
 
         // create Polylines as Edges between Nodes as Text an Circles
 
+        /*
+        //polyMatrix wird nur an Stellen gezeichnet, an denen in testMatrix[i][j] eine 1 steht
         for (i = 0; i < testMatrix.length; i++) {
             for (j = 0; j < testMatrix.length; j++) {
                 if (testMatrix[i][j] == 1) {
                     // wir können verhindern, dass wir nicht mehr Wissen welche Edge zu welchen Nodes gehört, indem wir einfach das Array mit Null füllen wo keine Edges sind dann ist Anzahl Plätze in der Matrix = Länge des Arrays
-                    polyArray[x] = lang.newPolyline(new Node[] { new Offset( 0, 0, circleArray[i], AnimalScript.DIRECTION_C), new Offset( 0, 0, circleArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
+                    polyMatrix[i][j] = lang.newPolyline(new Node[] { new Offset( 0, 0, circleArray[i], AnimalScript.DIRECTION_C), new Offset( 0, 0, circleArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
                     System.out.println(textArray[i].getText() + " " +  textArray[j].getText());
-                    x++;
+
+                }
+                else
+                    polyMatrix[i][j] = null;
+            }
+        }
+        */
+
+        //polyMatrix wird an allen Stellen gezeichnet und direkt mit hide an den Stellen versehen, an denen in testMatrix[i][j] eine 0 steht.
+        for (i = 0; i < testMatrix.length; i++) {
+            for (j = 0; j < testMatrix.length; j++) {
+                // wir können verhindern, dass wir nicht mehr Wissen welche Edge zu welchen Nodes gehört, indem wir einfach das Array mit Null füllen wo keine Edges sind dann ist Anzahl Plätze in der Matrix = Länge des Arrays
+                polyMatrix[i][j] = lang.newPolyline(new Node[] { new Offset( 0, 0, circleArray[i], AnimalScript.DIRECTION_C), new Offset( 0, 0, circleArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
+                System.out.println(textArray[i].getText() + " " +  textArray[j].getText());
+                if(testMatrix[i][j] == 0) {
+                    polyMatrix[i][j].hide();
                 }
             }
         }
 
+
         System.out.println(testMatrix.length);
-        System.out.println(circleArray[2].getName());
+        System.out.println(circleArray[testGraph.endContract].getName());
         lang.nextStep();
 
-        // highlighten der beiden Nodes die zusammengeführt werden, allerdings aktuell nur für den zweiten Cut
-        // TO DO
-        // dynamisch machen, damit alle Cuts gehiglightet werden und die Polyline highlighten, hiden und neu zeichnen!
 
+        //Highlighten der Polyline, die entfernt werden soll. Hier doppelt, da die Matrix symmetrisch ist.
+        //TODO
+        //Die Farbe muss noch dynamisch übergeben werden.
+        polyMatrix[testGraph.startContract][testGraph.endContract].changeColor("color", Color.RED, null, null);
+        polyMatrix[testGraph.endContract][testGraph.startContract].changeColor("color", Color.RED, null, null);
+
+        lang.nextStep("Highlighten");
+
+        // highlighten der beiden Nodes, die zusammengeführt werden, allerdings aktuell nur für den zweiten Cut
+        // TODO
+        // dynamisch machen, damit alle Cuts gehighlightet werden (Das geschieht dann mit Verschieben des Codes in die whileSchleife(ganz oben)
         textArray[testGraph.startContract].changeColor("color", Color.RED, null,null);
         circleArray[testGraph.startContract].changeColor("color", Color.RED, null, null);
         textArray[testGraph.endContract].changeColor("color", Color.RED, null, null);
         circleArray[testGraph.endContract].changeColor("color", Color.RED, null, null);
 
-        lang.nextStep();
-
-        int[][] testMatrix1 = {
-                {0, 1, 1},
-                {0, 0, 1},
-                {0, 0, 0},
-        };
+        lang.nextStep("Highlighten");
 
         /*
-
-        Node[] var1 = new Node[4];
-        var1[0] = (new Coordinates(50, 50));
-        var1[1] = (new Coordinates(50, 150));
-        var1[2] = (new Coordinates(150, 50));
-        var1[3] = (new Coordinates(150, 150));
-
-        Node[] var11 = new Node[3];
-        var11[0] = (new Coordinates(50, 50));
-        var11[1] = (new Coordinates(50, 150));
-        var11[2] = (new Coordinates(150, 50));
-
-        String[] var2 = new String[4];
-        var2[0] = "A";
-        var2[1] = "C";
-        var2[2] = "B";
-        var2[3] = "D";
-
-        String[] var21 = new String[3];
-        var21[0] = "A";
-        var21[1] = "C";
-        var21[2] = "B, D";
-
-        /*
-        GraphProperties gp = new GraphProperties();
-        gp.set("fillColor", Color.WHITE);
-        int x = 0;
-        while(x<3) {
-
-            Graph graph = lang.newGraph("graph", testMatrix, var1, var2, null, gp);
-            //graph.moveTo("NE", (String)null, new Coordinates(20, 100), (Timing)null, (Timing)null);
-            lang.nextStep();
-            graph.hide();
-
-
-            Graph graph1 = lang.newGraph("graph1", testMatrix1, var11, var21, null, gp);
-            lang.nextStep();
+        //Färbe alle Polylines rot, die an endContract dranhängen (hier der Wert j in der polyMatrix)
+        for (j = 0; j < testMatrix.length; j++) {
+            polyMatrix[testGraph.endContract][j].changeColor("color", Color.RED, null, null);
+            polyMatrix[j][testGraph.endContract].changeColor("color", Color.RED, null, null);
         }
         */
+
+        //Hide den betroffenen Node
+        textArray[testGraph.endContract].hide();
+        circleArray[testGraph.endContract].hide();
+
+        //Ausgelagert: Benennung des Nodes
+        String nodename = textArray[testGraph.startContract].getText() + " " + textArray[testGraph.endContract].getText();
+        System.out.println("cut: " + nodename);
+
+        //Färbe den contracteten Node wieder schwarz und füge den entfernten Node hinzu (Also Node A wird zu Node A B)
+        textArray[testGraph.startContract].setText(nodename, null, null);
+        //circleArray[testGraph.startContract].hide();
+        //circleArray[testGraph.startContract] = lang.newCircle(new Offset(0, 0, textArray[testGraph.startContract], AnimalScript.DIRECTION_C),20,"Circle " + nodename,null, cp);
+        textArray[testGraph.startContract].changeColor("color", Color.BLACK, null,null);
+        circleArray[testGraph.startContract].changeColor("color", Color.BLACK, null, null);
+
+        //Erstelle neues Polyline Array, um die neu gezeichneten Polylines zu speichern
+        Polyline[] newLine = new Polyline[testMatrix.length];
+
+        //Hide alle Polylines, die an endContract dranhängen (hier der Wert j in der polyMatrix)
+        for (j = 0; j < testMatrix.length; j++) {
+            polyMatrix[testGraph.endContract][j].hide();
+            polyMatrix[j][testGraph.endContract].hide();
+
+            //Befülle rememberedNodes mit den Nodes, die an dem contracteten Node dranhängen, damit später die Polylines zu diesen Nodes gezeichnet werden können.
+            if(testGraph.startContract != j && testMatrix[testGraph.endContract][j] == 1) { //Schaue nur die Nodes an, die an dem contracteten Node dranhängen. Alle anderen werden ignoriert.
+                rememberedNodes[j] = j;
+                System.out.println(Arrays.toString(rememberedNodes));
+            }
+
+            //Zeichne neue Polyline für den contracteten Node und den startNode (Das ist die Line, die im Algorithmus selbst eigentlich übrig bleibt und verschoben wird)
+            newLine[testGraph.startContract] = lang.newPolyline(new Node[] { new Offset( 0, 0, circleArray[testGraph.startContract], AnimalScript.DIRECTION_C), new Offset( 0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null);
+        }
+        lang.nextStep();
 
         // Start animal to view visualization
         Animal.startAnimationFromAnimalScriptCode(lang.toString());
@@ -485,50 +411,5 @@ public class AnimalGraph_Test1 implements Generator {
         this.lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews, Yves Geib", 640, 480);
         this.lang.setStepMode(true);
     }
-
-    /*public void createGraph() {
-
-        TextProperties tp = new TextProperties();
-        //tp.set("color", Color.BLACK);
-        CircleProperties cp = new CircleProperties();
-        //cp.set("color", Color.BLACK);
-        PolylineProperties pp = new PolylineProperties();
-        //pp.set("color", Color.BLACK);
-
-        // Create Node A
-        Text nodeA = lang.newText(new Coordinates(100,100),"A", "nodeA", null, tp);
-        //text.setText();
-        Circle circleA = lang.newCircle(new Offset(0,0,nodeA, AnimalScript.DIRECTION_C),20,"circleA",null, cp);
-
-        // Create Node B
-        Text nodeB = lang.newText(new Coordinates(200,100),"B", "nodeB", null, tp);
-        //text.setText();
-        Circle circleB = lang.newCircle(new Offset(0,0,nodeB, AnimalScript.DIRECTION_C),20,"circleB",null, cp);
-
-        // Create Node C
-        Text nodeC = lang.newText(new Coordinates(100,200),"C", "nodeC", null, tp);
-        //text.setText();
-        Circle circleC = lang.newCircle(new Offset(0,0,nodeC, AnimalScript.DIRECTION_C),20,"circleC",null, cp);
-
-        // Create Node D
-        Text nodeD = lang.newText(new Coordinates(200,200),"D", "nodeD", null, tp);
-        //text.setText();
-        Circle circleD = lang.newCircle(new Offset(0,0, nodeD, AnimalScript.DIRECTION_C),20,"circleD",null, cp);
-
-        // Edge between node A and B
-        Polyline edgeAB = lang.newPolyline(new Node[] { new Offset(20,0, circleA, AnimalScript.DIRECTION_C), new Offset(-20,0, circleB, AnimalScript.DIRECTION_C)}, "EdgeAB", null, pp);
-        Polyline edgeAC = lang.newPolyline(new Node[] { new Offset(0,20, circleA, AnimalScript.DIRECTION_C), new Offset(0,-20, circleC, AnimalScript.DIRECTION_C)}, "EdgeAC", null, pp);
-        Polyline edgeBD = lang.newPolyline(new Node[] { new Offset(0,20, circleB, AnimalScript.DIRECTION_C), new Offset(0,-20, circleD, AnimalScript.DIRECTION_C)}, "EdgeBD", null, pp);
-        Polyline edgeCD = lang.newPolyline(new Node[] { new Offset(20,0, circleC, AnimalScript.DIRECTION_C), new Offset(-20,0, circleD, AnimalScript.DIRECTION_C)}, "EdgeCD", null, pp);
-
-
-        Node startA = new Offset(20,0, circleA, AnimalScript.DIRECTION_C);
-        Node startB = new Offset(-20,0, circleB, AnimalScript.DIRECTION_C);
-        Node[] testarr = {startA, startB};
-
-
-
-    }
-    */
 
 }
