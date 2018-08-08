@@ -29,6 +29,7 @@ public class Kargers implements Generator {
     private PolylineProperties polylineProps;
     private SourceCodeProperties sourceCodeProps;
     private Graph graph;
+    private int coordinateX, coordinateY; //Coordinates of the user-input graph to translate them into our graph
 
     String[] nodeNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
@@ -77,11 +78,13 @@ public class Kargers implements Generator {
     }
 
     public void init(){
-        //this.lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews", 800, 600);
+        this.lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews", 800, 600);
         this.lang.setStepMode(true);
     }
 
-    public String generate(AnimationPropertiesContainer props,Hashtable<String, Object> primitives) {
+    public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
+
+
         this.lang.setInteractionType(1024);
         //this.createGraph();
 
@@ -89,10 +92,11 @@ public class Kargers implements Generator {
         this.circleProps = (CircleProperties)props.getPropertiesByName("circleProps");
         this.polylineProps = (PolylineProperties)props.getPropertiesByName("polylineProps");
         this.sourceCodeProps = (SourceCodeProperties)props.getPropertiesByName("sourceCodeProps");
-        //this.graph = (Graph)primitives.get("graph");
+        this.graph = (Graph)primitives.get("graph");
 
         this.intro();
         this.kargersMinCut(new Kargers(4, 4));
+        this.lang.setInteractionType(1024);
 
         this.lang.finalizeGeneration();
         return this.lang.toString();
@@ -145,26 +149,28 @@ public class Kargers implements Generator {
         };
      */
 
+
     public int kargersMinCut(Kargers graph) {
         //AnimalGraph1 testGraph = new AnimalGraph1(4, 4);
         this.lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews", 800, 600);
         this.lang.setStepMode(true);
         this.lang.setInteractionType(1024);
         Kargers testGraph = graph; //Just for the sake of the correct variable.
-        //this.intro();
 
-/*
-        graph.getNode(1).
-        for(Node n : nodelist) {
-            (Coordinates)n . getX getY
+        Node[] nodeList = this.graph.getNodes();
+
+        for (Node n : nodeList) {
+            coordinateX = ((Coordinates)n).getX();
+            coordinateY = ((Coordinates)n).getY();
         }
-*/
+
         int[][] testMatrix = {
                 {0, 1, 1, 0},
                 {1, 0, 0, 1},
                 {1, 0, 0, 1},
                 {0, 1, 1, 0},
         };
+
         TextProperties tp = new TextProperties();
         tp.set("color", Color.BLACK);
         CircleProperties cp = new CircleProperties();
@@ -197,10 +203,10 @@ public class Kargers implements Generator {
 
                         2C    3D
                     */
-            if(i < testMatrix.length/2)
-                textArray[i] = lang.newText(new Coordinates(100 + 100*i, 100), nodeNames[i], "node " + nodeNames[i], null, tp);
-            else
-                textArray[i] = lang.newText(new Coordinates(100 + 100 * (i - testMatrix.length/2), 100 + 100), nodeNames[i], "node " + nodeNames[i], null, tp);
+
+                textArray[i] = lang.newText(new Coordinates(coordinateX, coordinateY), nodeNames[i], "node " + nodeNames[i], null, tp);
+
+                //textArray[i] = lang.newText(new Coordinates(100 + 100 * (i - testMatrix.length/2), 100 + 100), nodeNames[i], "node " + nodeNames[i], null, tp);
 
             //create Circle around Text
             circleArray[i] = lang.newCircle(new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C),30,"Circle " + nodeNames[i],null, cp);
@@ -266,7 +272,7 @@ public class Kargers implements Generator {
 
 
                 System.out.println("length of testMatrix: " + testMatrix.length);
-                System.out.println("node that gets deleted after cutting the edge: " + circleArray[testGraph.endContract].getName());
+                System.out.println("node that gets deleted after cutting the edge: " + textArray[testGraph.endContract].getName());
 
                 //Highlighten der Polyline, die entfernt werden soll. Hier doppelt, da die Matrix symmetrisch ist.
                 //TODO
