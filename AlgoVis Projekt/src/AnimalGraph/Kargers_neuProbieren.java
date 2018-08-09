@@ -138,15 +138,57 @@ public class Kargers_neuProbieren implements Generator {
 
 
 
-        int[][] testMatrix = this.graph.getAdjacencyMatrix();
+        int[][] inputMatrix = this.graph.getAdjacencyMatrix();
+        int[][] testMatrix = new int[inputMatrix.length][inputMatrix.length];
+        int[][] transponierteMatrix = new int[testMatrix.length][testMatrix.length];
+        int matrixCounter = 0;
 
-        System.out.println("Übergebene testMatrix: Länge = " + testMatrix.length);
+        //Printe testMatrix, die vom User in Animal übergeben wurde
+        //TODO bisher noch XML Datei, noch nicht dynamisch
+        System.out.println("Übergebene inputMatrix: Länge = " + testMatrix.length);
+        for(i = 0; i < inputMatrix.length; i++) {
+            for (j = 0; j < inputMatrix.length; j++) {
+                if(inputMatrix[i][j] == 1)
+                    matrixCounter++;
+                System.out.print(inputMatrix[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        System.out.println("Anzahl Einsen in der Matrix = Anzahl Edges = " + matrixCounter);
+
+
+        //Transponiere testMatrix
+        for(i = 0; i < inputMatrix.length; i++) {
+            for (j = 0; j < inputMatrix.length; j++) {
+                transponierteMatrix[j][i] = inputMatrix[i][j];
+            }
+        }
+        //Printe transponierte Matrix
+        System.out.println("\nTransponierte Matrix: ");
+        for(i = 0; i < transponierteMatrix.length; i++) {
+            for (j = 0; j < transponierteMatrix.length; j++) {
+                System.out.print(transponierteMatrix[i][j] + " ");
+            }
+            System.out.println("");
+        }
+
+        //Füge transponierte Matrix in testMatrix ein
+        for(i = 0; i < testMatrix.length; i++) {
+            for (j = 0; j < testMatrix.length; j++) {
+                testMatrix[i][j] = inputMatrix[i][j] + transponierteMatrix[i][j];
+            }
+        }
+
+        //Gib die gesamte Matrix aus
+        System.out.println("\ntestMatrix PLUS transponierte Matrix: ");
         for(i = 0; i < testMatrix.length; i++) {
             for (j = 0; j < testMatrix.length; j++) {
                 System.out.print(testMatrix[i][j] + " ");
             }
-            System.out.print("\n");
+            System.out.println("");
         }
+
+
 
         TextProperties tp = new TextProperties();
         tp.set("color", Color.BLACK);
@@ -156,14 +198,11 @@ public class Kargers_neuProbieren implements Generator {
         pp.set("color", Color.BLACK);
 
         //Erstelle Platz für Primitives
-        Text[] textArray = new Text[testMatrix.length];
-        Circle[] circleArray = new Circle[testMatrix.length];
+        Text[] textArray = new Text[inputMatrix.length];
+        Circle[] circleArray = new Circle[inputMatrix.length];
 
         //Erstelle Polyline Matrix, um Polylines an korrekten Stellen zu zeichnen
-        Polyline[][] polyMatrix = new Polyline[testMatrix.length][testMatrix.length];
-
-        //Erstelle neues Polyline Array, um die neu gezeichneten Polylines zu speichern
-        Polyline[] newLine = new Polyline[testMatrix.length];
+        Polyline[][] polyMatrix = new Polyline[inputMatrix.length][inputMatrix.length];
 
         /*Create Graph TODO dynamically from Animal User Input
           0A 1B
@@ -180,14 +219,15 @@ public class Kargers_neuProbieren implements Generator {
             textArray[z] = lang.newText(new Coordinates(coordinateX, coordinateY), this.graph.getNodeLabel(n), "node " + this.graph.getNodeLabel(n), null, tp);
 
             //create Circle around Text
-            circleArray[z] = lang.newCircle(new Offset(0, 0, textArray[z], AnimalScript.DIRECTION_C), 30, "Circle " + this.graph.getNodeLabel(n), null, cp);
+            circleArray[z] = lang.newCircle(new Offset(0, 0, textArray[z], AnimalScript.DIRECTION_C), 30, "circle " + this.graph.getNodeLabel(n), null, cp);
             z++;
         }
 
+        System.out.print("\nNodes verbunden mit Edges:\n");
         //polyMatrix wird an allen Stellen gezeichnet und direkt mit hide an den Stellen versehen, an denen in testMatrix[i][j] eine 0 steht.
         for (i = 0; i < testMatrix.length; i++) {
             for (j = 0; j < testMatrix.length; j++) {
-                if (testMatrix[i][j] == 1) {
+                if (inputMatrix[i][j] == 1) {
                     // wir können verhindern, dass wir nicht mehr Wissen welche Edge zu welchen Nodes gehört, indem wir einfach das Array mit Null füllen wo keine Edges sind dann ist Anzahl Plätze in der Matrix = Länge des Arrays
                     polyMatrix[i][j] = lang.newPolyline(new Node[]{new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset(0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
                     System.out.println(textArray[i].getText() + " " + textArray[j].getText());
@@ -199,20 +239,21 @@ public class Kargers_neuProbieren implements Generator {
 
         lang.nextStep("Drawing Nodes & Polylines");
 
-        System.out.println("GraphSize" + this.graph.getSize());
+        System.out.println("\nGraphSize: " + this.graph.getSize());
 
         // get given Graph
+        int inputMatrixLength = this.graph.getAdjacencyMatrix().length;
         int nrOfVertices = this.graph.getSize();
-        int nrOfEdges = this.graph.getAdjacencyMatrix().length;
+        int nrOfEdges = matrixCounter;
 
         //fill edgeArray with given Graph
         edgeArray = new AnimalEdge[nrOfEdges];
         int y = 0; //edgeArray Counter
         // Filling the edgeArray with the Matrix Input to let Kargers_neuProbieren Execute with the Input Graph
-        for (i = 0; i < testMatrix.length; i++) {
-            for (j = 0; j < testMatrix.length; j++) {
+        for (i = 0; i < inputMatrixLength; i++) {
+            for (j = 0; j < inputMatrixLength; j++) {
 
-                if (testMatrix[i][j] == 1) {
+                if (inputMatrix[i][j] == 1) {
                     edgeArray[y] = new AnimalEdge(i, j);
                     y++;
                 }
@@ -254,21 +295,20 @@ public class Kargers_neuProbieren implements Generator {
             // else contract the edges (combine the subsets and combine
             // the node of the edge into one)
             else {
-                System.out.println("\n\n###############\nContracting edge" + edgeArray[x].src + edgeArray[x].dest);
+                System.out.println("\nContracting edge" + edgeArray[x].src + edgeArray[x].dest);
                 startContract = subset[edgeArray[x].src].parent;
                 endContract = subset[edgeArray[x].dest].parent;
 
 
+                System.out.println("length of inputMatrix: " + inputMatrix.length);
                 System.out.println("length of testMatrix: " + testMatrix.length);
                 System.out.println("startContract: " + startContract + " endContract: " + endContract);
                 System.out.println("node that gets deleted after cutting the edge: " + textArray[endContract].getName());
 
-                //Highlighten der Polyline, die entfernt werden soll. Hier doppelt, da die Matrix symmetrisch ist.
-                //TODO
-                //Die Farbe muss noch dynamisch übergeben werden.
+                //Highlighten der Polyline, die entfernt werden soll.
+                //TODO Die Farbe muss noch dynamisch übergeben werden.
                 if (polyMatrix[startContract][endContract] != null)
                     polyMatrix[startContract][endContract].changeColor("color", Color.RED, null, null);
-
 
                 lang.nextStep("Highlighten Polyline");
 
@@ -286,68 +326,121 @@ public class Kargers_neuProbieren implements Generator {
                 textArray[endContract].hide();
                 circleArray[endContract].hide();
 
-                //Ausgelagert: Benennung des Nodes (Code-Refactoring)
+                //Ausgelagert: Benennung des neuen Nodes (Code-Refactoring)
                 String nodename = textArray[startContract].getText() + " " + textArray[endContract].getText();
                 System.out.println("cut: " + nodename);
 
-                //Färbe den contracteten Node wieder schwarz und füge den entfernten Node hinzu (Also Node A wird zu Node A B)
+                //Färbe den contracteten Node wieder schwarz und füge den entfernten Node hinzu (Also Node A wird zu Node A B mit .setText)
                 textArray[startContract].setText(nodename, null, null);
-
-                //circleArray[testGraph.startContract].hide();
-                //circleArray[testGraph.startContract] = lang.newCircle(new Offset(0, 0, textArray[testGraph.startContract], AnimalScript.DIRECTION_C),20,"Circle " + nodename,null, cp);
                 textArray[startContract].changeColor("color", Color.BLACK, null, null);
                 circleArray[startContract].changeColor("color", Color.BLACK, null, null);
 
+                pp.set("color", Color.GREEN);
+
                 //Hide alle Polylines, die an endContract dranhängen (hier der Wert j in der polyMatrix)
                 for (j = 0; j < polyMatrix.length; j++) {
-                    int[] rememberedNodes = new int[testMatrix.length]; //Erstelle int-Array für das Speichern aller Nodes, die an dem contracteten Node dranhängen. Damit können nachher die neuen Lines gezeichnet werden.
-                    if (polyMatrix[endContract][j] != null)
-                        polyMatrix[endContract][j].hide();
+                    int[] rememberedNodes = new int[polyMatrix.length]; //Erstelle int-Array für das Speichern aller Nodes, die an dem contracteten Node dranhängen. Damit können nachher die neuen Lines gezeichnet werden.
 
 
                     //Befülle rememberedNodes mit den Nodes, die an dem contracteten Node dranhängen, damit später die Polylines zu diesen Nodes gezeichnet werden können.
                     if (startContract != j) { //Schaue nur die Nodes an, die an dem contracteten Node dranhängen. Alle anderen werden ignoriert.
-                        if (testMatrix[endContract][j] == 1) {
+
+                        for (i = 0; i < testMatrix.length; i++) {
+                            if (testMatrix[j][i] == testMatrix[startContract][endContract] && polyMatrix[startContract][endContract] != null) {
+                                polyMatrix[startContract][endContract].hide();
+                            }
+                        }
+
+                        if (polyMatrix[startContract][endContract] != null) {
+                            polyMatrix[startContract][endContract].hide();
+                            polyMatrix[startContract][endContract] = null;
+                        }
+                        //Hier geschieht das Hiden, oberes Dreieck der Matrix
+                        if (polyMatrix[endContract][j] != null) {
+
                             rememberedNodes[j] = j; //Merken der Knoten, zu denen die Lines gezeichnet werden.
+                            polyMatrix[endContract][j].hide();
+                            polyMatrix[endContract][j] = null;
+                            polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(5, 5, circleArray[startContract], AnimalScript.DIRECTION_C),
+                                    new Offset(5, 5, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
 
-                            //testmatrix soll die Werte auf null setzen, deren Knoten entfernt wurden, bzw. auch die Lines.
-                            //testMatrix[endContract][j] = 0;
-                            //testMatrix[j][endContract] = 0;
-                            //testMatrix[endContract][startContract] = 0;
-                            //testMatrix[startContract][endContract] = 0;
-
-                            /*
-                            testmatrix soll die Werte auf eins setzen, deren Lines neu gezeichnet wurden.
-                            Wenn A-B zusammengeführt wird, muss die neue Line von A nach D gezeichnet werden.
-                            Dies ist hier hinterlegt.
-                             */
-                            //testMatrix[startContract][rememberedNodes[j]] = 1;
-                            //testMatrix[rememberedNodes[j]][startContract] = 1;
+                            //polyMatrix[startContract][rememberedNodes[j]].show();
 
                             System.out.println(Arrays.toString(rememberedNodes));
-                            System.out.println("Wert j: " + j);
+                            System.out.println("Wert j a: " + j);
 
-                            //Zeichne neue Polyline für den contracteten Node und den startNode (Das ist die Line, die im Algorithmus selbst eigentlich übrig bleibt und verschoben wird, die wir aber neu zeichnen müssen)
-                            pp.set("color", Color.GREEN);
-                            newLine[j] = lang.newPolyline(new Node[]{new Offset(4, 4, circleArray[startContract], AnimalScript.DIRECTION_C), new Offset(4, 4, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
-                            //newLine[j].changeColor("color", Color.RED, null, null);
-                            newLine[j].show();
                         }
+                        //Unteres Dreieck der Matrix
+                        if (polyMatrix[j][endContract] != null) {
+                            rememberedNodes[j] = j; //Merken der Knoten, zu denen die Lines gezeichnet werden.
+                            polyMatrix[j][endContract].hide();
+                            polyMatrix[j][endContract] = null;
+                            polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(5, 5, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C),
+                                    new Offset(5, 5, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
+
+                            //polyMatrix[rememberedNodes[j]][startContract].show();
+
+                            System.out.println(Arrays.toString(rememberedNodes));
+                            System.out.println("Wert j b:" + j);
+
+                        }
+                        //testmatrix soll die Werte auf null setzen, deren Knoten entfernt wurden, bzw. auch die Edges.
+                        //testMatrix[endContract][j] = 0;
+                        //testMatrix[j][endContract] = 0;
+                        //testMatrix[endContract][startContract] = 0;
+                        //testMatrix[startContract][endContract] = 0;
+
                         /*
+                        testmatrix soll die Werte auf eins setzen, deren Lines neu gezeichnet wurden.
+                        Wenn A-B zusammengeführt wird, muss die neue Line von A nach D gezeichnet werden.
+                        Dies ist hier hinterlegt.
+                         */
+                        //testMatrix[startContract][rememberedNodes[j]] = 1;
+                        //testMatrix[rememberedNodes[j]][startContract] = 1;
+
+                       /*
                         if(testMatrix[startContract][rememberedNodes[j]] == 1 && newLine[j] != null)
                             newLine[j].changeColor("color", Color.RED, null, null);
                         */
-
                     }
+                }
 
-                    //Wenn noch eine Linie vom vorherigen Neuzeichnen existiert, wird diese Linie versteckt
-                    for (i = 0; i < newLine.length; i++) {
-                        if (newLine[i] != null) {
-                            newLine[i].hide();
-                            System.out.println("Hier komme ich noch hin");
+                System.out.println("Volle Matrix mit neu gezeichneteten Edges: ");
+                //Neuzeichnen aller neuen Edges
+                for(j = 0; j < polyMatrix.length; j++) {
+
+                    for(i = 0; i < polyMatrix.length; i++) {
+                        if(polyMatrix[j][i] != null)
+                            System.out.print("1 ");
+                        else
+                            System.out.print("0 ");
+                    }
+                    System.out.println();
+                }
+
+                //Wenn noch eine Linie vom vorherigen Neuzeichnen existiert, wird diese Linie versteckt
+                for (i = 0; i < polyMatrix.length; i++) {
+                    for (j = 0; j < polyMatrix.length; j++) {
+                        //if (testMatrix[i][j] == 1 && polyMatrix[i][j] != null || testMatrix[j][i] == 1 && polyMatrix[j][i] != null)
+                        //    polyMatrix[i][j].hide();
+                        if (polyMatrix[endContract][j] != null) {
+                            polyMatrix[endContract][j].hide();
+                            polyMatrix[endContract][j] = null;
+                            System.out.println("Hier komme ich noch hin1");
+                        }
+                        if (polyMatrix[startContract][endContract] != null) {
+                            polyMatrix[startContract][endContract].hide();
+                            polyMatrix[startContract][endContract] = null;
+                            System.out.println("Hier komme ich noch hin2");
+                        }
+                        if (polyMatrix[j][endContract] != null) {
+                            polyMatrix[j][endContract].hide();
+                            polyMatrix[j][endContract] = null;
+                            System.out.println("Hier komme ich noch hin3");
                         }
                     }
                 }
+
 
                 lang.nextStep("Hiden_& Neuzeichnen und den Algorithmus einen Schritt weiterführen");
 
@@ -359,7 +452,6 @@ public class Kargers_neuProbieren implements Generator {
                 testAnimalSet.union(subset, subset1, subset2);
             }
         }
-
         // there are now two subsets left in the contracted graph
         // so the results are the edges between the components
         cutEdges = 0;
@@ -371,6 +463,7 @@ public class Kargers_neuProbieren implements Generator {
                 cutEdges++;
             }
         }
+        System.out.println("FINAL: cutedges = " + cutEdges);
         //Animal.startAnimationFromAnimalScriptCode(lang.toString());
         return cutEdges;
     }
