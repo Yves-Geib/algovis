@@ -30,7 +30,6 @@ public class Kargers_neuProbieren implements Generator {
     private SourceCodeProperties sourceCodeProps;
     private SourceCode code;
     private Graph graph;
-    private SourceCode scr;
 
     Node[] nodeList;
     private int coordinateX, coordinateY; //Coordinates of the user-input graph to translate them into our graph
@@ -69,7 +68,6 @@ public class Kargers_neuProbieren implements Generator {
         this.graph = (Graph)primitives.get("graph");
 
         this.intro();
-        this.showSourceCode();
         this.kargersMinCut();
         this.lang.finalizeGeneration();
         return this.lang.toString();
@@ -132,7 +130,20 @@ public class Kargers_neuProbieren implements Generator {
         this.code.addCodeLine("boolean [] visited = new boolean [G.size()];", (String)null, 1, (Timing)null);
     */
 
-        showSourceCode();
+        SourceCodeProperties scrp = new SourceCodeProperties();
+        scrp.set(AnimationPropertiesKeys.CONTEXTCOLOR_PROPERTY, Color.BLUE);
+        scrp.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
+        scrp.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.RED);
+        scrp.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
+
+        SourceCode scr = lang.newSourceCode(new Coordinates(450, 200), "sourceCode", null, scrp);
+        scr.addCodeLine("while (nodes > 2)", null, 1, null);
+        scr.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
+        scr.addCodeLine("merge u and v", null, 3, null);
+        scr.addCodeLine("remove self-loops", null, 4, null);
+        scr.addCodeLine("return cut represented by two nodes", null, 5, null);
+
+        scr.highlight(0);
 
         int[][] inputMatrix = this.graph.getAdjacencyMatrix();
         int[][] testMatrix = new int[inputMatrix.length][inputMatrix.length];
@@ -287,6 +298,8 @@ public class Kargers_neuProbieren implements Generator {
             int subset2 = testAnimalSet.find(subset, edgeArray[x].dest);
             startContract = subset[edgeArray[x].src].parent;
             endContract = subset[edgeArray[x].dest].parent;
+            scr.unhighlight(0);
+            scr.highlight(1);
 
             // if the vertices belong to the same subset, this edge is not considered
             if (subset1 == subset2) {
@@ -325,6 +338,10 @@ public class Kargers_neuProbieren implements Generator {
                 circleArray[endContract].changeColor("color", Color.RED, null, null);
 
                 lang.nextStep("Highlighten Node");
+
+                scr.unhighlight(1);
+                scr.highlight(2);
+                scr.highlight(3);
 
                 //Hide den betroffenen Node
                 textArray[endContract].hide();
@@ -459,6 +476,9 @@ public class Kargers_neuProbieren implements Generator {
 
                 lang.nextStep("Hiden_& Neuzeichnen und den Algorithmus einen Schritt weiterführen");
 
+                scr.unhighlight(2);
+                scr.unhighlight(3);
+
                 System.out.println("Contracting subsets" + subset[edgeArray[x].src].parent + subset[edgeArray[x].dest].parent + "\n");
 
                 //lang.nextStep();
@@ -468,6 +488,7 @@ public class Kargers_neuProbieren implements Generator {
                 System.out.println("######### Subsets innerhalb: " + subset1 + " " + subset2 + "\n\n");
             }
         }
+
         // there are now two subsets left in the contracted graph
         // so the results are the edges between the components
         cutEdges = 0;
@@ -487,20 +508,20 @@ public class Kargers_neuProbieren implements Generator {
         return cutEdges;
     }
 
-    public void showSourceCode(){
+    /*public void showSourceCode(){
         SourceCodeProperties scrp = new SourceCodeProperties();
         scrp.set(AnimationPropertiesKeys.CONTEXTCOLOR_PROPERTY, Color.BLUE);
         scrp.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
         scrp.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.RED);
         scrp.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
 
-        SourceCode scr = lang.newSourceCode(new Offset(200, 200, graph, "graph"), "sourceCode", null, scrp);
+        SourceCode scr = lang.newSourceCode(new Coordinates(450, 150), "sourceCode", null, scrp);
         scr.addCodeLine("while (nodes > 2)", null, 1, null);
         scr.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
         scr.addCodeLine("merge u and v", null, 3, null);
         scr.addCodeLine("remove self-loops", null, 4, null);
         scr.addCodeLine("return cut represented by two nodes", null, 5, null);
-    }
+    }*/
 
     public String getName() {
         return "Karger's Minimal Cut";
