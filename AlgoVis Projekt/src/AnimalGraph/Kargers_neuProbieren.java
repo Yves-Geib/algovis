@@ -30,6 +30,7 @@ public class Kargers_neuProbieren implements Generator {
     private SourceCodeProperties sourceCodeProps;
     private SourceCode code;
     private Graph graph;
+    private SourceCode scr;
 
     Node[] nodeList;
     private int coordinateX, coordinateY; //Coordinates of the user-input graph to translate them into our graph
@@ -68,43 +69,28 @@ public class Kargers_neuProbieren implements Generator {
         this.graph = (Graph)primitives.get("graph");
 
         this.intro();
+        this.showSourceCode();
         this.kargersMinCut();
         this.lang.finalizeGeneration();
         return this.lang.toString();
     }
 
     private void intro() {
-        TextProperties var1 = new TextProperties();
-        var1.set("font", new Font("SansSerif", 1, 24));
-        Text var2 = this.lang.newText(new Coordinates(200, 50), "Kargers", "header", (DisplayOptions)null, var1);
-        RectProperties var3 = new RectProperties();
-        var3.set("fillColor", Color.YELLOW);
-        var3.set("filled", true);
-        var3.set("depth", 2);
-        this.lang.newRect(new Offset(-5, -5, var2, "NW"), new Offset(5, 5, var2, "SE"), "hrect", (DisplayOptions)null, var3);
-        SourceCodeProperties var4 = new SourceCodeProperties();
-        var4.set("font", new Font("SansSerif", 0, 18));
-        var4.set("color", Color.BLACK);
-        SourceCode var5 = this.lang.newSourceCode(new Offset(-150, 30, var2, "SW"), "intro", (DisplayOptions)null, var4);
-        var5.addCodeLine("Der Kargers_neuProbieren Minimal Cut Algorithmus dient dazu, innerhalb eines Graphen von einem gegebenen", (String)null, 0, (Timing)null);
-        var5.addCodeLine("Knoten aus die kuerzeste Route zu allen anderen Knoten zu finden. Der Graph kann", (String)null, 0, (Timing)null);
-        var5.addCodeLine("hierbei sowohl gerichtet als auch ungerichet sein. Als Entfernung zwischen zwei", (String)null, 0, (Timing)null);
-        var5.addCodeLine("Knoten wird in der Regel das Gewicht der auf der Route liegenden Kanten gewählt.", (String)null, 0, (Timing)null);
-        var5.addCodeLine("Bei einem ungewichteten Graphen wird als Entfernung die Anzahl der dazwischen", (String)null, 0, (Timing)null);
-        var5.addCodeLine("liegenden Knoten genommen. Es darf jedoch niemals ein negatives Gewicht existieren", (String)null, 0, (Timing)null);
-        var5.addCodeLine("", (String)null, 0, (Timing)null);
-        var5.addCodeLine("Der Algorithmus arbeitet indem er sich zu jeden Knoten merkt wie weit er vom", (String)null, 0, (Timing)null);
-        var5.addCodeLine("Start entfernt ist, wer sein Vorgänger auf der Route ist und ob er bereits", (String)null, 0, (Timing)null);
-        var5.addCodeLine("bearbeitet wurde. Wird ein Knoten bearbeitet so wird er als besucht markiert,", (String)null, 0, (Timing)null);
-        var5.addCodeLine("für seine Nachbarn wird berechnet wie weit sie entfernt sind sollte die Route", (String)null, 0, (Timing)null);
-        var5.addCodeLine("über den aktuell bearbeiteten Knoten gehen. Ist die neu berechnete Entfernung ", (String)null, 0, (Timing)null);
-        var5.addCodeLine("kürzer als die bereits gemerkte, so wird diese als Entfernung für den Nachbarn", (String)null, 0, (Timing)null);
-        var5.addCodeLine("eingetragen. Als Vorgänger dieses Nachbarns wird der bearbeitete Knoten eingetragen", (String)null, 0, (Timing)null);
-        var5.addCodeLine("und der Nachbar wird als unbesucht markiert.", (String)null, 0, (Timing)null);
-        var5.addCodeLine("Anfangs gild jeder Knoten als unbesucht ihr Vorgänger ist unbekannt und ihre Entfernung", (String)null, 0, (Timing)null);
-        var5.addCodeLine("ist unendlich. Für den Startknoten wird dann die Entfernung auf 0 gesetzt.", (String)null, 0, (Timing)null);
+        TextProperties headerprops = new TextProperties();
+        headerprops.set("font", new Font("SansSerif", 1, 24));
+        Text header = this.lang.newText(new Coordinates(200, 50), "Karger's Minimal Cut", "header", (DisplayOptions)null, headerprops);
+        RectProperties rectprops = new RectProperties();
+        rectprops.set("fillColor", Color.CYAN);
+        rectprops.set("filled", true);
+        rectprops.set("depth", 2);
+        this.lang.newRect(new Offset(-5, -5, header, "NW"), new Offset(5, 5, header, "SE"), "hrect", (DisplayOptions)null, rectprops);
+        SourceCodeProperties srcprops = new SourceCodeProperties();
+        srcprops.set("font", new Font("SansSerif", 0, 18));
+        srcprops.set("color", Color.BLACK);
+        SourceCode src = this.lang.newSourceCode(new Offset(-150, 30, header, "SW"), "intro", (DisplayOptions)null, srcprops);
+        src.addCodeLine("Karger's Minimal Cut Algorithmus sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt", (String)null, 0, (Timing)null);
         this.lang.nextStep("Intro");
-        var5.hide();
+        src.hide();
 
 
     }
@@ -146,6 +132,7 @@ public class Kargers_neuProbieren implements Generator {
         this.code.addCodeLine("boolean [] visited = new boolean [G.size()];", (String)null, 1, (Timing)null);
     */
 
+        showSourceCode();
 
         int[][] inputMatrix = this.graph.getAdjacencyMatrix();
         int[][] testMatrix = new int[inputMatrix.length][inputMatrix.length];
@@ -222,8 +209,12 @@ public class Kargers_neuProbieren implements Generator {
         tp.set("color", Color.BLACK);
         CircleProperties cp = new CircleProperties();
         cp.set("color", Color.BLACK);
+        cp.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
+        cp.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
+        cp.set("depth", 2);
         PolylineProperties pp = new PolylineProperties();
         pp.set("color", Color.BLACK);
+        pp.set("depth", 3);
 
         //Erstelle Platz für Primitives
         Text[] textArray = new Text[inputMatrix.length];
@@ -257,7 +248,7 @@ public class Kargers_neuProbieren implements Generator {
             for (j = 0; j < testMatrix.length; j++) {
                 if (testMatrix[i][j] == 1) {
                     // wir können verhindern, dass wir nicht mehr Wissen welche Edge zu welchen Nodes gehört, indem wir einfach das Array mit Null füllen wo keine Edges sind dann ist Anzahl Plätze in der Matrix = Länge des Arrays
-                    polyMatrix[i][j] = lang.newPolyline(new Node[]{new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset(0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null);
+                    polyMatrix[i][j] = lang.newPolyline(new Node[]{new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset(0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null, pp);
                     System.out.println(textArray[i].getText() + " " + textArray[j].getText());
                 }
             }
@@ -496,6 +487,20 @@ public class Kargers_neuProbieren implements Generator {
         return cutEdges;
     }
 
+    public void showSourceCode(){
+        SourceCodeProperties scrp = new SourceCodeProperties();
+        scrp.set(AnimationPropertiesKeys.CONTEXTCOLOR_PROPERTY, Color.BLUE);
+        scrp.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
+        scrp.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.RED);
+        scrp.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
+
+        SourceCode scr = lang.newSourceCode(new Offset(200, 200, graph, "graph"), "sourceCode", null, scrp);
+        scr.addCodeLine("while (nodes > 2)", null, 1, null);
+        scr.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
+        scr.addCodeLine("merge u and v", null, 3, null);
+        scr.addCodeLine("remove self-loops", null, 4, null);
+        scr.addCodeLine("return cut represented by two nodes", null, 5, null);
+    }
 
     public String getName() {
         return "Karger's Minimal Cut";

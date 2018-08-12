@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fb759aa-7501-4f16-a4fe-2768d0c159a7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AlgoVis Projekt/AnimalGraph/AnimalEdge.class" afterPath="$PROJECT_DIR$/out/production/AlgoVis Projekt/AnimalGraph/AnimalEdge.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AlgoVis Projekt/AnimalGraph/AnimalGraph.class" afterPath="$PROJECT_DIR$/out/production/AlgoVis Projekt/AnimalGraph/AnimalGraph.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalEdge.java" afterPath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalEdge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph.java" afterPath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java" afterPath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.java" afterPath="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,31 +14,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AnimalGraph_Test1.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java">
+      <file leaf-file-name="Kargers_neuProbieren.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4875">
-              <caret line="338" column="86" lean-forward="false" selection-start-line="338" selection-start-column="86" selection-end-line="338" selection-end-column="86" />
+            <state relative-caret-position="248">
+              <caret line="496" column="80" lean-forward="false" selection-start-line="496" selection-start-column="80" selection-end-line="496" selection-end-column="80" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AnimalSubset.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalSubset.java">
+      <file leaf-file-name="Kargers_neuProbieren.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" column="38" lean-forward="false" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AnimalEdge.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalEdge.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -56,6 +41,15 @@
       <find>color</find>
       <find>boxfillcolor</find>
       <find>system</find>
+      <find>var3</find>
+      <find>var4</find>
+      <find>var5</find>
+      <find>animationProper</find>
+      <find>animationproperties</find>
+      <find>pp</find>
+      <find>circle</find>
+      <find>cp</find>
+      <find>source</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -77,6 +71,7 @@
         <option value="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalEdge.java" />
         <option value="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph.java" />
         <option value="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java" />
+        <option value="$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.java" />
       </list>
     </option>
   </component>
@@ -87,10 +82,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-85" />
-    <option name="y" value="-1027" />
-    <option name="width" value="1584" />
-    <option name="height" value="1014" />
+    <option name="x" value="97" />
+    <option name="y" value="23" />
+    <option name="width" value="1104" />
+    <option name="height" value="722" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -108,10 +103,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -150,7 +141,15 @@
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
               <item name="Animal.jar" type="462c0819:PsiDirectoryNode" />
               <item name="generators" type="462c0819:PsiDirectoryNode" />
-              <item name="datastructures" type="462c0819:PsiDirectoryNode" />
+              <item name="network" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="algovisGit" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="Animal.jar" type="462c0819:PsiDirectoryNode" />
+              <item name="generators" type="462c0819:PsiDirectoryNode" />
+              <item name="network" type="462c0819:PsiDirectoryNode" />
+              <item name="routing" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="algovisGit" type="b2602c69:ProjectViewProjectNode" />
@@ -158,19 +157,15 @@
               <item name="Animal.jar" type="462c0819:PsiDirectoryNode" />
               <item name="generators" type="462c0819:PsiDirectoryNode" />
               <item name="sorting" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="algovisGit" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="Animal.jar" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-              <item name="sorting" type="462c0819:PsiDirectoryNode" />
-              <item name="selectionsort" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -180,7 +175,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="SearchEverywhereHistoryKey" value="flash&#9;PSI&#9;JAVA://generators.sorting.FlashSortWiz" />
+    <property name="SearchEverywhereHistoryKey" value="circlepr&#9;PSI&#9;JAVA://AnimalGraph.Kargers_neuProbieren#circleProps&#10;flash&#9;PSI&#9;JAVA://generators.sorting.FlashSortWiz" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -194,7 +189,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.AnimalGraph_Test1">
+  <component name="RunManager" selected="Application.Kargers_neuProbieren">
     <configuration name="AnimalGraph" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -222,6 +217,25 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="AnimalGraph.AnimalGraph_Test1" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="AlgoVis Projekt" />
+      <envs />
+    </configuration>
+    <configuration name="Kargers_neuProbieren" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="AnimalGraph.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="AnimalGraph.Kargers_neuProbieren" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -314,14 +328,16 @@
       <properties />
       <listeners />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Application.AnimalGraph" />
       <item index="1" class="java.lang.String" itemvalue="Application.AnimalGraph_Test1" />
+      <item index="2" class="java.lang.String" itemvalue="Application.Kargers_neuProbieren" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Application.AnimalGraph_Test1" />
-        <item index="1" class="java.lang.String" itemvalue="Application.AnimalGraph" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Application.Kargers_neuProbieren" />
+        <item index="1" class="java.lang.String" itemvalue="Application.AnimalGraph_Test1" />
+        <item index="2" class="java.lang.String" itemvalue="Application.AnimalGraph" />
       </list>
     </recent_temporary>
   </component>
@@ -347,29 +363,31 @@
       <workItem from="1533220313308" duration="29000" />
       <workItem from="1533220348454" duration="5703000" />
       <workItem from="1533226111626" duration="22000" />
+      <workItem from="1534003076277" duration="5036000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17274000" />
+    <option name="totallyTimeSpent" value="22310000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-85" y="-1027" width="1584" height="1014" extended-state="0" />
+    <frame x="97" y="23" width="1104" height="722" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32781458" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22847682" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924107" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32893288" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18352789" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21751413" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -381,7 +399,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328125" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -399,6 +416,30 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalSubset.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="38" lean-forward="false" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalEdge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="0" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2445">
@@ -684,6 +725,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2445">
+          <caret line="184" column="29" lean-forward="false" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-508">
+          <caret line="269" column="86" lean-forward="false" selection-start-line="269" selection-start-column="86" selection-end-line="269" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalSubset.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -700,18 +757,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph.java">
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2445">
-          <caret line="184" column="29" lean-forward="false" selection-start-line="184" selection-start-column="29" selection-end-line="184" selection-end-column="29" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/AnimalGraph_Test1.java">
+    <entry file="jar://$PROJECT_DIR$/../Animal.jar!/generators/graph/dijkstra/Dijkstra.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4875">
-          <caret line="338" column="86" lean-forward="false" selection-start-line="338" selection-start-column="86" selection-end-line="338" selection-end-column="86" />
+        <state relative-caret-position="101">
+          <caret line="28" column="54" lean-forward="false" selection-start-line="28" selection-start-column="39" selection-end-line="28" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../Animal.jar!/generators/graph/AnnotatedRingGenerator.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="224" column="38" lean-forward="false" selection-start-line="224" selection-start-column="32" selection-end-line="224" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../Animal.jar!/generators/network/aodv/AODVNode.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="17" column="33" lean-forward="false" selection-start-line="17" selection-start-column="33" selection-end-line="17" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../Animal.jar!/generators/network/aodv/RoutingTableEntry.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AlgoVis Projekt/src/AnimalGraph/Kargers_neuProbieren.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="496" column="80" lean-forward="false" selection-start-line="496" selection-start-column="80" selection-end-line="496" selection-end-column="80" />
           <folding />
         </state>
       </provider>
