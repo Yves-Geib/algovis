@@ -17,7 +17,7 @@ public class AnimalSubset {
 
     // find the subset of an element i
     // return only the root node of the subset in which the node is in
-    int find(AnimalSubset subsetArray[], int i) {
+    int find(AnimalSubset[] subsetArray, int i) {
         if (subsetArray[i].parent != i) {
             subsetArray[i].parent = find(subsetArray, subsetArray[i].parent);
         }
@@ -26,7 +26,7 @@ public class AnimalSubset {
 
     // union of two subsets (union by rank means, that the
     // "heavier" one becomes the parent of the other)
-    void union(AnimalSubset subsetArray[], int x, int y) {
+    void union(AnimalSubset[] subsetArray, int x, int y) {
         int rootOfX = find(subsetArray, x);
         int rootOfY = find(subsetArray, y);
 
@@ -41,7 +41,11 @@ public class AnimalSubset {
         // if ranks are same, choose one as root and increment its rank
         else {
             subsetArray[rootOfY].parent = rootOfX;
-            subsetArray[rootOfX].rank++;
+            subsetArray[rootOfY].rank++;
         }
+        System.out.print("rootOfX: " + rootOfX);
+        System.out.println(" rootOfY: " + rootOfY);
+        System.out.print("PARENT of rootOfX: " + subsetArray[rootOfX].parent);
+        System.out.println(" PARENT of rootOfY: " + subsetArray[rootOfY].parent);
     }
 }

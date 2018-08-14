@@ -39,12 +39,10 @@ public class KargersAlgorithm implements Generator {
 
     AnimalSubset testAnimalSet = new AnimalSubset();
 
-    //int v; // number of vertices (nodes)
-    //int e; // number of edges ACHTUNG wurde für Beispiel geändert
     private AnimalEdge[] edgeArray; // array to store all edges
     private int cutEdges;
-    private int startContract;
-    private int endContract;
+    private int startContract = 0;
+    private int endContract = 0;
 
     public KargersAlgorithm() {
 
@@ -79,7 +77,7 @@ public class KargersAlgorithm implements Generator {
     private void intro() {
         this.headerProps = new TextProperties();
         this.headerProps.set("font", new Font("SansSerif", 1, 24));
-        Text header = this.lang.newText(new Coordinates(200, 50), "Karger's algorithm for Minimum Cut", "header", (DisplayOptions)null, headerProps);
+        Text header = this.lang.newText(new Coordinates(250, 30), "Karger's algorithm for Minimum Cut", "header", (DisplayOptions)null, headerProps);
         this.rectProps = new RectProperties();
         this.rectProps.set("fillColor", Color.CYAN);
         this.rectProps.set("filled", true);
@@ -124,7 +122,7 @@ public class KargersAlgorithm implements Generator {
         this.code.addCodeLine("while (nodes > 2)", null, 1, null);
         this.code.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
         this.code.addCodeLine("merge u and v", null, 3, null);
-        this.code.addCodeLine("reattach other edges", null, 3, null);
+        this.code.addCodeLine("reattach other edges //lines might lay on top of each other", null, 3, null);
         this.code.addCodeLine("remove self-loops", null, 3, null);
         this.code.addCodeLine("return cut represented by two nodes", null, 2, null);
 
@@ -141,9 +139,7 @@ public class KargersAlgorithm implements Generator {
             for (j = 0; j < inputMatrix.length; j++) {
                 if(inputMatrix[i][j] == 1)
                     edgeCounter++;
-                System.out.print(inputMatrix[i][j] + " ");
             }
-            System.out.println("");
         }
         System.out.println("Anzahl Einsen in der Matrix = Anzahl Edges = " + edgeCounter);
 
@@ -154,15 +150,6 @@ public class KargersAlgorithm implements Generator {
                 transponierteMatrix[j][i] = inputMatrix[i][j];
             }
         }
-        //Printe transponierte Matrix
-        System.out.println("\nTransponierte Matrix: ");
-        for(i = 0; i < transponierteMatrix.length; i++) {
-            for (j = 0; j < transponierteMatrix.length; j++) {
-                System.out.print(transponierteMatrix[i][j] + " ");
-            }
-            System.out.println("");
-        }
-
         //Füge transponierte Matrix in testMatrix ein
         for(i = 0; i < testMatrix.length; i++) {
             for (j = 0; j < testMatrix.length; j++) {
@@ -170,18 +157,8 @@ public class KargersAlgorithm implements Generator {
             }
         }
 
-        //Gib die gesamte Matrix aus
-        System.out.println("\ntestMatrix PLUS transponierte Matrix: ");
-        for(i = 0; i < testMatrix.length; i++) {
-            for (j = 0; j < testMatrix.length; j++) {
-                System.out.print(testMatrix[i][j] + " ");
-            }
-            System.out.println("");
-        }
-
 
         // get given Graph
-        //int inputMatrixLength = this.graph.getAdjacencyMatrix().length;
         int nrOfVertices = this.graph.getSize();
         int nrOfEdges = edgeCounter;
 
@@ -212,11 +189,11 @@ public class KargersAlgorithm implements Generator {
         pp.set("depth", 3);
 
         //Erstelle Platz für Primitives
-        Text[] textArray = new Text[inputMatrix.length];
-        Circle[] circleArray = new Circle[inputMatrix.length];
+        Text[] textArray = new Text[testMatrix.length];
+        Circle[] circleArray = new Circle[testMatrix.length];
 
         //Erstelle Polyline Matrix, um Polylines an korrekten Stellen zu zeichnen
-        Polyline[][] polyMatrix = new Polyline[inputMatrix.length][inputMatrix.length];
+        Polyline[][] polyMatrix = new Polyline[testMatrix.length][testMatrix.length];
 
         /*Create Graph with coordinates and nodeLabels from user input
           0A 1B
@@ -252,6 +229,7 @@ public class KargersAlgorithm implements Generator {
 
         // allocate memory for creating i subsets
         AnimalSubset[] subset = new AnimalSubset[nrOfVertices];
+        System.out.println("nrOfVertices: " + nrOfVertices);
 
         // create i subsets of single elements
         for (i = 0; i < nrOfVertices; i++) {
@@ -259,7 +237,6 @@ public class KargersAlgorithm implements Generator {
             subset[i].parent = i;
             subset[i].rank = 0;
         }
-
         // here should be a single edge...
         Random r = new Random();
 
@@ -270,27 +247,60 @@ public class KargersAlgorithm implements Generator {
         while (vertices > 2) {
             // generates a random int between 0 and nrOfEdges
             int x = r.nextInt(nrOfEdges);
+            System.out.println("\nWert von x: " + x);
 
             // find vertices (sets) of current randomly picked edge
             int subset1 = testAnimalSet.find(subset, edgeArray[x].src);
             int subset2 = testAnimalSet.find(subset, edgeArray[x].dest);
-            startContract = subset[edgeArray[x].src].parent;
-            endContract = subset[edgeArray[x].dest].parent;
+
             this.code.unhighlight(0);
             this.code.highlight(1);
 
+            System.out.println("VOR DER IF-ABFRAGE IN WHILE-SCHLEIFE: STARTCONTRACT: " + startContract + " ENDCONTRACT: " + endContract + " ----subsetA: " + subset1 + " subsetB: " + subset2);
+
             // if the vertices belong to the same subset, this edge is not considered
-            // also if the vertices are already contracted, they should not be considered. If they do, it's
-            if (subset1 == subset2
-                    || (testMatrix[startContract][endContract] == 1 && polyMatrix[startContract][endContract] == null)
-                    || (testMatrix[startContract][startContract] == 1 && polyMatrix[endContract][startContract] == null)
-                    || (testMatrix[endContract][startContract] == 1 &&polyMatrix[startContract][endContract] == null)
-                    || (testMatrix[endContract][startContract] == 1 && polyMatrix[endContract][startContract] == null)) {
+            // also if the vertices are already contracted, they should not be considered.
+            if (subset1 == subset2) {
                 continue;
             }
+            /* We tried to make it pseudo-random, but that didn't solve the problem.
+                    || (testMatrix[startContract][endContract] == 1 && polyMatrix[startContract][endContract] == null)
+                    || (testMatrix[startContract][endContract] == 1 && polyMatrix[endContract][startContract] == null)
+                    || (testMatrix[endContract][startContract] == 1 && polyMatrix[startContract][endContract] == null)
+                    || (testMatrix[endContract][startContract] == 1 && polyMatrix[endContract][startContract] == null))
+             */
             // else contract the edge (combine the subsets and combine the nodes of the edge into one)
             else {
-                System.out.println("Contracting edge" + edgeArray[x].src + edgeArray[x].dest);
+/*
+                if (subset[edgeArray[x].src].rank > subset[edgeArray[x].dest].rank) {
+                    startContract = subset[edgeArray[x].src].parent;
+                    endContract = subset[edgeArray[x].dest].parent;
+                }
+                if (subset[edgeArray[x].src].rank < subset[edgeArray[x].dest].rank) {
+                    startContract = subset[edgeArray[x].dest].parent;
+                    endContract = subset[edgeArray[x].src].parent;
+                }
+                if (subset[edgeArray[x].src].rank == subset[edgeArray[x].dest].rank) {
+                    startContract = subset[edgeArray[x].src].parent;
+                    endContract = subset[edgeArray[x].dest].parent;
+                }
+
+                if (subset[edgeArray[x].src].rank > subset[edgeArray[x].dest].rank) {
+                    startContract = subset1;
+                    endContract = subset2;
+                }
+                if (subset[edgeArray[x].src].rank < subset[edgeArray[x].dest].rank) {
+                    startContract = subset2;
+                    endContract = subset1;
+                }
+                if (subset[edgeArray[x].src].rank == subset[edgeArray[x].dest].rank) {
+                    startContract = subset1;
+                    endContract = subset2;
+                }
+*/
+                startContract = subset1;
+                endContract = subset2;
+                System.out.println("\nContracting edge" + edgeArray[x].src + edgeArray[x].dest);
 
                 System.out.println("startContract: " + startContract + " endContract: " + endContract);
 
@@ -363,8 +373,8 @@ public class KargersAlgorithm implements Generator {
                             if (polyMatrix[startContract][rememberedNodes[j]] != null) {
                                 polyMatrix[startContract][rememberedNodes[j]].changeColor("color", Color.GREEN, null, null);
                             }
-                            else polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(5, 5, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(5, 5, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
+                            else polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
 
                             System.out.println(Arrays.toString(rememberedNodes));
                             System.out.println("Wert j a: " + j);
@@ -378,8 +388,8 @@ public class KargersAlgorithm implements Generator {
                             if (polyMatrix[rememberedNodes[j]][startContract] != null) {
                                 polyMatrix[rememberedNodes[j]][startContract].changeColor("color", Color.GREEN, null, null);
                             }
-                            else polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(5, 5, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C),
-                                        new Offset(5, 5, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
+                            else polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C),
+                                        new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, pp);
 
                             System.out.println(Arrays.toString(rememberedNodes));
                             System.out.println("Wert j b:" + j);
