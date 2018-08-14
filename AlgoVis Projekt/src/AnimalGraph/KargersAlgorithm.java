@@ -78,32 +78,32 @@ public class KargersAlgorithm implements Generator {
 
     private void intro() {
         this.headerProps = new TextProperties();
-        headerProps.set("font", new Font("SansSerif", 1, 24));
+        this.headerProps.set("font", new Font("SansSerif", 1, 24));
         Text header = this.lang.newText(new Coordinates(200, 50), "Karger's algorithm for Minimum Cut", "header", (DisplayOptions)null, headerProps);
         this.rectProps = new RectProperties();
-        rectProps.set("fillColor", Color.CYAN);
-        rectProps.set("filled", true);
-        rectProps.set("depth", 2);
+        this.rectProps.set("fillColor", Color.CYAN);
+        this.rectProps.set("filled", true);
+        this.rectProps.set("depth", 2);
         this.lang.newRect(new Offset(-5, -5, header, "NW"), new Offset(5, 5, header, "SE"), "hrect", (DisplayOptions)null, rectProps);
         this.sourceCodeProps = new SourceCodeProperties();
-        sourceCodeProps.set("font", new Font("SansSerif", 0, 16));
-        sourceCodeProps.set("color", Color.BLACK);
+        this.sourceCodeProps.set("font", new Font("SansSerif", 0, 16));
+        this.sourceCodeProps.set("color", Color.BLACK);
         this.code = this.lang.newSourceCode(new Offset(-150, 30, header, "SW"), "intro", (DisplayOptions)null, sourceCodeProps);
-        code.addCodeLine("Karger's algorithm for Minimum Cut sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("Er kontrahiert dabei so lange zufällig ausgewählte Kanten, bis nur noch zwei Knoten übrig sind. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("", (String)null, 0, (Timing)null); //Absatz im Text
-        code.addCodeLine("Kontrahieren bedeutet, dass zwei Knoten vereinigt werden und die Kante dazwischen entfernt wird. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("Alle Self-Loops, die hierbei entstehen, werden entfernt. Alle verschobenen Kanten bleiben bestehen. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("", (String)null, 0, (Timing)null); //Absatz im Text
-        code.addCodeLine("Die übrigen Kanten, die an dem entfernten Knoten dranhingen, gehen nun von dem neuen, vereinigten Knoten aus. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("Die Summe der übrig gebliebenen Kanten zwischen den letzten zwei Knoten wird als Schnitt bezeichnet. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("", (String)null, 0, (Timing)null); //Absatz im Text
-        code.addCodeLine("Anwendung findet der Algorithmus zum Beispiel beim Testen von Netzwerken, um eventuelle Schwächen zu beheben und deren Sicherheit zu erhöhen. ", (String)null, 0, (Timing)null);
-        code.addCodeLine("Ein weiteres Anwendungsbeispiel ist die Bildverarbeitung. Hier wird der Algorithmus zur Segmentierung des Bildes verwendet, ", (String)null, 0, (Timing)null);
-        code.addCodeLine("um benachbarte Pixel mit denselben Eigenschaften (Farbe, Textur, Dichte) zusammenzufassen, ", (String)null, 0, (Timing)null);
-        code.addCodeLine("damit die Weiterverarbeitung und Analyse des Bildes einfacher und effizienter wird. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("Karger's algorithm for Minimum Cut sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("Er kontrahiert dabei so lange zufällig ausgewählte Kanten, bis nur noch zwei Knoten übrig sind. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("", (String)null, 0, (Timing)null); //Absatz im Text
+        this.code.addCodeLine("Kontrahieren bedeutet, dass zwei Knoten vereinigt werden und die Kante dazwischen entfernt wird. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("Alle Self-Loops, die hierbei entstehen, werden entfernt. Alle verschobenen Kanten bleiben bestehen. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("", (String)null, 0, (Timing)null); //Absatz im Text
+        this.code.addCodeLine("Die übrigen Kanten, die an dem entfernten Knoten dranhingen, gehen nun von dem neuen, vereinigten Knoten aus. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("Die Summe der übrig gebliebenen Kanten zwischen den letzten zwei Knoten wird als Schnitt bezeichnet. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("", (String)null, 0, (Timing)null); //Absatz im Text
+        this.code.addCodeLine("Anwendung findet der Algorithmus zum Beispiel beim Testen von Netzwerken, um eventuelle Schwächen zu beheben und deren Sicherheit zu erhöhen. ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("Ein weiteres Anwendungsbeispiel ist die Bildverarbeitung. Hier wird der Algorithmus zur Segmentierung des Bildes verwendet, ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("um benachbarte Pixel mit denselben Eigenschaften (Farbe, Textur, Dichte) zusammenzufassen, ", (String)null, 0, (Timing)null);
+        this.code.addCodeLine("damit die Weiterverarbeitung und Analyse des Bildes einfacher und effizienter wird. ", (String)null, 0, (Timing)null);
         this.lang.nextStep("Intro");
-        code.hide();
+        this.code.hide();
 
     }
 
@@ -115,20 +115,20 @@ public class KargersAlgorithm implements Generator {
 
         int firstNodePosition = this.graph.getPositionForNode(nodeList[0]);
         this.sourceCodeProps = new SourceCodeProperties();
-        sourceCodeProps.set(AnimationPropertiesKeys.CONTEXTCOLOR_PROPERTY, Color.BLUE);
-        sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
-        sourceCodeProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.RED);
-        sourceCodeProps.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
+        this.sourceCodeProps.set(AnimationPropertiesKeys.CONTEXTCOLOR_PROPERTY, Color.BLUE);
+        this.sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
+        this.sourceCodeProps.set("highlightColor", Color.RED);
+        this.sourceCodeProps.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
 
-        SourceCode code = lang.newSourceCode(new Coordinates(firstNodePosition + 500, 200), "sourceCode", null, sourceCodeProps);
-        code.addCodeLine("while (nodes > 2)", null, 1, null);
-        code.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
-        code.addCodeLine("merge u and v", null, 3, null);
-        code.addCodeLine("reattach other edges", null, 4, null);
-        code.addCodeLine("remove self-loops", null, 5, null);
-        code.addCodeLine("return cut represented by two nodes", null, 6, null);
+        this.code = lang.newSourceCode(new Coordinates(firstNodePosition + 500, 200), "sourceCode", null, this.sourceCodeProps);
+        this.code.addCodeLine("while (nodes > 2)", null, 1, null);
+        this.code.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
+        this.code.addCodeLine("merge u and v", null, 3, null);
+        this.code.addCodeLine("reattach other edges", null, 3, null);
+        this.code.addCodeLine("remove self-loops", null, 3, null);
+        this.code.addCodeLine("return cut represented by two nodes", null, 2, null);
 
-        code.highlight(0);
+        this.code.highlight(0);
 
         int[][] inputMatrix = this.graph.getAdjacencyMatrix();
         int[][] testMatrix = new int[inputMatrix.length][inputMatrix.length];
@@ -276,8 +276,8 @@ public class KargersAlgorithm implements Generator {
             int subset2 = testAnimalSet.find(subset, edgeArray[x].dest);
             startContract = subset[edgeArray[x].src].parent;
             endContract = subset[edgeArray[x].dest].parent;
-            code.unhighlight(0);
-            code.highlight(1);
+            this.code.unhighlight(0);
+            this.code.highlight(1);
 
             // if the vertices belong to the same subset, this edge is not considered
             // also if the vertices are already contracted, they should not be considered. If they do, it's
@@ -316,10 +316,10 @@ public class KargersAlgorithm implements Generator {
 
                 lang.nextStep("Highlighten Node");
 
-                code.unhighlight(1);
-                code.highlight(2);
-                code.highlight(3);
-                code.highlight(4);
+                this.code.unhighlight(1);
+                this.code.highlight(2);
+                this.code.highlight(3);
+                this.code.highlight(4);
 
                 //Hide den betroffenen Node
                 textArray[endContract].hide();
@@ -388,9 +388,9 @@ public class KargersAlgorithm implements Generator {
                 }
                 lang.nextStep("Hiden_& Neuzeichnen und den Algorithmus einen Schritt weiterführen");
 
-                code.unhighlight(2);
-                code.unhighlight(3);
-                code.unhighlight(4);
+                this.code.unhighlight(2);
+                this.code.unhighlight(3);
+                this.code.unhighlight(4);
 
                 System.out.println("Contracting subsets" + subset[edgeArray[x].src].parent + subset[edgeArray[x].dest].parent + "\n");
 
@@ -416,7 +416,7 @@ public class KargersAlgorithm implements Generator {
         System.out.println("FINAL: cutedges = " + cutEdges);
 
         lang.nextStep("Endergebnis ausgeben und letzte CodeLine highlighten");
-        code.highlight(5);
+        this.code.highlight(5);
         this.rectProps = new RectProperties();
         rectProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
         rectProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.CYAN);
