@@ -21,6 +21,7 @@ import java.util.Random;
 
 import generators.framework.properties.AnimationPropertiesContainer;
 import algoanim.animalscript.AnimalScript;
+import interactionsupport.models.MultipleChoiceQuestionModel;
 
 public class Kargers_neuProbieren implements Generator {
     private Language lang;
@@ -503,9 +504,51 @@ public class Kargers_neuProbieren implements Generator {
             System.out.println("######### Subsets außerhalb: " + subset1 + " " + subset2);
         }
 
+        lang.nextStep("Endergebnis ausgeben und letzte CodeLine highlighten");
+        scr.highlight(4);
+        RectProperties recProps = new RectProperties();
+        recProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
+        recProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.CYAN);
+        recProps.set("depth", 1);
+        TextProperties resProps = new TextProperties();
+        resProps.set("color", Color.BLACK);
+        resProps.set("depth", 0);
+        resProps.set("font", new Font("SansSerif", 3, 12));
+        Text rest = lang.newText(new Offset(0, 50, scr, "SW"), "Karger's Minimal Cut ist: " + cutEdges, "scr", (DisplayOptions)null, resProps);
+        Rect resrect = lang.newRect(new Offset(-5, -5, rest, "NW"), new Offset(5, 5, rest, "SE"), "resrect", (DisplayOptions)null, recProps);
+        Text explain = lang.newText(new Offset( 0, 10, rest, "SW"), "Das bedeutet, auf der letzten Kante die du siehst liegen " + cutEdges +" Kanten aufeinander.", "rest", null, tp);
         System.out.println("FINAL: cutedges = " + cutEdges);
         //Animal.startAnimationFromAnimalScriptCode(lang.toString());
+
+        lang.nextStep("MultipleChoice");
+        MultipleChoiceQuestionModel firstmulti = new MultipleChoiceQuestionModel("first");
+        firstmulti.setPrompt("Warum kann es sein, dass Karger’s Algorithmus nicht immer den minimalen Schnitt berechnet?");
+        firstmulti.addAnswer("Weil er die Kanten zufällig auswählt", 1, "Richtig. Weil die Kanten zufällig ausgewählt werden, kann nicht immer ein minimales Ergebnis garantiert werden.");
+        firstmulti.addAnswer("Weil falsche Kanten ausgewählt werden können", 0, "Falsch. Die ausgewählten Kanten sind nicht falsch, sondern lediglich zufällig.");
+        firstmulti.addAnswer("Weil der Algorithmus nicht alle Kanten berücksichtigt", 0, "Falsch. Der Algorithmus berücksichtigt alle Kanten, er wählt jedoch zufällig die Nächste aus.");
+        firstmulti.addAnswer("Weil die Kanten nicht zufällig ausgewählt werden", 0, "Falsch. Gerade weil die Kanten zufällig ausgewählt werden, kann es sein, dass das Ergebnis nicht immer minimal ist.");
+        this.lang.addMCQuestion(firstmulti);
+
+        lang.nextStep("next MultipleChoice");
+
+        MultipleChoiceQuestionModel secmulti = new MultipleChoiceQuestionModel("second");
+        secmulti.setPrompt("Wie wird ein Graph genannt, bei dem zwischen zwei Knoten mehrere Kanten liegen können?");
+        secmulti.addAnswer("Wald", 0, "Falsch. Ein solcher Graph wird Multigraph genannt.");
+        secmulti.addAnswer("Multigraph", 1, "Richtig!");
+        secmulti.addAnswer("Tree", 0, "Falsch. Ein solcher Graph wird Multigraph genannt.");
+        secmulti.addAnswer("zusammenhängender Graph", 0, "Falsch. Falsch. Ein solcher Graph wird Multigraph genannt. Ein zusammenhängender Graph ist das, was Karger's Algorithmus als Input bekommt.");
+        this.lang.addMCQuestion(secmulti);
+
+        lang.nextStep("last MultipleChoice");
+        MultipleChoiceQuestionModel lastmulti = new MultipleChoiceQuestionModel("last");
+        lastmulti.setPrompt("Wie wird ein Algorithmus genannt, der mit einer gewissen Wahrscheinlichkeit falsche Ergebnisse liefert?");
+        lastmulti.addAnswer("Las Vegas", 0, "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
+        lastmulti.addAnswer("Monte Carlo", 1, "Richtig!");
+        lastmulti.addAnswer("Atlantic City", 0, "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
+        this.lang.addMCQuestion(lastmulti);
+
         return cutEdges;
+
     }
 
     /*public void showSourceCode(){
