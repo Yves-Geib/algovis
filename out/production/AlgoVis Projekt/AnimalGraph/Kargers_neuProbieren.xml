@@ -103,7 +103,7 @@
 		<AnimationProperties type="PolylineProperties">
 			<AnimationPropertyItem type="IntegerPropertyItem">
 				<name>depth</name>
-				<isEditable value="true" />
+				<isEditable value="false" />
 				<label></label>
 				<value><int>1</int></value>
 			</AnimationPropertyItem>
@@ -115,7 +115,7 @@
 			</AnimationPropertyItem>
 			<AnimationPropertyItem type="BooleanPropertyItem">
 				<name>hidden</name>
-				<isEditable value="true" />
+				<isEditable value="false" />
 				<label></label>
 				<value><boolean value="false" /></value>
 			</AnimationPropertyItem>
@@ -147,7 +147,7 @@
 			</AnimationPropertyItem>
 			<AnimationPropertyItem type="IntegerPropertyItem">
 				<name>depth</name>
-				<isEditable value="true" />
+				<isEditable value="false" />
 				<label></label>
 				<value><int>1</int></value>
 			</AnimationPropertyItem>
@@ -159,7 +159,7 @@
 			</AnimationPropertyItem>
 			<AnimationPropertyItem type="BooleanPropertyItem">
 				<name>hidden</name>
-				<isEditable value="true" />
+				<isEditable value="false" />
 				<label></label>
 				<value><boolean value="false" /></value>
 			</AnimationPropertyItem>
@@ -191,7 +191,7 @@
 			</AnimationPropertyItem>
 			<AnimationPropertyItem type="BooleanPropertyItem">
 				<name>hidden</name>
-				<isEditable value="true" />
+				<isEditable value="false" />
 				<label></label>
 				<value><boolean value="false" /></value>
 			</AnimationPropertyItem>

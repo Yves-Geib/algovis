@@ -13,11 +13,9 @@ import generators.framework.Generator;
 import generators.framework.GeneratorType;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.*;
+
 import algoanim.primitives.generators.Language;
-import java.util.Hashtable;
-import java.util.Random;
 
 import generators.framework.properties.AnimationPropertiesContainer;
 import algoanim.animalscript.AnimalScript;
@@ -31,6 +29,8 @@ public class Kargers_neuProbieren implements Generator {
     private SourceCodeProperties sourceCodeProps;
     private SourceCode code;
     private Graph graph;
+    private Locale locale;
+    private HashMap<String, String> text;
 
     Node[] nodeList;
     private int coordinateX, coordinateY; //Coordinates of the user-input graph to translate them into our graph
@@ -44,13 +44,84 @@ public class Kargers_neuProbieren implements Generator {
     private int startContract;
     private int endContract;
 
-    public Kargers_neuProbieren() {
+    public Kargers_neuProbieren(Locale language) {
+        //including multiple languages
+        this.locale = language;
+        this.text = new HashMap();
+        if(this.locale == Locale.GERMANY) {
+            this.text.put("firstmulti0", "Warum kann es sein, dass Karger’s Algorithmus nicht immer den minimalen Schnitt berechnet?");
+            this.text.put("answere0_0", "Weil er die Kanten zufällig auswählt");
+            this.text.put("answere0_1", "Weil falsche Kanten ausgewählt werden können");
+            this.text.put("answere0_2", "Weil der Algorithmus nicht alle Kanten berücksichtigt");
+            this.text.put("answere0_3", "Weil die Kanten nicht zufällig ausgewählt werden");
+            this.text.put("feedback0_0", "Richtig. Weil die Kanten zufällig ausgewählt werden, kann nicht immer ein minimales Ergebnis garantiert werden..");
+            this.text.put("feedback0_1", "Falsch. Die ausgewählten Kanten sind nicht falsch, sondern lediglich zufällig.");
+            this.text.put("feedback0_2", "Falsch. Der Algorithmus berücksichtigt alle Kanten, er wählt jedoch zufällig die Nächste aus.");
+            this.text.put("feedback0_3", "Falsch. Gerade weil die Kanten zufällig ausgewählt werden, kann es sein, dass das Ergebnis nicht immer minimal ist.");
 
+            this.text.put("secondmulti1", "Wie wird ein Graph genannt, bei dem zwischen zwei Knoten mehrere Kanten liegen können?");
+            this.text.put("answere1_0", "Wald");
+            this.text.put("answere1_1", "Multigraph");
+            this.text.put("answere1_2", "Tree");
+            this.text.put("answere1_3", "zusammenhängender Graph");
+            this.text.put("feedback1_0", "Falsch. Ein solcher Graph wird Multigraph genannt.");
+            this.text.put("feedback1_1", "Richtig!");
+            this.text.put("feedback1_2", "Falsch. Ein solcher Graph wird Multigraph genannt.");
+            this.text.put("feedback1_3", "Falsch. Ein solcher Graph wird Multigraph genannt.");
+
+            this.text.put("lastmulti2", "Wie wird ein Algorithmus genannt, der mit einer gewissen Wahrscheinlichkeit falsche Ergebnisse liefert?");
+            this.text.put("answere2_0", "Atlantic City");
+            this.text.put("answere2_1", "Monte Carlo");
+            this.text.put("answere2_2", "Las Vegas");
+            this.text.put("feedback2_0", "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
+            this.text.put("feedback2_1", "Richtig!");
+            this.text.put("feedback2_2", "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
+
+            this.text.put("description", "Karger's Minimal Cut Algorithmus sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt");
+            this.text.put("resultsent", "Karger's Minimal Cut ist: ");
+            this.text.put("res1", "Das bedeutet, auf der letzten Kante die du siehst liegen ");
+            this.text.put("res2", " Kanten aufeinandner.");
+        }
+        else {
+            this.text.put("firstmulti0", "Why can it be that Karger's algorithm does not always calculate the minimum cut?");
+            this.text.put("answere0_0", "Because it randomly selects the edges");
+            this.text.put("answere0_1", "Because wrong edges can be selected");
+            this.text.put("answere0_2", "Because the algorithm does not take all edges into account");
+            this.text.put("answere0_3", "Because the edges are not selected randomly");
+            this.text.put("feedback0_0", "Correct. Because the edges are randomly selected, a minimum result cannot always be guaranteed...");
+            this.text.put("feedback0_1", "Wrong. The selected edges are not wrong, but only random");
+            this.text.put("feedback0_2", "Wrong. The algorithm takes all edges into account, but randomly selects the next one");
+            this.text.put("feedback0_3", "Wrong. Just because the edges are randomly selected, it is possible that the result is not always minimal");
+
+            this.text.put("secondmulti1", "What is a graph called, where several edges can lie between two nodes?");
+            this.text.put("answere1_0", "Forest");
+            this.text.put("answere1_1", "Multigraph");
+            this.text.put("answere1_2", "Tree");
+            this.text.put("answere1_3", "connected graph");
+            this.text.put("feedback1_0", "Wrong. Such a graph is called a multi graph.");
+            this.text.put("feedback1_1", "Correct!");
+            this.text.put("feedback1_2", "Wrong. Such a graph is called a multi graph.");
+            this.text.put("feedback1_3", "Wrong. Such a graph is called a multi graph.");
+
+            this.text.put("lastmulti2", "What is an algorithm called that is likely to produce false results?");
+            this.text.put("answere2_0", "Atlantic City");
+            this.text.put("answere2_1", "Monte Carlo");
+            this.text.put("answere2_2", "Las Vegas");
+            this.text.put("feedback2_0", "Wrong. Such an algorithm is called Monte Carlo algorithm.");
+            this.text.put("feedback2_1", "Correct!");
+            this.text.put("feedback2_2", "Wrong. Such an algorithm is called Monte Carlo algorithm.");
+
+            this.text.put("description", "Karger's Minimal Cut algorithm searches for the minimal cut in an undirected contiguous graph");
+            this.text.put("resultsent", "Karger's Minimal Cut is: ");
+            this.text.put("res1", "That means, on the last edge you see are lying ");
+            this.text.put("res2"," edges on top of each other.");
+        }
     }
 
     public void init(){
         this.lang = new AnimalScript("Karger's Minimal Cut", "Hannah Drews", 800, 600);
         this.lang.setStepMode(true);
+        //this.circleProps = new CircleProperties();
     }
 
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
@@ -60,7 +131,11 @@ public class Kargers_neuProbieren implements Generator {
         //this.createGraph();
 
         this.textProps = (TextProperties)props.getPropertiesByName("textProps");
-        this.circleProps = (CircleProperties)props.getPropertiesByName("circleProps");
+       /* CircleProperties circleProps = (CircleProperties)props.getPropertiesByName("circleProps");
+        circleProps.set("color", Color.BLACK);
+        circleProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
+        circleProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
+        circleProps.set("depth", 2);*/
         this.polylineProps = (PolylineProperties)props.getPropertiesByName("polylineProps");
         this.sourceCodeProps = new SourceCodeProperties();
         this.sourceCodeProps.set("font", new Font("Monospaced", 0, 12));
@@ -87,7 +162,7 @@ public class Kargers_neuProbieren implements Generator {
         srcprops.set("font", new Font("SansSerif", 0, 18));
         srcprops.set("color", Color.BLACK);
         SourceCode src = this.lang.newSourceCode(new Offset(-150, 30, header, "SW"), "intro", (DisplayOptions)null, srcprops);
-        src.addCodeLine("Karger's Minimal Cut Algorithmus sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt", (String)null, 0, (Timing)null);
+        src.addCodeLine((String)this.text.get("description"), (String)null, 0, (Timing)null);
         this.lang.nextStep("Intro");
         src.hide();
 
@@ -219,6 +294,7 @@ public class Kargers_neuProbieren implements Generator {
 
         TextProperties tp = new TextProperties();
         tp.set("color", Color.BLACK);
+        //CircleProperties circleProps = new CircleProperties();
         CircleProperties cp = new CircleProperties();
         cp.set("color", Color.BLACK);
         cp.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
@@ -514,37 +590,37 @@ public class Kargers_neuProbieren implements Generator {
         resProps.set("color", Color.BLACK);
         resProps.set("depth", 0);
         resProps.set("font", new Font("SansSerif", 3, 12));
-        Text rest = lang.newText(new Offset(0, 50, scr, "SW"), "Karger's Minimal Cut ist: " + cutEdges, "scr", (DisplayOptions)null, resProps);
+        Text rest = lang.newText(new Offset(0, 50, scr, "SW"), (String)this.text.get("resultsent") + cutEdges, "scr", (DisplayOptions)null, resProps);
         Rect resrect = lang.newRect(new Offset(-5, -5, rest, "NW"), new Offset(5, 5, rest, "SE"), "resrect", (DisplayOptions)null, recProps);
-        Text explain = lang.newText(new Offset( 0, 10, rest, "SW"), "Das bedeutet, auf der letzten Kante die du siehst liegen " + cutEdges +" Kanten aufeinander.", "rest", null, tp);
+        Text explain = lang.newText(new Offset( 0, 10, rest, "SW"), (String)this.text.get("res1") + cutEdges + (String)this.text.get("res2"), "rest", null, tp);
         System.out.println("FINAL: cutedges = " + cutEdges);
         //Animal.startAnimationFromAnimalScriptCode(lang.toString());
 
         lang.nextStep("MultipleChoice");
         MultipleChoiceQuestionModel firstmulti = new MultipleChoiceQuestionModel("first");
-        firstmulti.setPrompt("Warum kann es sein, dass Karger’s Algorithmus nicht immer den minimalen Schnitt berechnet?");
-        firstmulti.addAnswer("Weil er die Kanten zufällig auswählt", 1, "Richtig. Weil die Kanten zufällig ausgewählt werden, kann nicht immer ein minimales Ergebnis garantiert werden.");
-        firstmulti.addAnswer("Weil falsche Kanten ausgewählt werden können", 0, "Falsch. Die ausgewählten Kanten sind nicht falsch, sondern lediglich zufällig.");
-        firstmulti.addAnswer("Weil der Algorithmus nicht alle Kanten berücksichtigt", 0, "Falsch. Der Algorithmus berücksichtigt alle Kanten, er wählt jedoch zufällig die Nächste aus.");
-        firstmulti.addAnswer("Weil die Kanten nicht zufällig ausgewählt werden", 0, "Falsch. Gerade weil die Kanten zufällig ausgewählt werden, kann es sein, dass das Ergebnis nicht immer minimal ist.");
+        firstmulti.setPrompt((String)this.text.get("firstmulti0"));
+        firstmulti.addAnswer((String)this.text.get("answere0_0"), 1, (String)this.text.get("feedback0_0"));
+        firstmulti.addAnswer((String)this.text.get("answere0_1"), 1, (String)this.text.get("feedback0_1"));
+        firstmulti.addAnswer((String)this.text.get("answere0_2"), 1, (String)this.text.get("feedback0_2"));
+        firstmulti.addAnswer((String)this.text.get("answere0_3"), 1, (String)this.text.get("feedback0_3"));
         this.lang.addMCQuestion(firstmulti);
 
         lang.nextStep("next MultipleChoice");
 
         MultipleChoiceQuestionModel secmulti = new MultipleChoiceQuestionModel("second");
-        secmulti.setPrompt("Wie wird ein Graph genannt, bei dem zwischen zwei Knoten mehrere Kanten liegen können?");
-        secmulti.addAnswer("Wald", 0, "Falsch. Ein solcher Graph wird Multigraph genannt.");
-        secmulti.addAnswer("Multigraph", 1, "Richtig!");
-        secmulti.addAnswer("Tree", 0, "Falsch. Ein solcher Graph wird Multigraph genannt.");
-        secmulti.addAnswer("zusammenhängender Graph", 0, "Falsch. Falsch. Ein solcher Graph wird Multigraph genannt. Ein zusammenhängender Graph ist das, was Karger's Algorithmus als Input bekommt.");
+        secmulti.setPrompt("secondmulti1");
+        secmulti.addAnswer((String)this.text.get("answere1_0"), 0, (String)this.text.get("feedback1_0"));
+        secmulti.addAnswer((String)this.text.get("answere1_1"), 0, (String)this.text.get("feedback1_1"));
+        secmulti.addAnswer((String)this.text.get("answere1_2"), 0, (String)this.text.get("feedback1_2"));
+        secmulti.addAnswer((String)this.text.get("answere1_3"), 0, (String)this.text.get("feedback1_3"));
         this.lang.addMCQuestion(secmulti);
 
         lang.nextStep("last MultipleChoice");
         MultipleChoiceQuestionModel lastmulti = new MultipleChoiceQuestionModel("last");
-        lastmulti.setPrompt("Wie wird ein Algorithmus genannt, der mit einer gewissen Wahrscheinlichkeit falsche Ergebnisse liefert?");
-        lastmulti.addAnswer("Las Vegas", 0, "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
-        lastmulti.addAnswer("Monte Carlo", 1, "Richtig!");
-        lastmulti.addAnswer("Atlantic City", 0, "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
+        lastmulti.setPrompt((String)this.text.get("lastmulti2"));
+        lastmulti.addAnswer((String)this.text.get("answere2_0"), 0, (String)this.text.get("feedback2_0"));
+        lastmulti.addAnswer((String)this.text.get("answere2_1"), 0, (String)this.text.get("feedback2_1"));
+        lastmulti.addAnswer((String)this.text.get("answere2_2"), 0, (String)this.text.get("feedback2_2"));
         this.lang.addMCQuestion(lastmulti);
 
         return cutEdges;
@@ -575,7 +651,7 @@ public class Kargers_neuProbieren implements Generator {
     }
 
     public String getAnimationAuthor() {
-        return "Hannah Drews";
+        return "Hannah Drews, Yves Geib";
     }
 
     public String getDescription(){
@@ -597,7 +673,7 @@ public class Kargers_neuProbieren implements Generator {
     }
 
     public Locale getContentLocale() {
-        return Locale.GERMAN;
+        return this.locale;
     }
 
     public GeneratorType getGeneratorType() {
@@ -666,7 +742,7 @@ public class Kargers_neuProbieren implements Generator {
 */
 
     public static void main(String[] args) {
-        Kargers_neuProbieren karg = new Kargers_neuProbieren();
+        Kargers_neuProbieren karg = new Kargers_neuProbieren(Locale.GERMANY);
         //karg.kargersMinCut(karg);
 
         Animal.startGeneratorWindow(karg);
