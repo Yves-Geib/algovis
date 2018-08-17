@@ -5,6 +5,8 @@
 			<name>graph</name>
 			<value><Graph>%graphscript
 
+				graphcoordinates at 0 0
+
 				graph 6
 
 				startknoten A

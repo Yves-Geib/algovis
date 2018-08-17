@@ -34,7 +34,7 @@ public class AnimalSubset {
         if (subsetArray[rootOfX].rank < subsetArray[rootOfY].rank) {
             subsetArray[rootOfX].parent = rootOfY;
         }
-        else if (subsetArray[rootOfX].rank > subsetArray[rootOfX].rank) {
+        else if (subsetArray[rootOfX].rank > subsetArray[rootOfY].rank) {
             subsetArray[rootOfY].parent = rootOfX;
         }
 
@@ -43,9 +43,5 @@ public class AnimalSubset {
             subsetArray[rootOfY].parent = rootOfX;
             subsetArray[rootOfY].rank++;
         }
-        System.out.print("rootOfX: " + rootOfX);
-        System.out.println(" rootOfY: " + rootOfY);
-        System.out.print("PARENT of rootOfX: " + subsetArray[rootOfX].parent);
-        System.out.println(" PARENT of rootOfY: " + subsetArray[rootOfY].parent);
     }
 }
