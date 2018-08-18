@@ -5,6 +5,11 @@
  */
 package AhoCorasick;
 
+import algoanim.primitives.Graph;
+import algoanim.properties.*;
+import algoanim.util.DisplayOptions;
+import algoanim.util.Node;
+import animal.main.Animal;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 
@@ -13,10 +18,6 @@ import java.util.*;
 import algoanim.primitives.generators.Language;
 import generators.framework.properties.AnimationPropertiesContainer;
 import algoanim.animalscript.AnimalScript;
-import algoanim.properties.TextProperties;
-import algoanim.properties.ArrayProperties;
-import algoanim.properties.ArrayMarkerProperties;
-import algoanim.properties.SourceCodeProperties;
 
 public class AhoCorasick implements Generator {
     private Language lang;
@@ -25,18 +26,47 @@ public class AhoCorasick implements Generator {
     private ArrayMarkerProperties arrayMarkerProps;
     private String[] inputText;
     private SourceCodeProperties sourceCodeProps;
+    private Graph graph;
+
+    public AhoCorasick() {}
 
     public void init() {
-        lang = new AnimalScript("Aho-Corasick algorithm", "Hannah Drews, Yves Geib", 800, 600);
+        this.lang = new AnimalScript("Aho-Corasick algorithm", "Hannah Drews, Yves Geib", 800, 600);
+        this.lang.setStepMode(true);
     }
 
     public String generate(AnimationPropertiesContainer props, Hashtable<String, Object> primitives) {
+
+        this.lang.setInteractionType(1024);
+
         textProps = (TextProperties) props.getPropertiesByName("textProps");
         arrayProps = (ArrayProperties) props.getPropertiesByName("arrayProps");
         arrayMarkerProps = (ArrayMarkerProperties) props.getPropertiesByName("arrayMarkerProps");
         inputText = (String[]) primitives.get("inputText");
         sourceCodeProps = (SourceCodeProperties) props.getPropertiesByName("sourceCodeProps");
+        graph = (Graph) primitives.get("trie");
 
+
+        GraphProperties graphProps = this.graph.getProperties();
+        Node[] var1 = new Node[this.graph.getSize()];
+        String[] var2 = new String[this.graph.getSize()];
+
+        for(int var3 = 0; var3 < this.graph.getSize(); ++var3) {
+            System.out.println(Arrays.toString(this.graph.getAdjacencyMatrix()[var3]));
+            var1[var3] = this.graph.getNode(var3);
+            var2[var3] = this.graph.getNodeLabel(var3);
+        }
+
+        this.graph = this.lang.newGraph("graph", this.graph.getAdjacencyMatrix(), var1, var2, (DisplayOptions)null, graphProps);
+
+        //init and start
+        String[] arr = {"he", "she", "hers", "his"};
+        String text = "ahishers";
+        int k = arr.length;
+
+        searchWords(arr, k, text);
+
+        this.lang.finalizeGeneration();
         return lang.toString();
     }
 
@@ -89,15 +119,16 @@ public class AhoCorasick implements Generator {
 
     //g[][] - goto function(Trie)
 
-    public static int R = 26, M = 500;
-    public static int[] out, f;
-    public static int[][] g;
+    private int R = 26, M = 500;
+    private int[] out, f;
+    private int[][] g;
+
 
     //Initialize all values in
     //failure function to -1
     //goto function to -1
     //out function to 0 [default when created]
-    public static void initialize() {
+    public void initialize() {
         out = new int[M];
         f = new int[M];
         g = new int[M][R];
@@ -107,7 +138,7 @@ public class AhoCorasick implements Generator {
         }
     }
 
-    public static int buildMatchingMachine(String[] arr, int k) {
+    public int buildMatchingMachine(String[] arr, int k) {
 
         //Initialize step is called
         initialize();
@@ -206,7 +237,7 @@ public class AhoCorasick implements Generator {
     //               [Must be between 0 and no. of states -1, inclusive]
     //nextInput - The next character that enters the machine
 
-    public static int findNextState(int currentState, char nextInput) {
+    public int findNextState(int currentState, char nextInput) {
 
         int ch = nextInput - 'a';
 
@@ -219,7 +250,7 @@ public class AhoCorasick implements Generator {
     }
 
     //Finds all occurrences of all array words in text
-    public static void searchWords(String[] arr, int k, String text) {
+    public void searchWords(String[] arr, int k, String text) {
 
         //Preprocess patterns
         //Build machine with goto, failure and output functions
@@ -253,11 +284,10 @@ public class AhoCorasick implements Generator {
 
 
     public static void main(String[] args) {
-        String[] arr = {"he", "she", "hers", "his"};
-        String text = "ahishers";
-        int k = arr.length;
 
-        searchWords(arr, k, text);
+        AhoCorasick aho = new AhoCorasick();
+        Animal.startGeneratorWindow(aho);
+
     }
 
 
