@@ -47,12 +47,6 @@ public class KargersAlgorithm implements Generator {
     private int startContract = 0;
     private int endContract = 0;
 
-
-
-    public KargersAlgorithm() {
-        this(Locale.US);
-    }
-
     public KargersAlgorithm(Locale language) {
         //including multiple languages
         this.locale = language;
