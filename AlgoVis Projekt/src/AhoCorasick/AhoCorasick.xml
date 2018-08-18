@@ -238,36 +238,41 @@
 			</AnimationPropertyItem>
 		</AnimationProperties>
 		<Primitive type="StringArray">
-			<name>inputText</name>
-			<value><StringArray>his, he, she, hers</StringArray></value>
-			<description>input Text - default dictionary: &quot;ahishers&quot; - default input: &quot;he&quot;,&quot;she&quot;,&quot;hers&quot;,&quot;his&quot;</description>
+			<name>dictionary</name>
+			<value><StringArray>ahishers</StringArray></value>
+			<description>default dictionary: &quot;ahishers&quot;</description>
 		</Primitive>
 		<Primitive type="Graph">
 		<name>trie</name>
 			<value><Graph>%graphscript
 
-				graph 10 directed weighted
+				graph 10 directed
 
-				node B at 100 250
-				node C at 200 250
-				node E at 300 250
-				node F at 100 350
-				node H at 300 150
-				node I at 200 150
-				node O at 300 450
-				node R at 300 350
-				node S at 100 150
-				node Z at 200 0
+				graphcoordinates at 50 20
 
-				edge B F weight 1
-				edge E R weight 1
-				edge H E weight 1
-				edge I C weight 1
-				edge R O weight 1
-				edge S B weight 1
-				edge Z S weight 1
-				edge Z I weight 1
-				edge Z H weight 1
+				startknoten J
+
+				node A at 100 250
+				node B at 200 250
+				node C at 300 250
+				node D at 100 350
+				node E at 300 150
+				node F at 200 150
+				node G at 300 450
+				node H at 300 350
+				node I at 100 150
+				node J at 200 0
+
+				edge A D
+				edge C H
+				edge E C
+				edge F B
+				edge H G
+				edge I A
+				edge J I
+				edge J F
+				edge J E
+
 			</Graph></value>
 	</Primitive>
 	</Folder>

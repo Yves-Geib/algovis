@@ -6,13 +6,18 @@
 package AhoCorasick;
 
 import algoanim.primitives.Graph;
+import algoanim.primitives.StringArray;
+import algoanim.primitives.Text;
 import algoanim.properties.*;
+import algoanim.util.Coordinates;
 import algoanim.util.DisplayOptions;
 import algoanim.util.Node;
+import algoanim.util.Offset;
 import animal.main.Animal;
 import generators.framework.Generator;
 import generators.framework.GeneratorType;
 
+import java.awt.*;
 import java.util.*;
 
 import algoanim.primitives.generators.Language;
@@ -24,7 +29,8 @@ public class AhoCorasick implements Generator {
     private TextProperties textProps;
     private ArrayProperties arrayProps;
     private ArrayMarkerProperties arrayMarkerProps;
-    private String[] inputText;
+    private Text keywords;
+    private StringArray dictionary;
     private SourceCodeProperties sourceCodeProps;
     private Graph graph;
 
@@ -39,25 +45,50 @@ public class AhoCorasick implements Generator {
 
         this.lang.setInteractionType(1024);
 
-        textProps = (TextProperties) props.getPropertiesByName("textProps");
-        arrayProps = (ArrayProperties) props.getPropertiesByName("arrayProps");
-        arrayMarkerProps = (ArrayMarkerProperties) props.getPropertiesByName("arrayMarkerProps");
-        inputText = (String[]) primitives.get("inputText");
-        sourceCodeProps = (SourceCodeProperties) props.getPropertiesByName("sourceCodeProps");
-        graph = (Graph) primitives.get("trie");
+        this.textProps = (TextProperties) props.getPropertiesByName("textProps");
+        this.arrayProps = (ArrayProperties) props.getPropertiesByName("arrayProps");
+        this.arrayMarkerProps = (ArrayMarkerProperties) props.getPropertiesByName("arrayMarkerProps");
+        this.dictionary = (StringArray) primitives.get("dictionary");
+        this.sourceCodeProps = (SourceCodeProperties) props.getPropertiesByName("sourceCodeProps");
+        this.graph = (Graph) primitives.get("trie");
+
 
 
         GraphProperties graphProps = this.graph.getProperties();
-        Node[] var1 = new Node[this.graph.getSize()];
-        String[] var2 = new String[this.graph.getSize()];
+        Node[] nodes = new Node[this.graph.getSize()];
+        String[] nodenames = new String[this.graph.getSize()];
 
-        for(int var3 = 0; var3 < this.graph.getSize(); ++var3) {
-            System.out.println(Arrays.toString(this.graph.getAdjacencyMatrix()[var3]));
-            var1[var3] = this.graph.getNode(var3);
-            var2[var3] = this.graph.getNodeLabel(var3);
+        for(int i = 0; i < this.graph.getSize(); i++) {
+            System.out.println(Arrays.toString(this.graph.getAdjacencyMatrix()[i]));
+            nodes[i] = this.graph.getNode(i);
+            nodenames[i] = this.graph.getNodeLabel(i);
         }
 
-        this.graph = this.lang.newGraph("graph", this.graph.getAdjacencyMatrix(), var1, var2, (DisplayOptions)null, graphProps);
+        // Graph
+        this.graph = this.lang.newGraph(this.graph.getName(), this.graph.getAdjacencyMatrix(), nodes, nodenames, (DisplayOptions)null, graphProps);
+
+        int position = this.graph.getPositionForNode(this.graph.getNode(0)); //Position of first node of graph
+
+        // Search words in array, fixed
+        String[] searchWords = {"he", "his", "hers", "she"};
+        this.keywords = this.lang.newText(new Coordinates(position + 250, position + 400), "he", "keywords", null, null);
+
+
+        this.textProps = new TextProperties();
+        textProps.set("color", Color.BLACK);
+        textProps.set("font",  new Font("SansSerif", 1, 24));
+
+        String[] input = new String[dictionary.getLength()];
+        for (int i = 0; i < dictionary.getLength(); i++) {
+
+            input[i] = dictionary.getData(i);
+            System.out.println(input[i]);
+
+        }
+        System.out.println(Arrays.toString(input));
+        //Dictionary text, changeable by user
+        StringArray dictionary = this.lang.newStringArray(new Offset(position + 500, position + 350, "keywords", "SW"), input, "dictionary", null, arrayProps);
+
 
         //init and start
         String[] arr = {"he", "she", "hers", "his"};
@@ -66,7 +97,7 @@ public class AhoCorasick implements Generator {
 
         searchWords(arr, k, text);
 
-        this.lang.finalizeGeneration();
+        //this.lang.finalizeGeneration();
         return lang.toString();
     }
 
@@ -142,7 +173,6 @@ public class AhoCorasick implements Generator {
 
         //Initialize step is called
         initialize();
-
         //Initially we just have 0 states
         int states = 1;
 
