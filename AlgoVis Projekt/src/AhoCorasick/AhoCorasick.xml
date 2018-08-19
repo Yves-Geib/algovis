@@ -239,39 +239,42 @@
 		</AnimationProperties>
 		<Primitive type="StringArray">
 			<name>dictionary</name>
-			<value><StringArray>ahishers</StringArray></value>
-			<description>default dictionary: &quot;ahishers&quot;</description>
+			<value><StringArray>ushers</StringArray></value>
+			<description>default dictionary: &quot;ushers&quot;</description>
 		</Primitive>
 		<Primitive type="Graph">
 		<name>trie</name>
 			<value><Graph>%graphscript
 
-				graph 10 directed
 
-				graphcoordinates at 50 20
+				graph 10 directed weighted
 
-				startknoten J
 
-				node A at 100 250
-				node B at 200 250
-				node C at 300 250
-				node D at 100 350
-				node E at 300 150
-				node F at 200 150
-				node G at 300 450
-				node H at 300 350
-				node I at 100 150
-				node J at 200 0
+				graphcoordinates at 0 50
 
-				edge A D
-				edge C H
-				edge E C
-				edge F B
-				edge H G
-				edge I A
-				edge J I
-				edge J F
-				edge J E
+				startknoten O
+
+				node O at 200 50
+				node H at 300 150
+				node E at 300 250
+				node S at 100 150
+				node H1 at 100 250
+				node E1 at 100 350
+				node I at 200 250
+				node S1 at 200 350
+				node R at 300 350
+				node S2 at 300 450
+
+				edge O O weight 1
+				edge H1 E1 weight 1
+				edge E R weight 1
+				edge H E weight 1
+				edge I S1 weight 1
+				edge R S2 weight 1
+				edge S H1 weight 1
+				edge O S weight 1
+				edge H I weight 1
+				edge O H weight 1
 
 			</Graph></value>
 	</Primitive>

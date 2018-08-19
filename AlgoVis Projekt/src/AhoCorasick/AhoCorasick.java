@@ -29,8 +29,13 @@ public class AhoCorasick implements Generator {
     private TextProperties textProps;
     private ArrayProperties arrayProps;
     private ArrayMarkerProperties arrayMarkerProps;
-    private Text keywords;
-    private StringArray dictionary;
+    private GraphProperties graphProps;
+    private Text searchWords;
+    private Text keywordHe;
+    private Text keywordShe;
+    private Text keywordHis;
+    private Text keywordHers;
+    private String[] dictionary;
     private SourceCodeProperties sourceCodeProps;
     private Graph graph;
 
@@ -45,16 +50,21 @@ public class AhoCorasick implements Generator {
 
         this.lang.setInteractionType(1024);
 
-        this.textProps = (TextProperties) props.getPropertiesByName("textProps");
-        this.arrayProps = (ArrayProperties) props.getPropertiesByName("arrayProps");
-        this.arrayMarkerProps = (ArrayMarkerProperties) props.getPropertiesByName("arrayMarkerProps");
-        this.dictionary = (StringArray) primitives.get("dictionary");
-        this.sourceCodeProps = (SourceCodeProperties) props.getPropertiesByName("sourceCodeProps");
-        this.graph = (Graph) primitives.get("trie");
+        this.textProps = (TextProperties)props.getPropertiesByName("textProps");
+        this.arrayProps = (ArrayProperties)props.getPropertiesByName("arrayProps");
+        this.arrayMarkerProps = (ArrayMarkerProperties)props.getPropertiesByName("arrayMarkerProps");
+        this.dictionary = (String[])primitives.get("dictionary");
+        this.sourceCodeProps = (SourceCodeProperties)props.getPropertiesByName("sourceCodeProps");
+        this.graph = (Graph)primitives.get("trie");
+
 
 
 
         GraphProperties graphProps = this.graph.getProperties();
+        graphProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.LIGHT_GRAY);
+        graphProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.RED);
+
+        //Build Graph with Nodes and Labels
         Node[] nodes = new Node[this.graph.getSize()];
         String[] nodenames = new String[this.graph.getSize()];
 
@@ -64,35 +74,49 @@ public class AhoCorasick implements Generator {
             nodenames[i] = this.graph.getNodeLabel(i);
         }
 
+
+        System.out.println(Arrays.toString(nodes));
         // Graph
         this.graph = this.lang.newGraph(this.graph.getName(), this.graph.getAdjacencyMatrix(), nodes, nodenames, (DisplayOptions)null, graphProps);
-
         int position = this.graph.getPositionForNode(this.graph.getNode(0)); //Position of first node of graph
 
-        // Search words in array, fixed
-        String[] searchWords = {"he", "his", "hers", "she"};
-        this.keywords = this.lang.newText(new Coordinates(position + 250, position + 400), "he", "keywords", null, null);
-
-
         this.textProps = new TextProperties();
+        textProps.set("color", Color.DARK_GRAY);
+        textProps.set("font",  new Font("SansSerif", 1, 14));
+
+        // Search words in array, fixed
+        //String[] searchWords = {"he", "his", "hers", "she"};
+        this.searchWords = this.lang.newText(new Coordinates(position + 450, position + 150), "Searched Words: ", "searchWords", null, textProps);
         textProps.set("color", Color.BLACK);
-        textProps.set("font",  new Font("SansSerif", 1, 24));
+        textProps.set("font",  new Font("SansSerif", 1, 20));
+        this.keywordHe = this.lang.newText(new Offset(0, 10, searchWords, "SW"), "he,", "keywordHe", null, textProps);
+        this.keywordShe = this.lang.newText(new Offset(40, 0, keywordHe, "N"), "she,", "keywordShe", null, textProps);
+        this.keywordHis = this.lang.newText(new Offset(40, 0, keywordShe, "N"), "his,", "keywordHis", null, textProps);
+        this.keywordHers = this.lang.newText(new Offset(40, 0, keywordHis, "N"), "hers", "keywordHers", null, textProps);
 
-        String[] input = new String[dictionary.getLength()];
-        for (int i = 0; i < dictionary.getLength(); i++) {
 
-            input[i] = dictionary.getData(i);
-            System.out.println(input[i]);
+        this.arrayProps = new ArrayProperties();
+        arrayProps.set("fillColor", Color.WHITE);
+        arrayProps.set("cellHighlight", Color.RED);
+
+        //String[] input = new String[100];
+/*
+        StringArray dictionary1 = this.lang.newStringArray(new Offset(300, 200, "keywordHe", "SW"), this.dictionary.clone(), "dictionary", null, arrayProps);
+        for (int i = 0; i < 100; i++) {
+            input[i] = dictionary1.getData(i);
 
         }
-        System.out.println(Arrays.toString(input));
+        dictionary1.hide();
+*/
         //Dictionary text, changeable by user
-        StringArray dictionary = this.lang.newStringArray(new Offset(position + 500, position + 350, "keywords", "SW"), input, "dictionary", null, arrayProps);
+
+
+
 
 
         //init and start
         String[] arr = {"he", "she", "hers", "his"};
-        String text = "ahishers";
+        String text = "ushers";
         int k = arr.length;
 
         searchWords(arr, k, text);
@@ -137,6 +161,13 @@ public class AhoCorasick implements Generator {
     public String getOutputLanguage() {
         return Generator.PSEUDO_CODE_OUTPUT;
     }
+    /*
+
+    Bevor wir das vergessen:
+
+    if (dictionary[i] == searchedWords[irgendein char]
+     */
+
 
 
     //R- alphabet size
@@ -271,16 +302,21 @@ public class AhoCorasick implements Generator {
 
         int ch = nextInput - 'a';
 
+        System.out.print(nextInput);
+
         //If goto function is not defined use failure function
         while (g[currentState][ch] == -1) {
             currentState = f[currentState];
         }
-
         return g[currentState][ch];
     }
 
     //Finds all occurrences of all array words in text
     public void searchWords(String[] arr, int k, String text) {
+
+        String[] input = {"u", "s", "h", "e", "r", "s", };
+
+        StringArray dictionary = this.lang.newStringArray(new Offset(0, 200, "keywordHe", "N"), input, "dictionary", null, arrayProps);
 
         //Preprocess patterns
         //Build machine with goto, failure and output functions
@@ -293,20 +329,34 @@ public class AhoCorasick implements Generator {
         //occurrences of words in arr[]
         for (int i = 0; i < text.length(); i++) {
 
+            /*
+        lang.nextStep("highlight words in input text");
+
+        dictionary.highlightCell(i, null, null);
+        if (i > 0)
+            dictionary.unhighlightCell(i-1, null, null);
+*/
+
+
             currentState = findNextState(currentState, text.charAt(i));
 
             //If match not found, move to next state
-            if (out[currentState] == 0) continue;
+            if (out[currentState] == 0) {
+                continue;
+            }
 
             //Match found, print all matching words of arr[] using
             //output function
             for (int j = 0; j < k; j++) {
 
                 if ((out[currentState] & (1 << j)) == (1 << j)) {
+
                     System.out.println("Word " + arr[j] + " appears from " + (i - arr[j].length() + 1) + " to " + i);
                 }
 
             }
+            //Hier immer der State, an dem ein Wort gefunden wurde
+            System.out.print(currentState + " ");
 
         }
 
