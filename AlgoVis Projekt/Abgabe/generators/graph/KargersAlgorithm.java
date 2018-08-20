@@ -47,8 +47,7 @@ public class KargersAlgorithm implements Generator {
     private int startContract = 0;
     private int endContract = 0;
 
-
-
+    
     public KargersAlgorithm() {
         this(Locale.US);
     }
@@ -693,7 +692,7 @@ public class KargersAlgorithm implements Generator {
     }
 
     public Locale getContentLocale() {
-        return Locale.GERMAN;
+        return this.locale;
     }
 
     public GeneratorType getGeneratorType() {
@@ -705,7 +704,7 @@ public class KargersAlgorithm implements Generator {
     }
 
     public static void main(String[] args) {
-        KargersAlgorithm karg = new KargersAlgorithm(Locale.GERMAN);
+        KargersAlgorithm karg = new KargersAlgorithm(Locale.US);
         Animal.startGeneratorWindow(karg);
 
         System.out.println("Finished.");
