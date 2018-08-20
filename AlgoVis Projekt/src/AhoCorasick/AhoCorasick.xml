@@ -275,6 +275,8 @@
 				edge O S weight 1
 				edge H I weight 1
 				edge O H weight 1
+				edge E1 E weight 1
+				edge S2 O weight 1
 
 			</Graph></value>
 	</Primitive>
