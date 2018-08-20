@@ -47,6 +47,12 @@ public class KargersAlgorithm implements Generator {
     private int startContract = 0;
     private int endContract = 0;
 
+
+
+    public KargersAlgorithm() {
+        this(Locale.US);
+    }
+
     public KargersAlgorithm(Locale language) {
         //including multiple languages
         this.locale = language;
@@ -81,22 +87,6 @@ public class KargersAlgorithm implements Generator {
             this.text.put("feedback2_1", "Richtig!");
             this.text.put("feedback2_2", "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
             this.text.put("feedback2_3", "Falsch. Ein solcher Algorithmus wird Monte Carlo Algorithmus genannt.");
-/*
-            this.text.put("description",
-                    "Karger's algorithm for Minimum Cut sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt." +
-                            "Er kontrahiert dabei so lange zufällig ausgewählte Kanten, bis nur noch zwei Knoten übrig sind." +
-                            "\n" +
-                            "Kontrahieren bedeutet, dass zwei Knoten vereinigt werden und die Kante dazwischen entfernt wird." +
-                            "Alle Self-Loops, die hierbei entstehen, werden entfernt. Alle verschobenen Kanten bleiben bestehen." +
-                            "\n" +
-                            "Die übrigen Kanten, die an dem entfernten Knoten dranhingen, gehen nun von dem neuen, vereinigten Knoten aus." +
-                            "Die Summe der übrig gebliebenen Kanten zwischen den letzten zwei Knoten wird als Schnitt bezeichnet." +
-                            "\n" +
-                            "Anwendung findet der Algorithmus zum Beispiel beim Testen von Netzwerken, um eventuelle Schwächen zu beheben und deren Sicherheit zu erhöhen." +
-                            "Ein weiteres Anwendungsbeispiel ist die Bildverarbeitung. Hier wird der Algorithmus zur Segmentierung des Bildes verwendet," +
-                            "um benachbarte Pixel mit denselben Eigenschaften (Farbe, Textur, Dichte) zusammenzufassen," +
-                            "damit die Weiterverarbeitung und Analyse des Bildes einfacher und effizienter wird.");
-*/
 
             this.text.put("description", "Karger's algorithm for Minimum Cut sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt. " +
                     "Er kontrahiert dabei so lange zufällig ausgewählte Kanten, bis nur noch zwei Knoten übrig sind. \t\t" +
@@ -108,7 +98,6 @@ public class KargersAlgorithm implements Generator {
                     "Ein weiteres Anwendungsbeispiel ist die Bildverarbeitung. Hier wird der Algorithmus zur Segmentierung des Bildes verwendet, \t" +
                     "um benachbarte Pixel mit denselben Eigenschaften (Farbe, Textur, Dichte) zusammenzufassen, \t" +
                     "damit die Weiterverarbeitung und Analyse des Bildes einfacher und effizienter wird. \t");
-
 
             this.text.put("description1", "Karger's algorithm for Minimum Cut sucht in einem ungerichteten zusammenhängenden Graphen den minimalen Schnitt. ");
             this.text.put("description2", "Er kontrahiert dabei so lange zufällig ausgewählte Kanten, bis nur noch zwei Knoten übrig sind. ");
@@ -184,7 +173,6 @@ public class KargersAlgorithm implements Generator {
             this.text.put("description12", "to unite connected pixels with the same characteristics like color, texture and/or density. ");
             this.text.put("description13", "This makes the analysis and further processing of the image much easier. ");
 
-
             this.text.put("introDescription1", "Karger's algorithm for Minimum Cut computes a minimum cut of a connected graph. ");
             this.text.put("introDescription2", "The idea is based on the concept of contraction of an edge in an undirected graph.");
             this.text.put("introDescription3", "This way the number of nodes is reduced one by one, until only two nodes are left. ");
@@ -194,16 +182,6 @@ public class KargersAlgorithm implements Generator {
             this.text.put("introDescription7", "The sum of the remaining edges between the last two nodes is called the 'cut'. ");
             this.text.put("introDescription8", "Karger's algorithm works with a random selection generator, which is why the result does not always have to be the minimum cut. ");
             this.text.put("introDescription9", "This kind of algorithm is called Monte Carlo algorithm. ");
-
-
-            /* rest info in german
-             +
-                            "\n" +
-                            "Anwendung findet der Algorithmus zum Beispiel beim Testen von Netzwerken, um eventuelle Schwächen zu beheben und deren Sicherheit zu erhöhen." +
-                            "Ein weiteres Anwendungsbeispiel ist die Bildverarbeitung. Hier wird der Algorithmus zur Segmentierung des Bildes verwendet," +
-                            "um benachbarte Pixel mit denselben Eigenschaften (Farbe, Textur, Dichte) zusammenzufassen," +
-                            "damit die Weiterverarbeitung und Analyse des Bildes einfacher und effizienter wird."
-             */
 
             this.text.put("results", "Karger's Minimum Cut is: ");
             this.text.put("res1", "That means, on the last edge you see are ");
@@ -222,12 +200,8 @@ public class KargersAlgorithm implements Generator {
         this.lang.setInteractionType(1024);
         //this.createGraph();
 
-        this.polylineProps = (PolylineProperties)props.getPropertiesByName("polylineProps");
         this.textProps = (TextProperties)props.getPropertiesByName("textProps");
-        this.sourceCodeProps = new SourceCodeProperties();
-        this.sourceCodeProps.set("font", new Font("Monospaced", 0, 12));
-        this.sourceCodeProps.set("highlightColor", Color.RED);
-        this.sourceCodeProps.set("color", Color.BLACK);
+        this.sourceCodeProps = (SourceCodeProperties)props.getPropertiesByName("sourceCodeProps");
         this.graph = (Graph)primitives.get("graph");
 
         this.intro();
@@ -237,41 +211,32 @@ public class KargersAlgorithm implements Generator {
     }
 
     private void intro() {
-        this.headerProps = new TextProperties();
-        this.headerProps.set("font", new Font("SansSerif", 1, 24));
-        this.header = this.lang.newText(new Coordinates(250, 30), "Karger's algorithm for Minimum Cut", "header", (DisplayOptions)null, headerProps);
-        this.rectProps = new RectProperties();
-        this.rectProps.set("fillColor", Color.CYAN);
-        this.rectProps.set("filled", true);
-        this.rectProps.set("depth", 2);
-        this.lang.newRect(new Offset(-5, -5, header, "NW"), new Offset(5, 5, header, "SE"), "hrect", (DisplayOptions)null, rectProps);
-        this.sourceCodeProps = new SourceCodeProperties();
-        this.sourceCodeProps.set("font", new Font("SansSerif", 0, 16));
-        this.sourceCodeProps.set("color", Color.BLACK);
-        this.code = this.lang.newSourceCode(new Offset(-150, 30, header, "SW"), "intro", (DisplayOptions)null, sourceCodeProps);
-        this.code.addCodeLine((String)this.text.get("description1"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description2"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description3"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description4"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description5"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description6"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description7"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description8"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description9"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description10"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description11"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description12"), "intro", 0, null);
-        this.code.addCodeLine((String)this.text.get("description13"), "intro", 0, null);
-        this.lang.nextStep("intro");
-        this.code.hide();
-        /*
-        this.textProps = new TextProperties();
-        this.textProps.set("font", new Font("SansSerif", 0, 16));
-        this.textProps.set("color", Color.BLACK);
-        this.introText = this.lang.newText(new Coordinates(200, 75), (String)this.text.get("description"), "intro", null, textProps);
-        this.lang.nextStep("introText");
-        this.introText.hide();
-        */
+        headerProps = new TextProperties();
+        headerProps.set("font", new Font("SansSerif", 1, 24));
+        header = this.lang.newText(new Coordinates(250, 30), "Karger's algorithm for Minimum Cut", "header", (DisplayOptions)null, headerProps);
+        rectProps = new RectProperties();
+        rectProps.set("fillColor", Color.CYAN);
+        rectProps.set("filled", true);
+        rectProps.set("depth", 2);
+        lang.newRect(new Offset(-5, -5, header, "NW"), new Offset(5, 5, header, "SE"), "hrect", (DisplayOptions)null, rectProps);
+        //sourceCodeProps.set("font", new Font("SansSerif", 0, 16));
+        //sourceCodeProps.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
+        code = this.lang.newSourceCode(new Offset(-150, 30, header, "SW"), "intro", (DisplayOptions)null, sourceCodeProps);
+        code.addCodeLine((String)this.text.get("description1"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description2"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description3"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description4"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description5"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description6"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description7"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description8"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description9"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description10"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description11"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description12"), "intro", 0, null);
+        code.addCodeLine((String)this.text.get("description13"), "intro", 0, null);
+        lang.nextStep("intro");
+        code.hide();
     }
 
     public int kargersMinCut() {
@@ -280,23 +245,19 @@ public class KargersAlgorithm implements Generator {
 
         this.nodeList = this.graph.getNodes();
 
-        int firstNodePosition = this.graph.getPositionForNode(nodeList[0]); //Needed for the offset for the code. //TODO should be done properly, like not with a reference to the first node, but to the most right node
+        int firstNodePosition = this.graph.getPositionForNode(nodeList[0]); //Needed for the offset for the code, such that code and graph do not overlap. //TODO should be done properly; not with a reference to the first node, but to the most right node
 
-        this.sourceCodeProps = new SourceCodeProperties();
-        this.sourceCodeProps.set(AnimationPropertiesKeys.CONTEXTCOLOR_PROPERTY, Color.BLUE);
-        this.sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
-        this.sourceCodeProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.RED);
-        this.sourceCodeProps.set(AnimationPropertiesKeys.COLOR_PROPERTY, Color.BLACK);
+        //sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", Font.PLAIN, 12));
 
-        this.code = lang.newSourceCode(new Coordinates(firstNodePosition + 500, 200), "sourceCode", null, this.sourceCodeProps);
-        this.code.addCodeLine("while (nodes > 2)", null, 1, null);
-        this.code.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
-        this.code.addCodeLine("merge u and v", null, 3, null);
-        this.code.addCodeLine("reattach other edges //lines might lay on top of each other", null, 3, null);
-        this.code.addCodeLine("remove self-loops", null, 3, null);
-        this.code.addCodeLine("return cut represented by two nodes", null, 2, null);
+        code = lang.newSourceCode(new Coordinates(firstNodePosition + 500, 200), "sourceCode", null, sourceCodeProps);
+        code.addCodeLine("while (nodes > 2)", null, 1, null);
+        code.addCodeLine("choose random edge (u,v) from graph", null, 2, null);
+        code.addCodeLine("merge u and v", null, 3, null);
+        code.addCodeLine("reattach other edges //lines might lay on top of each other", null, 3, null);
+        code.addCodeLine("remove self-loops", null, 3, null);
+        code.addCodeLine("return cut represented by two nodes", null, 2, null);
 
-        this.code.highlight(0);
+        code.highlight(0);
 
         int[][] inputMatrix = this.graph.getAdjacencyMatrix();
         int[][] testMatrix = new int[inputMatrix.length][inputMatrix.length];
@@ -345,16 +306,15 @@ public class KargersAlgorithm implements Generator {
         }
 
 
-        TextProperties tp = new TextProperties();
-        tp.set("color", Color.BLACK);
+        textProps.set("font", new Font("SansSerif", 0, 12));
         CircleProperties cp = new CircleProperties();
         cp.set("color", Color.BLACK);
         cp.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
         cp.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.WHITE);
         cp.set("depth", 2);
-        this.polylineProps = new PolylineProperties();
-        this.polylineProps.set("color", Color.BLACK);
-        this.polylineProps.set("depth", 3);
+        polylineProps = new PolylineProperties();
+        polylineProps.set("color", Color.BLACK);
+        polylineProps.set("depth", 3);
 
         //Erstelle Platz für Primitives
         Text[] textArray = new Text[testMatrix.length];
@@ -367,7 +327,7 @@ public class KargersAlgorithm implements Generator {
           0A 1B
           2C 3D
         */
-        // this.nodeList = this.graph.getNodes(); //this gets done above because of Pseudo-Code-Position, but is mainly used in this place.
+        // this.nodeList = this.graph.getNodes(); //this gets done above because of Pseudo-Code-Position, but is mainly used for this loop.
         int z = 0;
         for (Node n : nodeList) {
 
@@ -375,7 +335,7 @@ public class KargersAlgorithm implements Generator {
             this.coordinateY = ((Coordinates) n).getY();
 
             //create Text of node
-            textArray[z] = lang.newText(new Coordinates(coordinateX, coordinateY), this.graph.getNodeLabel(n), "node " + this.graph.getNodeLabel(n), null, tp);
+            textArray[z] = lang.newText(new Coordinates(coordinateX, coordinateY), this.graph.getNodeLabel(n), "node " + this.graph.getNodeLabel(n), null, textProps);
 
             //create Circle around Text
             circleArray[z] = lang.newCircle(new Offset(0, 0, textArray[z], AnimalScript.DIRECTION_C), 30, "circle " + this.graph.getNodeLabel(n), null, cp);
@@ -389,12 +349,12 @@ public class KargersAlgorithm implements Generator {
             for (j = 0; j < testMatrix.length; j++) {
                 if (testMatrix[i][j] == 1) {
                     // wir können verhindern, dass wir nicht mehr Wissen welche Edge zu welchen Nodes gehört, indem wir einfach das Array mit Null füllen wo keine Edges sind dann ist Anzahl Plätze in der Matrix = Länge des Arrays
-                    polyMatrix[i][j] = lang.newPolyline(new Node[]{new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset(0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null, this.polylineProps);
+                    polyMatrix[i][j] = lang.newPolyline(new Node[]{new Offset(0, 0, textArray[i], AnimalScript.DIRECTION_C), new Offset(0, 0, textArray[j], AnimalScript.DIRECTION_C)}, "Edge " + textArray[i] + "-" + textArray[j] + "after being contracted", null, polylineProps);
                     System.out.println(textArray[i].getText() + " " + textArray[j].getText());
                 }
             }
         }
-        lang.nextStep("Drawing Nodes & Polylines");
+        lang.nextStep("Drawing graph");
 
         // allocate memory for creating i subsets
         KargersSubset[] subset = new KargersSubset[nrOfVertices];
@@ -419,8 +379,8 @@ public class KargersAlgorithm implements Generator {
             int subset1 = testAnimalSet.find(subset, edgeArray[x].src);
             int subset2 = testAnimalSet.find(subset, edgeArray[x].dest);
 
-            this.code.unhighlight(0);
-            this.code.highlight(1);
+            code.unhighlight(0);
+            code.highlight(1);
 
             // if the vertices belong to the same subset, this edge is not considered
             // also if the vertices are already contracted, they should not be considered.
@@ -430,34 +390,6 @@ public class KargersAlgorithm implements Generator {
             // else contract the edge (combine the subsets and combine the nodes of the edge into one)
             else {
 
-/* //This code is for the case that our solution with drawing polylines doesn't work anymore. It should stay as a reminder for now, until everything works properly.
-                if (subset[edgeArray[x].src].rank > subset[edgeArray[x].dest].rank) {
-                    startContract = subset[edgeArray[x].src].parent;
-                    endContract = subset[edgeArray[x].dest].parent;
-                }
-                if (subset[edgeArray[x].src].rank < subset[edgeArray[x].dest].rank) {
-                    startContract = subset[edgeArray[x].dest].parent;
-                    endContract = subset[edgeArray[x].src].parent;
-                }
-                if (subset[edgeArray[x].src].rank == subset[edgeArray[x].dest].rank) {
-                    startContract = subset[edgeArray[x].src].parent;
-                    endContract = subset[edgeArray[x].dest].parent;
-                }
-
-                if (subset[edgeArray[x].src].rank > subset[edgeArray[x].dest].rank) {
-                    startContract = subset1;
-                    endContract = subset2;
-                }
-                if (subset[edgeArray[x].src].rank < subset[edgeArray[x].dest].rank) {
-                    startContract = subset2;
-                    endContract = subset1;
-                }
-                if (subset[edgeArray[x].src].rank == subset[edgeArray[x].dest].rank) {
-                    startContract = subset1;
-                    endContract = subset2;
-                }
-*/
-
                 startContract = subset1;
                 endContract = subset2;
                 System.out.println("\nContracting edge" + edgeArray[x].src + edgeArray[x].dest);
@@ -465,7 +397,6 @@ public class KargersAlgorithm implements Generator {
                 System.out.println("startContract: " + startContract + " endContract: " + endContract);
 
                 //Highlighten der Polyline, die entfernt werden soll.
-                //TODO Die Farbe muss noch dynamisch übergeben werden.
                 //Wenn an beiden Stellen in der Matrix eine Eins steht, highlighte nur eine Edge, ansonsten highlighte die Edge, die in der Matrix vorhanden ist.
                 /*
                 if (polyMatrix[startContract][endContract] != null && polyMatrix[endContract][startContract] != null)
@@ -486,7 +417,7 @@ public class KargersAlgorithm implements Generator {
                 if (polyMatrix[endContract][startContract] != null)
                     polyMatrix[endContract][startContract].changeColor("color", Color.RED, null, null);
 
-                lang.nextStep("Highlight Polyline");
+                lang.nextStep("Highlight Polyline that is about to be cut");
 
                 // highlighten der beiden Nodes, die zusammengeführt werden, allerdings aktuell nur für den zweiten Cut
                 // TODO
@@ -496,12 +427,12 @@ public class KargersAlgorithm implements Generator {
                 textArray[endContract].changeColor("color", Color.RED, null, null);
                 circleArray[endContract].changeColor("color", Color.RED, null, null);
 
-                lang.nextStep("Highlighten Node");
+                lang.nextStep("Highlighten nodes that are about to be contracted");
 
-                this.code.unhighlight(1);
-                this.code.highlight(2);
-                this.code.highlight(3);
-                this.code.highlight(4);
+                code.unhighlight(1);
+                code.highlight(2);
+                code.highlight(3);
+                code.highlight(4);
 
                 //Hide den betroffenen Node
                 textArray[endContract].hide();
@@ -517,6 +448,11 @@ public class KargersAlgorithm implements Generator {
                 textArray[startContract] = this.lang.newText(this.graph.getNode(startContract), nodename, "node: " + nodename, null, textProps);
 
                 //create new Circle around new Text so that it is centered
+                if (nodename.length() > 2) {
+                    circleArray[startContract].hide();
+                    circleArray[startContract] = this.lang.newCircle(new Offset(0, 0, textArray[startContract], AnimalScript.DIRECTION_C), 30, "circle " + nodename, null, cp);
+                    //circleArray[startContract].show();
+                }
                 if (nodename.length() > 4) {
                     circleArray[startContract].hide();
                     circleArray[startContract] = this.lang.newCircle(new Offset(0, 0, textArray[startContract], AnimalScript.DIRECTION_C), 35, "circle " + nodename, null, cp);
@@ -541,7 +477,7 @@ public class KargersAlgorithm implements Generator {
                 circleArray[startContract].changeColor("color", Color.BLACK, null, null);
 
 
-                this.polylineProps.set("color", Color.GREEN);
+                polylineProps.set("color", Color.GREEN);
 
                 //Hide all lines that are attached to endContract (here the value j in polyMatrix)
                 for (j = 0; j < polyMatrix.length; j++) {
@@ -575,9 +511,9 @@ public class KargersAlgorithm implements Generator {
 
                                 //...zeichne beide mit korrekten Koordinaten neu.
                                 polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                                 polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                             }
 
                             //Wenn an nur jeweils einer Stelle in der Matrix eine eins steht, dann...
@@ -588,7 +524,7 @@ public class KargersAlgorithm implements Generator {
 
                                 //zeichne sie mit korrekten Koordinaten neu.
                                 polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                             }
 
                             //Wenn an beiden Stellen eine 0 steht, dann...
@@ -596,7 +532,7 @@ public class KargersAlgorithm implements Generator {
 
                                 //...zeichne eine neue polyline and die obere Stelle der Matrix.
                                 polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                             }
 
                         }
@@ -616,9 +552,9 @@ public class KargersAlgorithm implements Generator {
 
                                 //...zeichne beide mit korrekten Koordinaten neu.
                                 polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                                 polyMatrix[startContract][rememberedNodes[j]] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                             }
 
                             //Wenn an nur jeweils einer Stelle in der Matrix eine eins steht, dann...
@@ -629,7 +565,7 @@ public class KargersAlgorithm implements Generator {
 
                                 //zeichne sie mit korrekten Koordinaten neu.
                                 polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                             }
 
                             //Wenn an beiden Stellen eine 0 steht, dann...
@@ -637,21 +573,20 @@ public class KargersAlgorithm implements Generator {
 
                                 //...zeichne eine neue polyline and die untere Stelle der Matrix.
                                 polyMatrix[rememberedNodes[j]][startContract] = lang.newPolyline(new Node[]{new Offset(0, 0, circleArray[startContract], AnimalScript.DIRECTION_C),
-                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, this.polylineProps);
+                                        new Offset(0, 0, circleArray[rememberedNodes[j]], AnimalScript.DIRECTION_C)}, "newLine", null, polylineProps);
                             }
 
                         }
                     }
                 }
-                lang.nextStep("Hiden_& Neuzeichnen und den Algorithmus einen Schritt weiterführen");
+                lang.nextStep("Restart loop");
 
-                this.code.unhighlight(2);
-                this.code.unhighlight(3);
-                this.code.unhighlight(4);
+                code.unhighlight(2);
+                code.unhighlight(3);
+                code.unhighlight(4);
 
                 System.out.println("Contracting subsets" + subset[edgeArray[x].src].parent + subset[edgeArray[x].dest].parent + "\n");
 
-                //lang.nextStep();
                 // number of Vertices is one less
                 vertices--;
                 testAnimalSet.union(subset, subset1, subset2);
@@ -672,21 +607,20 @@ public class KargersAlgorithm implements Generator {
         }
         System.out.println("FINAL: cutedges = " + cutEdges);
 
-        lang.nextStep("Endergebnis ausgeben und letzte CodeLine highlighten");
-        this.code.highlight(5);
-        this.rectProps = new RectProperties();
+        lang.nextStep("Final result and highlight last codeline");
+        code.highlight(5);
+
         rectProps.set(AnimationPropertiesKeys.FILLED_PROPERTY, true);
         rectProps.set(AnimationPropertiesKeys.FILL_PROPERTY, Color.CYAN);
         rectProps.set("depth", 1);
-        this.textProps = new TextProperties();
-        textProps.set("color", Color.BLACK);
+
         textProps.set("depth", 0);
-        textProps.set("font", new Font("SansSerif", 3, 12));
         Text rest = lang.newText(new Offset(0, 50, code, "SW"), (String)this.text.get("results") + cutEdges, "scr", (DisplayOptions)null, textProps);
-        Rect resrect = lang.newRect(new Offset(-5, -5, rest, "NW"), new Offset(5, 5, rest, "SE"), "resrect", (DisplayOptions)null, rectProps);
+        Rect resrect = lang.newRect(new Offset(-7, -7, rest, "NW"), new Offset(7, 7, rest, "SE"), "resrect", (DisplayOptions)null, rectProps);
+        //There are multiple on top of each other. This text is here to explain that.
         Text explain = lang.newText(new Offset( 0, 10, rest, "SW"), (String)this.text.get("res1") + cutEdges + (String)this.text.get("res2"), "rest", null, textProps);
 
-        lang.nextStep("MultipleChoice");
+        lang.nextStep("first MultipleChoice");
         MultipleChoiceQuestionModel firstmulti = new MultipleChoiceQuestionModel("first");
         firstmulti.setPrompt((String)this.text.get("firstmulti0"));
         firstmulti.addAnswer((String)this.text.get("answer0_0"), 1, (String)this.text.get("feedback0_0"));
@@ -695,7 +629,7 @@ public class KargersAlgorithm implements Generator {
         firstmulti.addAnswer((String)this.text.get("answer0_3"), 1, (String)this.text.get("feedback0_3"));
         this.lang.addMCQuestion(firstmulti);
 
-        lang.nextStep("next MultipleChoice");
+        lang.nextStep("second MultipleChoice");
 
         MultipleChoiceQuestionModel secmulti = new MultipleChoiceQuestionModel("second");
         secmulti.setPrompt("secondmulti1");
@@ -705,7 +639,7 @@ public class KargersAlgorithm implements Generator {
         secmulti.addAnswer((String)this.text.get("answer1_3"), 0, (String)this.text.get("feedback1_3"));
         this.lang.addMCQuestion(secmulti);
 
-        lang.nextStep("last MultipleChoice");
+        lang.nextStep("third MultipleChoice");
         MultipleChoiceQuestionModel lastmulti = new MultipleChoiceQuestionModel("last");
         lastmulti.setPrompt((String)this.text.get("lastmulti2"));
         lastmulti.addAnswer((String)this.text.get("answer2_0"), 0, (String)this.text.get("feedback2_0"));
@@ -747,10 +681,11 @@ public class KargersAlgorithm implements Generator {
 
     public String getCodeExample(){
         return "while (nodes > 2)\n"
-        + "\tchoose random edge (u,v) from graph\n"
-        + "\tmerge u and v\n"
-        + "\tremove self-loops\n"
-        + "return cut represented by two nodes\n";
+                + "\tchoose random edge (u,v) from graph\n"
+                + "\t\tmerge u and v\n"
+                + "\t\reattach other edges\n"
+                + "\t\tremove self-loops\n"
+                + "return cut represented by two nodes\n";
     }
 
     public String getFileExtension(){
