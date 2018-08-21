@@ -5,10 +5,8 @@
  */
 package AhoCorasick;
 
-import algoanim.primitives.Graph;
+import algoanim.primitives.*;
 import algoanim.primitives.Point;
-import algoanim.primitives.StringArray;
-import algoanim.primitives.Text;
 import algoanim.properties.*;
 import algoanim.util.Coordinates;
 import algoanim.util.DisplayOptions;
@@ -31,15 +29,33 @@ public class AhoCorasick implements Generator {
     private ArrayProperties arrayProps;
     private ArrayMarkerProperties arrayMarkerProps;
     private GraphProperties graphProps;
+    private SourceCode failureCode, code, code1, code2, code3;
     private Text patterns, dictionaryText, keywordHe, keywordShe, keywordHis, keywordHers, output;
     private Text he, she, his, hers;
     //private String[] dictionary;
     private SourceCodeProperties sourceCodeProps;
     private Graph graph;
     private StringArray dictionary;
-    private Point pointer;
+    private Locale locale;
+    private HashMap<String, String> text;
 
-    public AhoCorasick() {}
+    public AhoCorasick() {this(Locale.US);}
+
+    public AhoCorasick(Locale language) {
+        this.locale = language;
+        this.text = new HashMap();
+        if(this.locale == Locale.GERMANY || this.locale == Locale.GERMAN) {
+
+
+
+        }
+        else {
+
+
+        }
+
+
+    }
 
     public void init() {
         this.lang = new AnimalScript("Aho-Corasick algorithm", "Hannah Drews, Yves Geib", 800, 600);
@@ -87,14 +103,17 @@ public class AhoCorasick implements Generator {
 
         // Graph
         graph = this.lang.newGraph(graph.getName(), graph.getAdjacencyMatrix(), nodes, nodenames, (DisplayOptions) null, graphProps);
-        graph.hideEdge(5, 2, null, null); //failure function edge
-        graph.hideEdge(9, 0, null, null); //failure function edge
+        graph.hideEdge(5, 2, null, null); //failed transaction edge
+        graph.hideEdge(9, 0, null, null); //failed transaction edge
+        graph.hideEdge(3, 0, null, null); //failed transaction edge
+
         int position = graph.getPositionForNode(graph.getNode(0)); //Position of first node of graph
+        System.out.println(position);
 
         // Search words in array, fixed/not changeable
         textProps.set("color", Color.GRAY);
         textProps.set("font", new Font("SansSerif", 1, 14));
-        patterns = this.lang.newText(new Offset(175, 20, graph, "N"), "Patterns: ", "patterns", null, textProps);
+        patterns = this.lang.newText(new Offset(175, 20, graph, "N"), "Patterns with which the graph gets built: ", "patterns", null, textProps);
 
         textProps.set("color", Color.BLACK);
         textProps.set("font", new Font("SansSerif", 1, 14));
@@ -129,20 +148,47 @@ public class AhoCorasick implements Generator {
         textProps.set("font", new Font("SansSerif", 1, 14));
         output = this.lang.newText(new Offset(0, 75, dictionary, "SW"), "Patterns found in dictionary: {} ", "output", null, textProps);
 
+        //Code shown while traversing in graph
+        sourceCodeProps.set("color", Color.RED);
+        sourceCodeProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.GREEN);
+        sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", 1, 12));
+        code = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCode", null, sourceCodeProps);
+
         lang.nextStep("Find letter 'U'");
         dictionary.highlightCell(0, null, null); //Letter U rot
+        code.addCodeLine("// code for regular graph traversal/pattern searching", null, 0, null);
+        code.changeColor("color", Color.BLACK, null, null);
+        code.addCodeLine("look for current letter at children of root", null, 0, null);
+
+        lang.nextStep("current letter not found in children");
+        code.changeColor("color", Color.BLACK, null, null);
+        code.addCodeLine("if there are none", null, 1, null);
+        graph.highlightEdge(0, 1, null, null);
+        graph.highlightEdge(0, 3, null, null);
 
         lang.nextStep("Highlight edge O-O");
+        code.addCodeLine("use failed transaction line and restart at root", null, 2, null);
+        graph.unhighlightEdge(0, 1, null, null);
+        graph.unhighlightEdge(0, 3, null, null);
         graph.highlightEdge(0, 0, null, null); //Edge O-O rot
 
         lang.nextStep("Find next letter: 'S'");
         graph.unhighlightEdge(0, 0, null, null); //Edge O-O schwarz
         dictionary.unhighlightCell(0, null, null); //Letter U schwarz
         dictionary.highlightCell(1, null, null); //Letter S rot
+        code.changeColor("color", Color.BLACK, null, null);
+        code1 = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCode", null, sourceCodeProps);
+        code1.addCodeLine("// code for regular graph traversal/pattern searching", null, 0, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("look for current letter at children of root", null, 0, null);
 
         lang.nextStep("Traverse in graph");
         graph.highlightEdge(0, 3, null, null); //Edge O - S rot
         graph.highlightNode(3, null, null); //Node S rot
+        code1.addCodeLine("if there are none", null, 1, null);
+        code1.addCodeLine("use failed transaction line and restart at root", null, 2, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("if there is one", null, 1, null);
 
         lang.nextStep();
         graph.unhighlightEdge(0, 3, null, null); //Edge O-S schwarz
@@ -150,34 +196,100 @@ public class AhoCorasick implements Generator {
         dictionary.setHighlightFillColor(1, Color.GREEN, null, null); //Grüne Farbe
         graph.highlightNode(3, null, null); //Node S grün
         dictionary.highlightCell(1, null, null); //Letter S grün
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("move to that child", "move", 2, null);
+        code1.highlight("move");
 
         lang.nextStep("Find next letter: 'H'");
         graph.unhighlightNode(3, null, null); //Node S schwarz
         dictionary.highlightCell(2, null, null); //Letter H rot
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("look for next letter in current branch", null, 2, null);
+
+        lang.nextStep();
+
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("if there is none", "failure", 2, null);
+
+        lang.nextStep();
+        graph.showEdge(3, 0, null, null); //show failfunction Edge
+        graph.setEdgeHighlightPolyColor(3, 0, Color.BLUE, null, null); //switch failfunction Edge highlightColor to blue
+        graph.hideEdgeWeight(3, 0, null, null); //hide failfunction EdgeWeight
+        graph.highlightEdge(3, 0, null, null); //show failfunction Edge in blue
+        graph.hideEdge(0, 3, null, null); //hide original edge so they don't overlap. Needs to be shown later again.
+        code1.addCodeLine("/*", null, 3, null);
+        code1.addCodeLine("  This is always the case for", null, 3, null);
+        code1.addCodeLine("  the direct children of root.", null, 3, null);
+        code1.addCodeLine("  But with traversing further", null, 3, null);
+        code1.addCodeLine("  into the tree, every node has", null, 3, null);
+        code1.addCodeLine("  a so called failed transaction", null, 3, null);
+        code1.addCodeLine("  which will appear later on.", null, 3, null);
+        code1.addCodeLine("*/", null, 3, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("use failed transaction line back to root", "failure1", 3, null);
 
         lang.nextStep("Traverse in graph");
+        graph.hideEdge(3, 0, null, null);
+        graph.showEdge(0, 3, null, null);
         graph.highlightEdge(3, 4, null, null); //Edge S-H rot
         graph.highlightNode(4, null, null); //Node H rot
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("if there is one", null, 2, null);
+
+
         lang.nextStep();
         graph.unhighlightEdge(3, 4, null, null); //Edge S-H schwwarz
         graph.setNodeHighlightFillColor(4, Color.GREEN, null, null); //Grüne Farbe
         dictionary.setHighlightFillColor(2, Color.GREEN, null, null); //Grüne Farbe
         graph.highlightNode(4, null, null); //Node H grün
         dictionary.highlightCell(2, null, null); //Letter H grün
+        code.hide();
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("move to that child", "move1", 3, null);
+        code1.highlight("move1");
+
 
         lang.nextStep("Find next letter: 'E'");
         graph.unhighlightNode(4, null, null); //Node H schwarz
         dictionary.highlightCell(3, null, null); //Letter E rot
+        //code.unhighlight("move1");
+        code1.changeColor("color", Color.BLACK, null, null);
+        code2 = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCode", null, sourceCodeProps);
+        code2.addCodeLine("// code for regular graph traversal/pattern searching", null, 0, null);
+        code2.addCodeLine("look for current letter at children of root", null, 0, null);
+        code2.addCodeLine("if there are none", null, 1, null);
+        code2.addCodeLine("use failed transaction line and restart at root", null, 2, null);
+        code2.addCodeLine("if there is one", null, 1, null);
+        code2.addCodeLine("move to that child", null, 2, null);
+        code2.changeColor("color", Color.BLACK, null, null);
+        code2.addCodeLine("look for next letter in current branch", null, 2, null);
 
         lang.nextStep("Traverse in graph");
         graph.highlightEdge(4, 5, null, null); //Edge H-E rot
         graph.highlightNode(5, null, null); //Node E rot
+        code2.addCodeLine("if there is none", "failure", 2, null);
+        code2.addCodeLine("/*", null, 3, null);
+        code2.addCodeLine("  This is always the case for", null, 3, null);
+        code2.addCodeLine("  the direct children of root.", null, 3, null);
+        code2.addCodeLine("  But with traversing further", null, 3, null);
+        code2.addCodeLine("  into the tree, every node has", null, 3, null);
+        code2.addCodeLine("  a so called failed transaction", null, 3, null);
+        code2.addCodeLine("  which will appear later on.", null, 3, null);
+        code2.addCodeLine("*/", null, 3, null);
+        code2.addCodeLine("use failed transaction line back to root", null, 3, null);
+        code2.changeColor("color", Color.BLACK, null, null);
+        code2.addCodeLine("if there is one", null, 2, null);
+
         lang.nextStep();
         graph.unhighlightEdge(4, 5, null, null); //Edge H-E schwarz
         graph.setNodeHighlightFillColor(5, Color.GREEN, null, null); //Grüne Farbe
         dictionary.setHighlightFillColor(3, Color.GREEN, null, null); //Grüne Farbe
         graph.highlightNode(5, null, null); //Node E grün
         dictionary.highlightCell(3, null, null); //Letter E grün
+        code1.hide();
+        code2.changeColor("color", Color.BLACK, null, null);
+        code2.addCodeLine("move to that child", "move2", 3, null);
+        code2.highlight("move2");
 
         lang.nextStep("Keyword 'she' was found");
         keywordShe.changeColor("color", Color.GREEN, null, null);
@@ -185,32 +297,90 @@ public class AhoCorasick implements Generator {
         textProps.set("color", Color.BLACK);
         textProps.set("font", new Font("SansSerif", 0, 14));
         Text keywordSheFound = this.lang.newText(new Offset(0, 30, dictionary, "SW"), "Word: " + keywordShe.getText() + " appears in dictionary from 1 to 3.", "keywordSheFound", null, textProps);
+        code2.addCodeLine("if it is the last letter of a pattern", "patternFound", 3, null);
+        code2.highlight("patternFound");
+
+
 
         lang.nextStep("Add 'she' to output Strings");
         textProps.set("color", Color.BLACK);
         textProps.set("font", new Font("SansSerif", 1, 14));
         output.setText("Patterns found in dictionary: {she} ", null, null);
+        code2.addCodeLine("add the pattern to the output", "addPattern", 4, null);
+        code2.highlight("addPattern");
 
         lang.nextStep("Continue with algorithm");
         keywordSheFound.hide();
         keywordShe.changeColor("color", Color.BLACK, null, null);
         she.changeColor("color", Color.GRAY, null, null);
-        //Node E bleibt so lange grün, solange er mit der failfunction zu tun hat.
-        //graph.unhighlightNode(5, null, null); //Node E schwarz
-
-        lang.nextStep();
         dictionary.highlightCell(4, null, null); //Letter R rot
+
+        code2.changeColor("color", Color.BLACK, null, null);
+        code3 = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCode", null, sourceCodeProps);
+        code3.addCodeLine("// code for regular graph traversal/pattern searching", null, 0, null);
+        code3.changeColor("color", Color.BLACK, null, null);
+        code3.addCodeLine("look for current letter at children of root", null, 0, null);
+        code3.addCodeLine("if there are none", null, 1, null);
+        code3.addCodeLine("use failed transaction line and restart at root", null, 2, null);
+        code3.addCodeLine("if there is one", null, 1, null);
+        code3.addCodeLine("move to that child", null, 2, null);
+        code3.changeColor("color", Color.BLACK, null, null);
+        code3.addCodeLine("look for next letter in current branch", null, 2, null);
 
         //FEHLERFUNKTION
         lang.nextStep("Fail function");
+        code2.hide();
+        code3.hide();
         graph.showEdge(5, 2, null, null); //show failfunction Edge
         graph.setEdgeHighlightPolyColor(5, 2, Color.BLUE, null, null); //switch failfunction Edge highlightColor to blue
         graph.hideEdgeWeight(5, 2, null, null); //hide failfunction EdgeWeight
         graph.highlightEdge(5, 2, null, null); //show failfunction Edge in blue
+
+        //code shown while in failed transaction
+        sourceCodeProps.set("color", Color.BLUE);
+        sourceCodeProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.GREEN);
+        sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", 1, 12));
+        failureCode = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCodeFailfunction", null, sourceCodeProps);
+        failureCode.addCodeLine("// code for failed transactions graph traversing/substring searching", null, 0, null);
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("if (next letter is not found in current branch", null, 0, null);
+        failureCode.addCodeLine("&& child is not direct child of root)", null, 2, null);
+        failureCode.addCodeLine("move along failed transaction", null, 1, null);
+
+        lang.nextStep("comment");
+        failureCode.addCodeLine("/*", null, 1, null);
+        failureCode.addCodeLine("  Instead of going back to root every time", null, 1, null);
+        failureCode.addCodeLine("  and restarting the search, ", null, 1, null);
+        failureCode.addCodeLine("  this way is more efficient by searching", null, 1, null);
+        failureCode.addCodeLine("  for a substring of the current string.", null, 1, null);
+        failureCode.addCodeLine("  This is done by moving to the root-nearest node", null, 1, null);
+        failureCode.addCodeLine("  with the same letter.", null, 1, null);
+        failureCode.addCodeLine("*/", null, 1, null);
+        failureCode.changeColor("color", Color.GRAY, null, null);
+
+
         lang.nextStep();
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("if there is none", null, 2, null);
+        failureCode.addCodeLine("move back to root", null, 3, null);
+
+        lang.nextStep("Find current letter in higher branch");
         graph.highlightNode(2, null, null); //Letter E rot
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("if there is one", null, 2, null);
+        failureCode.addCodeLine("check if a substring is found", null, 3, null);
+
+        lang.nextStep();
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("if there is a substring of previous string", null, 4, null);
+        failureCode.addCodeLine("//{he} is a substring of {she}", null, 4, null);
+
+        lang.nextStep();
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("add that substring to the output", "addingHe", 5, null);
 
         lang.nextStep("Found keyword 'he'");
+        failureCode.highlight("addingHe");
         graph.setNodeHighlightFillColor(1, Color.GREEN, null, null); //Farbe grün
         graph.setNodeHighlightFillColor(2, Color.GREEN, null, null); //Farbe grün
         graph.highlightNode(1, null, null); //Letter H grün
@@ -237,13 +407,18 @@ public class AhoCorasick implements Generator {
         he.changeColor("color", Color.GRAY, null, null); //{he} schwarz
         she.changeColor("color", Color.GRAY, null, null); //{He, She} schwarz
         keywordHe.changeColor("color", Color.BLACK, null, null); //keywordHe schwarz
+        failureCode.unhighlight("addingHe");
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("Traverse further in graph", "traverseFurther", 2, null);
 
         lang.nextStep("Traverse further in graph after failfunction");
         graph.unhighlightNode(2, null, null); //Node E from 'He' schwarz (von rot)
         graph.unhighlightNode(5, null, null); //Node E from 'She' schwarz (von grün)
-        graph.hideEdge(5, 2, null, null); //hide failure function edge
+        graph.hideEdge(5, 2, null, null); //hide failed transaction edge
         graph.highlightEdge(2, 8, null, null); //Edge E-R rot
         graph.highlightNode(8, null, null); //Node R rot
+        failureCode.hide();
+        code.show();
 
         lang.nextStep("Found letter: 'R'");
         graph.unhighlightEdge(2, 8, null, null); //Edge E-R schwarz
@@ -288,6 +463,8 @@ public class AhoCorasick implements Generator {
         graph.setEdgeHighlightPolyColor(9, 0, Color.BLUE, null, null); //switch failfunction Edge highlightColor to blue
         graph.hideEdgeWeight(9, 0, null, null); //hide failfunction EdgeWeight
         graph.highlightEdge(9, 0, null, null); //show failfunction Edge in blue
+        code.hide();
+        failureCode.show();
 
         lang.nextStep();
 

@@ -254,27 +254,29 @@
 
 				startknoten O
 
-				node O at 200 50
-				node H at 300 150
-				node E at 300 250
-				node S at 100 150
-				node H1 at 100 250
-				node E1 at 100 350
-				node I at 200 250
-				node S1 at 200 350
-				node R at 300 350
-				node S2 at 300 450
+				node O at 500 50
+				node H at 600 150
+				node E at 600 250
+				node S at 400 150
+				node H1 at 400 250
+				node E1 at 400 350
+				node I at 500 250
+				node S1 at 500 350
+				node R at 600 350
+				node S2 at 600 450
 
 				edge O O weight 1
-				edge H1 E1 weight 1
-				edge E R weight 1
-				edge H E weight 1
-				edge I S1 weight 1
-				edge R S2 weight 1
-				edge S H1 weight 1
-				edge O S weight 1
-				edge H I weight 1
+				edge H1 E1 weight 5
+				edge E R weight 8
+				edge H E weight 2
+				edge I S1 weight 7
+				edge R S2 weight 9
+				edge S H1 weight 4
+				edge O S weight 3
+				edge H I weight 6
 				edge O H weight 1
+				<!--> Failure edges 3, 5, 9 in this order in the code </!-->
+				edge S O weight 1
 				edge E1 E weight 1
 				edge S2 O weight 1
 
