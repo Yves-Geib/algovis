@@ -690,7 +690,7 @@ public class AhoCorasick implements Generator {
     }
 
     public Locale getContentLocale() {
-        return Locale.ENGLISH;
+        return this.locale;
     }
 
     public GeneratorType getGeneratorType() {
@@ -700,13 +700,6 @@ public class AhoCorasick implements Generator {
     public String getOutputLanguage() {
         return Generator.PSEUDO_CODE_OUTPUT;
     }
-    /*
-
-    Bevor wir das vergessen:
-
-    if (dictionary[i] == searchedWords[irgendein char]
-     */
-
 
 
     //R- alphabet size
