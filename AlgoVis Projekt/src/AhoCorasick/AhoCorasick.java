@@ -22,6 +22,7 @@ import java.util.*;
 import algoanim.primitives.generators.Language;
 import generators.framework.properties.AnimationPropertiesContainer;
 import algoanim.animalscript.AnimalScript;
+import interactionsupport.models.MultipleChoiceQuestionModel;
 
 public class AhoCorasick implements Generator {
     private Language lang;
@@ -45,11 +46,65 @@ public class AhoCorasick implements Generator {
         this.locale = language;
         this.text = new HashMap();
         if(this.locale == Locale.GERMANY || this.locale == Locale.GERMAN) {
+            this.text.put("firstmulti", "Für welchen Unix-Command bildet der Aho-Corasick Algorithmus die Basis?");
+            this.text.put("answer0_0", "ls");
+            this.text.put("answer0_1", "grep");
+            this.text.put("answer0_2", "sed");
+            this.text.put("answer0_3", "fgrep");
+            this.text.put("feedback0_0", "Leider falsch. Die richtige Antwort wäre fgrep zur Suche nach Wörtern in einem bestimmten Text.");
+            this.text.put("feedback0_1", "Leider falsch. Grep benutzt einen etwas langsameren Suchalgorithmus als Aho-Corasick zur Suche.");
+            this.text.put("feedback0_2", "Leider falsch. Die richtige Antwort wäre fgrep zur Suche nach Wörtern in einem bestimmten Text.");
+            this.text.put("feedback0_3", "Richtig! Das Kommando arbeitet durch die Verwendung des Aho-Corasick Algorithmus sehr effizient und empfiehlt sich immer dann, wenn besonders schnell große Datenmengen durchsucht werden sollen.");
+
+            this.text.put("secondmulti", "Was ist eine Fehler-Funktion?");
+            this.text.put("answer1_0", "Der Output, wenn keines der Wörter aus dem Trie (Patterns) im Eingabetext gefunden wurde.");
+            this.text.put("answer1_1", "Sie gibt den Zustand im Trie nach einem Missmatch aus.");
+            this.text.put("answer1_2", "Sie repräsentiert alle Wörter, die nicht im Eingabetext gefunden wurden. ");
+            this.text.put("feedback1_0", "Leider falsch. Versuch es noch einmal!");
+            this.text.put("feedback1_1", "Richtig! Die Fehlerfunktion wird im Preprocessing gesetzt und findet für einen Zustand s den längsten richtigen Suffix, der ein richtiges Präfix eines Patterns ist.");
+            this.text.put("feedback1_2", "Leider falsch. Versuch es noch einmal!");
+
+            this.text.put("lastmulti", "Welche Laufzeit hat der Algorithmus Aho Corasick?");
+            this.text.put("answer2_0", "O(n*k+m)");
+            this.text.put("answer2_1", "O(n*m)");
+            this.text.put("answer2_2", "O(n+m+z)");
+            this.text.put("feedback2_0", "Falsch! Richtig wäre O(n+m+z), also wesentlich schneller.");
+            this.text.put("feedback2_1", "Falsch! Richtig wäre O(n+m+z), also wesentlich schneller.");
+            this.text.put("feedback2_2", "Richtig! Dabei ist n die Länge des Textes, m das Traversieren des Tries und z die Anzahl der Patterns.");
+
+
+
 
 
 
         }
         else {
+            this.text.put("firstmulti", "For which Unix command is the Aho-Corasick algorithm the basis?");
+            this.text.put("answer0_0", "ls");
+            this.text.put("answer0_1", "grep");
+            this.text.put("answer0_2", "sed");
+            this.text.put("answer0_3", "fgrep");
+            this.text.put("feedback0_0", "Wrong. The correct answer would be fgrep to search for words in a particular text.");
+            this.text.put("feedback0_1", "Unfortunately wrong. Grep uses a slightly slower search algorithm than Aho-Corasick.");
+            this.text.put("feedback0_2", "Wrong. The correct answer would be fgrep to search for words in a particular text.");
+            this.text.put("feedback0_3", "Right! The command works very efficient using the Aho-Corasick algorithm and is recommended whenever large amounts of data need to be scanned very quickly.");
+
+            this.text.put("secondmulti", "What is an error function?");
+            this.text.put("answer1_0", "The output, if none of the words from the trie in the input text was found.");
+            this.text.put("answer1_1", "It represents the state of the trie after a mismatch.");
+            this.text.put("answer1_2", "It represents all of the words that were not found in the input text.");
+            this.text.put("feedback1_0", "Unfortunately wrong. Try it again!");
+            this.text.put("feedback1_1", "That's right! The error function is set in preprocessing and finds the longest correct suffix for a state s, which is a correct prefix of a pattern.");
+            this.text.put("feedback1_2", "Unfortunately wrong. Try it again!");
+
+            this.text.put("lastmulti", "What is the runtime of the algorithm Aho Corasick?");
+            this.text.put("answer2_0", "O(n*k+m)");
+            this.text.put("answer2_1", "O(n*m)");
+            this.text.put("answer2_2", "O(n+m+z)");
+            this.text.put("feedback2_0", "Wrong. The correct answer is O(n+m+z), which is much faster.");
+            this.text.put("feedback2_1", "Wrong. The correct answer is O(n+m+z), which is much faster.");
+            this.text.put("feedback2_2", "Right! n is the length of the text, m is the traversal of the trie and z is the number of patterns.");
+
 
 
         }
@@ -73,7 +128,6 @@ public class AhoCorasick implements Generator {
         this.sourceCodeProps = (SourceCodeProperties)props.getPropertiesByName("sourceCodeProps");
         this.graph = (Graph)primitives.get("trie");
 
-        ahoAlgo(this.graph);
         //init and start
         String[] arr = {"he", "she", "hers", "his"};
         String text = "ushers";
@@ -81,7 +135,9 @@ public class AhoCorasick implements Generator {
 
         searchWords(arr, k, text);
 
-        //this.lang.finalizeGeneration();
+        ahoAlgo(this.graph);
+
+        this.lang.finalizeGeneration();
         return lang.toString();
     }
 
@@ -327,6 +383,14 @@ public class AhoCorasick implements Generator {
         code3.changeColor("color", Color.BLACK, null, null);
         code3.addCodeLine("look for next letter in current branch", null, 2, null);
 
+        lang.nextStep("second MultipleChoice");
+        MultipleChoiceQuestionModel secondmulti = new MultipleChoiceQuestionModel("Failed transactions");
+        secondmulti.setPrompt((String)this.text.get("secondmulti"));
+        secondmulti.addAnswer((String)this.text.get("answer1_0"), 1, (String)this.text.get("feedback1_0"));
+        secondmulti.addAnswer((String)this.text.get("answer1_1"), 1, (String)this.text.get("feedback1_1"));
+        secondmulti.addAnswer((String)this.text.get("answer1_2"), 1, (String)this.text.get("feedback1_2"));
+        this.lang.addMCQuestion(secondmulti);
+
         //FEHLERFUNKTION
         lang.nextStep("Fail function");
         code2.hide();
@@ -358,19 +422,17 @@ public class AhoCorasick implements Generator {
         failureCode.addCodeLine("*/", null, 1, null);
         failureCode.changeColor("color", Color.GRAY, null, null);
 
-
-        lang.nextStep();
-        failureCode.changeColor("color", Color.BLACK, null, null);
+        lang.nextStep("Find current letter in higher branch");
+        graph.setNodeHighlightFillColor(2, Color.BLUE, null, null);
+        graph.highlightNode(2, null, null);
         failureCode.addCodeLine("if there is none", null, 2, null);
         failureCode.addCodeLine("move back to root", null, 3, null);
-
-        lang.nextStep("Find current letter in higher branch");
-        graph.highlightNode(2, null, null); //Letter E rot
         failureCode.changeColor("color", Color.BLACK, null, null);
         failureCode.addCodeLine("if there is one", null, 2, null);
         failureCode.addCodeLine("check if a substring is found", null, 3, null);
 
         lang.nextStep();
+        he.changeColor("color", Color.BLUE, null, null);
         failureCode.changeColor("color", Color.BLACK, null, null);
         failureCode.addCodeLine("if there is a substring of previous string", null, 4, null);
         failureCode.addCodeLine("//{he} is a substring of {she}", null, 4, null);
@@ -402,7 +464,7 @@ public class AhoCorasick implements Generator {
 
         lang.nextStep("Back to traversing graph for the next letter: 'R'");
         graph.unhighlightNode(1, null, null); //Letter H schwarz
-        graph.setNodeHighlightFillColor(2, Color.RED, null, null); //Node E zurück zu rot
+        graph.setNodeHighlightFillColor(2, Color.BLUE, null, null); //Node E zurück zu blau
         keywordHeFound.hide();
         he.changeColor("color", Color.GRAY, null, null); //{he} schwarz
         she.changeColor("color", Color.GRAY, null, null); //{He, She} schwarz
@@ -411,14 +473,24 @@ public class AhoCorasick implements Generator {
         failureCode.changeColor("color", Color.BLACK, null, null);
         failureCode.addCodeLine("Traverse further in graph", "traverseFurther", 2, null);
 
+        lang.nextStep();
+        graph.setNodeHighlightFillColor(2, Color.RED, null, null); //Node E zurück zu rot
+        failureCode.hide();
+        code.show();
+        code.addCodeLine("if there is one", null, 1, null);
+        code.changeColor("color", Color.BLACK, null, null);
+        code.addCodeLine("look for next letter in current branch", null, 2, null);
+
         lang.nextStep("Traverse further in graph after failfunction");
         graph.unhighlightNode(2, null, null); //Node E from 'He' schwarz (von rot)
         graph.unhighlightNode(5, null, null); //Node E from 'She' schwarz (von grün)
         graph.hideEdge(5, 2, null, null); //hide failed transaction edge
         graph.highlightEdge(2, 8, null, null); //Edge E-R rot
         graph.highlightNode(8, null, null); //Node R rot
-        failureCode.hide();
-        code.show();
+        code.addCodeLine("if there is none", "failure", 2, null);
+        code.addCodeLine("use failed transaction line back to root", "failure1", 3, null);
+        code.changeColor("color", Color.BLACK, null, null);
+        code.addCodeLine("if there is one", null, 2, null);
 
         lang.nextStep("Found letter: 'R'");
         graph.unhighlightEdge(2, 8, null, null); //Edge E-R schwarz
@@ -427,15 +499,36 @@ public class AhoCorasick implements Generator {
         dictionary.setHighlightFillColor(4, Color.GREEN, null, null); //Farbe grün
         graph.highlightNode(8, null, null); //Node R grün
         dictionary.highlightCell(4, null, null); //Letter R grün
+        code.changeColor("color", Color.BLACK, null, null);
+        code.addCodeLine("move to that child", "move1", 3, null);
+        code.highlight("move1");
 
         lang.nextStep("Find next letter 'S'");
-
         graph.unhighlightNode(8, null, null);
         dictionary.highlightCell(5, null, null);
+
+        //Back to first code section
+        code.changeColor("color", Color.BLACK, null, null);
+        sourceCodeProps.set("color", Color.RED);
+        sourceCodeProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.GREEN);
+        sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", 1, 12));
+        code1 = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCode", null, sourceCodeProps);
+        code1.addCodeLine("// code for regular graph traversal/pattern searching", null, 0, null);
+        code1.addCodeLine("look for current letter at children of root", null, 0, null);
+        code1.addCodeLine("if there are none", null, 1, null);
+        code1.addCodeLine("use failed transaction line and restart at root", null, 2, null);
+        code1.addCodeLine("if there is one", null, 1, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("look for next letter in current branch", null, 2, null);
+
 
         lang.nextStep("Traverse further in graph");
         graph.highlightNode(9, null, null);
         graph.highlightEdge(8, 9, null, null);
+        code1.addCodeLine("if there is none", "failure", 2, null);
+        code1.addCodeLine("use failed transaction line back to root", "failure1", 3, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("if there is one", null, 2, null);
 
         lang.nextStep("Found letter: 'S'");
         graph.unhighlightEdge(8, 9, null, null);
@@ -443,28 +536,124 @@ public class AhoCorasick implements Generator {
         dictionary.setHighlightFillColor(5, Color.GREEN, null, null);
         graph.highlightNode(9, null, null);
         dictionary.highlightCell(9, null, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code1.addCodeLine("move to that child", "move1", 3, null);
+        code1.highlight("move1");
+        code.hide();
+
 
         lang.nextStep("Keyword 'hers' was found");
         keywordHers.changeColor("color", Color.GREEN, null, null);
         hers.changeColor("color", Color.GREEN, null, null);
         textProps.set("font", new Font("SansSerif", 0, 14));
         Text keywordHersFound = this.lang.newText(new Offset(0, 30, dictionary, "SW"), "Word: " + keywordHers.getText() + " appears in dictionary from 2 to 5.", "keywordHersFound", null, textProps);
+        code1.addCodeLine("if it is the last letter of a pattern", "patternFound", 3, null);
+        code1.highlight("patternFound");
+
 
         lang.nextStep("Add 'hers' to output Strings");
         textProps.set("color", Color.BLACK);
         textProps.set("font", new Font("SansSerif", 1, 14));
         output.setText("Patterns found in dictionary: {he, she, hers} ", null, null);
+        code1.addCodeLine("add the pattern to the output", "addPattern", 4, null);
+        code1.highlight("addPattern");
 
-        lang.nextStep("Failure function back to O(root)");
+        lang.nextStep("last letter in patterns");
         keywordHersFound.hide();
         keywordHers.changeColor("color", Color.BLACK, null, null);
         hers.changeColor("color", Color.GRAY, null, null);
+        code1.changeColor("color", Color.BLACK, null, null);
+        code2 = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCode", null, sourceCodeProps);
+        code2.addCodeLine("// code for regular graph traversal/pattern searching", null, 0, null);
+        code2.addCodeLine("look for current letter at children of root", null, 0, null);
+        code2.addCodeLine("if there are none", null, 1, null);
+        code2.addCodeLine("use failed transaction line and restart at root", null, 2, null);
+        code2.addCodeLine("if there is one", null, 1, null);
+        code2.changeColor("color", Color.BLACK, null, null);
+        code2.addCodeLine("look for next letter in current branch", null, 2, null);
+
+        lang.nextStep();
+        graph.setNodeHighlightFillColor(9, Color.RED, null, null);
+        code2.addCodeLine("if there is none", "failure", 2, null);
+
+        lang.nextStep("Failure function back to O(root)");
         graph.showEdge(9, 0, null, null);
         graph.setEdgeHighlightPolyColor(9, 0, Color.BLUE, null, null); //switch failfunction Edge highlightColor to blue
         graph.hideEdgeWeight(9, 0, null, null); //hide failfunction EdgeWeight
         graph.highlightEdge(9, 0, null, null); //show failfunction Edge in blue
+        code2.addCodeLine("use failed transaction line back to root", "failure1", 3, null);
+
+        lang.nextStep("back at root, no more dictionary letters left");
+        graph.unhighlightNode(9, null, null);
+        graph.setNodeHighlightFillColor(0, Color.BLUE, null, null);
+        graph.highlightNode(0, null, null);
+        graph.hideEdge(9, 0, null, null);
         code.hide();
-        failureCode.show();
+        code1.hide();
+        code2.hide();
+
+        //code shown while in failed transaction
+        sourceCodeProps.set("color", Color.BLUE);
+        sourceCodeProps.set(AnimationPropertiesKeys.HIGHLIGHTCOLOR_PROPERTY, Color.GREEN);
+        sourceCodeProps.set(AnimationPropertiesKeys.FONT_PROPERTY, new Font("Monospaced", 1, 12));
+        failureCode = this.lang.newSourceCode(new Offset (-480, 0, graph.getNode(0), "SW"), "sourceCodeFailfunction", null, sourceCodeProps);
+        failureCode.addCodeLine("// code for failed transactions graph traversing/substring searching", null, 0, null);
+        failureCode.addCodeLine("if (next letter is not found in current branch", null, 0, null);
+        failureCode.addCodeLine("&& child is not direct child of root)", null, 2, null);
+        failureCode.addCodeLine("move along failed transaction", null, 1, null);
+        failureCode.addCodeLine("/*", null, 1, null);
+        failureCode.addCodeLine("  Instead of going back to root every time", null, 1, null);
+        failureCode.addCodeLine("  and restarting the search, ", null, 1, null);
+        failureCode.addCodeLine("  this way is more efficient by searching", null, 1, null);
+        failureCode.addCodeLine("  for a substring of the current string.", null, 1, null);
+        failureCode.addCodeLine("  This is done by moving to the root-nearest node", null, 1, null);
+        failureCode.addCodeLine("  with the same letter.", null, 1, null);
+        failureCode.addCodeLine("*/", null, 1, null);
+        failureCode.addCodeLine("if there is none", null, 2, null);
+        failureCode.changeColor("color", Color.GRAY, null, null);
+        failureCode.addCodeLine("move back to root", null, 3, null);
+
+        lang.nextStep();
+        failureCode.addCodeLine("if it is the end of dictionary", null, 3, null);
+        for (int i = 0; i < dictionary.getLength(); i++) {
+            dictionary.setHighlightFillColor(i, Color.BLUE, null, null);
+            dictionary.highlightCell(i, null, null);
+        }
+
+        lang.nextStep();
+        for (int i = 0; i < dictionary.getLength(); i++) {
+            dictionary.setHighlightFillColor(i, Color.RED, null, null);
+            dictionary.unhighlightCell(i, null, null);
+        }
+        graph.unhighlightNode(0, null, null);
+        failureCode.changeColor("color", Color.BLACK, null, null);
+        failureCode.addCodeLine("finish algorithm and show output", null, 4, null);
+        output.changeColor("color", Color.BLUE, null, null);
+        textProps.set("color", Color.BLACK);
+        textProps.set("font", new Font("SansSerif", 0, 14));
+        Text keywordHeFound1 = this.lang.newText(new Offset(0, 15, output, "SW"), "Word '" + keywordHe.getText() + "' appears in dictionary from 2 to 3", "keywordHeFound", null, textProps);
+        Text keywordHersFound1 = this.lang.newText(new Offset(0, 10, keywordHeFound1, "SW"), "Word '" + keywordHers.getText() + "' appears in dictionary from 2 to 5.", "keywordHersFound", null, textProps);
+        Text keywordSheFound1 = this.lang.newText(new Offset(0, 10, keywordHersFound1, "SW"), "Word '" + keywordShe.getText() + "' appears in dictionary from 1 to 3.", "keywordSheFound", null, textProps);
+
+
+
+        lang.nextStep("first MultipleChoice");
+        failureCode.hide();
+        MultipleChoiceQuestionModel firstmulti = new MultipleChoiceQuestionModel("Unix-command");
+        firstmulti.setPrompt((String)this.text.get("firstmulti"));
+        firstmulti.addAnswer((String)this.text.get("answer0_0"), 0, (String)this.text.get("feedback0_0"));
+        firstmulti.addAnswer((String)this.text.get("answer0_1"), 0, (String)this.text.get("feedback0_1"));
+        firstmulti.addAnswer((String)this.text.get("answer0_2"), 0, (String)this.text.get("feedback0_2"));
+        firstmulti.addAnswer((String)this.text.get("answer0_3"), 1, (String)this.text.get("feedback0_3"));
+        this.lang.addMCQuestion(firstmulti);
+
+        lang.nextStep("third MultipleChoice");
+        MultipleChoiceQuestionModel lastmulti = new MultipleChoiceQuestionModel("Runtime");
+        lastmulti.setPrompt((String)this.text.get("lastmulti"));
+        lastmulti.addAnswer((String)this.text.get("answer2_0"), 0, (String)this.text.get("feedback2_0"));
+        lastmulti.addAnswer((String)this.text.get("answer2_1"), 0, (String)this.text.get("feedback2_1"));
+        lastmulti.addAnswer((String)this.text.get("answer2_2"), 0, (String)this.text.get("feedback2_2"));
+        this.lang.addMCQuestion(lastmulti);
 
         lang.nextStep();
 
