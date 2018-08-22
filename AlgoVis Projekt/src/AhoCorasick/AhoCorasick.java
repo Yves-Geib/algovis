@@ -3,7 +3,7 @@
  * Hannah Drews, Yves Geib, 2018 for the Animal project at TU Darmstadt.
  * Copying this file for educational purposes is permitted without further authorization.
  */
-package AhoCorasick;
+package ahoCorasick;
 
 import algoanim.primitives.*;
 import algoanim.primitives.Point;
@@ -587,7 +587,6 @@ public class AhoCorasick implements Generator {
         graph.unhighlightNode(9, null, null);
         graph.setNodeHighlightFillColor(0, Color.BLUE, null, null);
         graph.highlightNode(0, null, null);
-        graph.hideEdge(9, 0, null, null);
         code.hide();
         code1.hide();
         code2.hide();
@@ -610,10 +609,11 @@ public class AhoCorasick implements Generator {
         failureCode.addCodeLine("  with the same letter.", null, 1, null);
         failureCode.addCodeLine("*/", null, 1, null);
         failureCode.addCodeLine("if there is none", null, 2, null);
-        failureCode.changeColor("color", Color.GRAY, null, null);
+        failureCode.changeColor("color", Color.BLACK, null, null);
         failureCode.addCodeLine("move back to root", null, 3, null);
 
         lang.nextStep();
+        graph.hideEdge(9, 0, null, null);
         failureCode.addCodeLine("if it is the end of dictionary", null, 3, null);
         for (int i = 0; i < dictionary.getLength(); i++) {
             dictionary.setHighlightFillColor(i, Color.BLUE, null, null);

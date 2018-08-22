@@ -1,0 +1,7 @@
+resources -- DE/EN_US
+src/generators/graph --java&xml
+			weitere Klassen: /KargersHelpers/ --KargersSubset&KargersEdge
+
+Kreis ändern - neu zeichnen
+Sprache Deutsch Englisch
+XML weighted
